@@ -1,13 +1,9 @@
 // controllers/contactController.js
 
-const Newsletter = require("../models/Newsletter");
-const contact = require("../models/ContactModel")
-const sendEmail = require("../utils/sendEmail");
+const Newsletter   = require("../models/Newsletter");
+const Contact      = require("../models/ContactModel");
+const sendEmail    = require("../utils/sendEmail");
 
-/**
- * Submit Contact Form
- * Saves contact to DB, sends confirmation to user, notifies admin
- */
 exports.submitContact = async (req, res) => {
   try {
     const { name, email, subject, message } = req.body;
@@ -55,18 +51,13 @@ exports.submitContact = async (req, res) => {
       `,
     });
 
-    res
-      .status(200)
-      .json({ status: "success", message: "Message sent successfully" });
+    res.status(200).json({ status: "success", message: "Message sent successfully" });
   } catch (error) {
     console.error("Contact form error:", error);
     res.status(500).json({ status: "error", message: error.message });
   }
 };
 
-/**
- * Send welcome email helper — extracted so it's never called on duplicates
- */
 async function sendWelcomeEmail(email) {
   await sendEmail({
     email,
@@ -101,25 +92,17 @@ async function sendWelcomeEmail(email) {
   });
 }
 
-/**
- * Subscribe to Newsletter
- * Three clear paths: already active → reject, inactive → reactivate, new → create
- */
 exports.subscribeNewsletter = async (req, res) => {
   try {
     const { email } = req.body;
 
     if (!email) {
-      return res
-        .status(400)
-        .json({ status: "fail", message: "Email is required" });
+      return res.status(400).json({ status: "fail", message: "Email is required" });
     }
 
-    // ── Path 1 & 2: Existing subscriber ─────────────────────────────
     const existingSubscriber = await Newsletter.findOne({ email });
 
     if (existingSubscriber) {
-      // Already active → stop here, no email sent
       if (existingSubscriber.isActive) {
         return res.status(400).json({
           status: "fail",
@@ -127,27 +110,20 @@ exports.subscribeNewsletter = async (req, res) => {
         });
       }
 
-      // Inactive → reactivate
       existingSubscriber.isActive = true;
       await existingSubscriber.save();
       await sendWelcomeEmail(email);
 
-      return res
-        .status(200)
-        .json({ status: "success", message: "Subscribed successfully" });
+      return res.status(200).json({ status: "success", message: "Subscribed successfully" });
     }
 
-    // ── Path 3: Brand new subscriber ────────────────────────────────
     await Newsletter.create({ email });
     await sendWelcomeEmail(email);
 
-    return res
-      .status(200)
-      .json({ status: "success", message: "Subscribed successfully" });
+    return res.status(200).json({ status: "success", message: "Subscribed successfully" });
   } catch (error) {
     console.error("Newsletter subscription error:", error);
 
-    // Final safety net for race-condition duplicate key errors
     if (error.code === 11000) {
       return res.status(400).json({
         status: "fail",
@@ -159,28 +135,18 @@ exports.subscribeNewsletter = async (req, res) => {
   }
 };
 
-/**
- * Get All Contacts (Admin only)
- */
 exports.getAllContacts = async (req, res) => {
   try {
     const contacts = await Contact.find().sort({ createdAt: -1 });
-    res
-      .status(200)
-      .json({ status: "success", results: contacts.length, data: contacts });
+    res.status(200).json({ status: "success", results: contacts.length, data: contacts });
   } catch (error) {
     res.status(500).json({ status: "error", message: error.message });
   }
 };
 
-/**
- * Get All Newsletter Subscribers (Admin only)
- */
 exports.getAllSubscribers = async (req, res) => {
   try {
-    const subscribers = await Newsletter.find({ isActive: true }).sort({
-      subscribedAt: -1,
-    });
+    const subscribers = await Newsletter.find({ isActive: true }).sort({ subscribedAt: -1 });
     res.status(200).json({
       status: "success",
       results: subscribers.length,
