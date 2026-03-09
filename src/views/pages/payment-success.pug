@@ -1,0 +1,25 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title= title
+    link(rel="stylesheet" href="/css/payment-success.css")
+  body
+    .success-container
+      .success-card
+        .icon-container
+          i.fa-solid.fa-circle-check
+        h1 Payment Successful!
+        p Thank you for your generous donation.
+        
+        .details
+          p Your payment is being verified...
+          if reference
+            p.reference Reference: #{reference}
+        
+        .actions
+          a.btn.btn-primary(href="/projects") View Projects
+          a.btn.btn-secondary(href="/") Go Home
+    
+    script(src="/js/payment-success.js")

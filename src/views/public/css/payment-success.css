@@ -1,0 +1,146 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  
+  .success-container {
+    width: 100%;
+    max-width: 500px;
+  }
+  
+  .success-card {
+    background: white;
+    border-radius: 20px;
+    padding: 60px 40px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    animation: slideUp 0.5s ease-out;
+  }
+  
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .icon-container {
+    margin-bottom: 30px;
+  }
+  
+  .icon-container i {
+    font-size: 80px;
+    color: #10b981;
+    animation: scaleIn 0.5s ease-out 0.2s both;
+  }
+  
+  @keyframes scaleIn {
+    from {
+      transform: scale(0);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+  
+  h1 {
+    color: #1f2937;
+    margin-bottom: 15px;
+    font-size: 32px;
+  }
+  
+  .success-card > p {
+    color: #6b7280;
+    font-size: 18px;
+    margin-bottom: 30px;
+  }
+  
+  .details {
+    background: #f3f4f6;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+  }
+  
+  .details p {
+    color: #4b5563;
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+  
+  .details p:last-child {
+    margin-bottom: 0;
+  }
+  
+  .reference {
+    font-weight: 600;
+    color: #1f2937;
+    font-family: monospace;
+    font-size: 12px;
+  }
+  
+  .actions {
+    display: flex;
+    gap: 15px;
+    flex-direction: column;
+  }
+  
+  .btn {
+    padding: 15px 30px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: inline-block;
+  }
+  
+  .btn-primary {
+    background: #667eea;
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    background: #5568d3;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+  }
+  
+  .btn-secondary {
+    background: white;
+    color: #667eea;
+    border: 2px solid #667eea;
+  }
+  
+  .btn-secondary:hover {
+    background: #f3f4f6;
+    transform: translateY(-2px);
+  }
+  
+  @media (max-width: 768px) {
+    .success-card {
+      padding: 40px 30px;
+    }
+    
+    h1 {
+      font-size: 24px;
+    }
+    
+    .icon-container i {
+      font-size: 60px;
+    }
+  }

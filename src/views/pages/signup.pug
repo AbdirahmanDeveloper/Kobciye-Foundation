@@ -1,0 +1,37 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title Signup || Kobciye Foundation
+    link(rel="stylesheet" href="/css/auth.css")
+  body
+    form.form#signup-form
+      h1 Create Account
+      p Join Kobciye Foundation today
+
+      .input-box
+        label(for="name") Full Name
+        input(type="text" id="name" name="name" required)
+
+      .input-box
+        label(for="email") Email
+        input(type="email" id="email" name="email" required)
+
+      .input-box
+        label(for="password") Password
+        input(type="password" id="password" name="password" required)
+
+      .input-box
+        label(for="confirm-password") Confirm Password
+        input(type="password" id="confirm-password" required)
+
+      button.auth-btn(type="submit") Sign Up
+
+      p.switch
+        | Already have an account? 
+        a(href="/login") Login
+
+script(src="/js/signup.js")
+
+    

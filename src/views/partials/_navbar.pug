@@ -1,0 +1,122 @@
+header
+  a.logo(href="/")
+    img.logo-img(src="/images/logo.jpeg" alt="Kobciye Foundation")
+  .navigation-btn
+    i.fa-solid.fa-bars
+  nav
+    ul.nav-links
+      li
+        a(href="/" class=activePage === 'home' ? 'active' : '') Home
+      li
+        a(href="/about" class=activePage === 'about' ? 'active' : '') About Us
+      li
+        a(href="/projects" class=activePage === 'projects' ? 'active' : '') Projects
+      li
+        a(href="/blog" class=activePage === 'blog' ? 'active' : '') Blog
+      li
+        a(href="/contact" class=activePage === 'contact' ? 'active' : '') Contact Us
+  .header-btns
+    a.donate-btn(href="/payment") Donate Now
+    a.login-btn#loginBtn(href="/login") Login
+  
+  .user-profile
+    button.profile-btn#profileBtn
+      .avator
+        i.fa-solid.fa-user
+      h3#userName
+    
+  .profile-modal
+    .modal-header
+      h2 My Profile
+      i.fa-solid.fa-xmark.close-modal
+    
+    .modal-body
+      .profile-tabs
+        button.tab-btn.active(data-tab="overview") Overview
+        button.tab-btn(data-tab="donations") My Donations
+        button.tab-btn(data-tab="setting") Setting
+    
+    .tabs-content
+      //- Overview Tab
+      .modal-section.active#overview
+        .overview-card
+          .overview-card-header
+            .large-avatar
+              i.fa-solid.fa-user
+            h3#userName 
+            p#userEmail 
+            p.role#role
+          
+          .overview-stats
+            .stat-card
+              i.fa-solid.fa-hand-holding-heart
+              .stat-info
+                h4#totalDonations 0
+                p Total Donations
+            
+            .stat-card
+              i.fa-solid.fa-dollar-sign
+              .stat-info
+                h4#totalAmount KES 0
+                p Total Amount
+            
+            .stat-card
+              i.fa-solid.fa-calendar
+              .stat-info
+                h4#memberSince
+                p Member Since
+      
+      //- Donations Tab
+      .donations.modal-section#donations
+        .donations-header
+          h2 My Donations
+          .filter-buttons
+            button.filter-btn.active(data-filter="all") All
+            button.filter-btn(data-filter="success") Completed
+            button.filter-btn(data-filter="pending") Pending
+        
+        .donations-list
+          .loading-state
+            i.fa-solid.fa-spinner.fa-spin
+            p Loading donations...
+      
+      //- Settings Tab
+      .setting.modal-section#setting
+        .setting-form
+          form.acount-info#acountInfo
+            h3 Account Information
+            
+            .form-group
+              label(for="editName") Full Name
+              input#editName(type="text" placeholder="Your Name")
+            
+            .form-group
+              label(for="editEmail") Email Address
+              input#editEmail(type="email" placeholder="Your Email")
+            
+            button.save-btn(type="button")
+              i.fa-solid.fa-floppy-disk
+              |  Save Changes
+          
+          form.change-password#changePassword
+            h3 Change Password
+            
+            .form-group
+              label(for="currentPassword") Current Password
+              input#currentPassword(type="password" placeholder="Current Password")
+            
+            .form-group
+              label(for="newPassword") New Password
+              input#newPassword(type="password" placeholder="New Password")
+            
+            .form-group
+              label(for="confirmPassword") Confirm Password
+              input#confirmPassword(type="password" placeholder="Confirm Password")
+            
+            button.save-btn(type="submit")
+              i.fa-solid.fa-lock
+              |  Update Password
+
+          button.logout-btn#logoutBtn(type="button")
+            i.fa-solid.fa-right-from-bracket
+            span Logout

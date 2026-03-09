@@ -1,0 +1,163 @@
+/* =========================
+   CONTACT HERO
+========================= */
+.contact-hero {
+    position: relative;
+    background-image: url("/images/home-hero.png");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .contact-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 1;
+  }
+  
+  .contact-hero * {
+    position: relative;
+    z-index: 2;
+  }
+  
+  /* =========================
+     CONTACT CARDS
+  ========================= */
+  .contacts-section {
+    padding: 4rem 1rem;
+    background: #f1f5f9;
+  }
+  
+  .contacts-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  a.contact-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+  }
+  
+  a.contact-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+  }
+  .contact-card {
+    background: #ffffff;
+    width: 300px;
+    padding: 2rem 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  
+  .contact-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+  }
+  
+  .contact-card i {
+    font-size: 2.5rem;
+    color: #0f766e;
+    margin-bottom: 1rem;
+  }
+  
+  .contact-card h3 {
+    font-size: 1.3rem;
+    color: #0f766e;
+    margin-bottom: 0.5rem;
+  }
+  
+  .contact-card p {
+    font-size: 1rem;
+    color: #374151;
+    margin: 0.2rem 0;
+  }
+  
+  /* ── Clickable links in cards ── */
+  .contact-card a {
+    display: block;
+    font-size: 1rem;
+    color: #374151;
+    text-decoration: none;
+    margin: 0.2rem 0;
+    transition: color 0.2s;
+  }
+  
+  .contact-card a:hover {
+    color: #0f766e;
+    text-decoration: underline;
+  }
+  
+  /* =========================
+     CONTACT FORM
+  ========================= */
+  .contact-section {
+    padding: 4rem 1rem;
+    background: #f1f5f9;
+  }
+  
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    font-size: 1.1rem;
+    color: #374151;
+    margin-bottom: 2rem;
+  }
+  
+  .input-box {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+  }
+  
+  .input-box label {
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #0f766e;
+  }
+  
+  .input-box input,
+  .input-box textarea {
+    padding: 0.75rem 1rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+    transition: border 0.3s, box-shadow 0.3s;
+  }
+  
+  .input-box input:focus,
+  .input-box textarea:focus {
+    border-color: #22c55e;
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2);
+  }
+  
+  .contact-btn {
+    background: #0f766e;
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 0.75rem 2rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .contact-btn:hover {
+    background: #22c55e;
+  }

@@ -1,0 +1,80 @@
+include ../layout/_head
+
+body
+  include ../partials/_navbar
+
+  block content
+    //- BLOG HERO
+    section.hero.blog-hero
+      .hero-content.blog-hero-content
+        .hero-txt
+          h1 Latest BLOG posts
+          p Stories, updates, and insights from Kobciye Foundation
+
+    //- BLOG SECTION
+
+
+    section.blog-section
+      .section-divider
+        .divider-label Explore Our News
+      .blog-container
+        each item in news
+          article.blog-card
+            .blog-img
+              img.blog-img(src=item.image ? `/uploads/news/${item.image}` : "/images/blog-hero.png" alt="blog image")
+            .blog-content
+              h2.blog-title= item.title
+              p.blog-script= item.content
+              .blogDate
+                span
+                  i.fa-regular.fa-calendar
+                  | #{item.createdAt.toDateString()}
+              a.read-more(href=`/blog/${item._id}`) Read More
+
+
+   
+    //- TESTIMONIALS
+    section.testimonials
+      .section-divider
+        .divider-line
+        .divider-label What People Said About Us
+        .divider-line
+      .testimonial-cards
+        .testimonial-card
+          .quote-icon "
+          p "Kobciye helped my community get clean water. Truly life-changing!"
+          h3 — Amina, Nairobi
+        .testimonial-card
+          .quote-icon "
+          p "Volunteering here taught me the value of giving back."
+          h3 — John, Volunteer
+
+    //- IMPACTS
+    .section-divider
+      .divider-label Our Impact
+    section.impact-stats
+      .stat
+        .stat-icon
+          i.fa-solid.fa-people-group
+        h2 200+
+        p Communities Served
+      .stat
+        .stat-icon
+          i.fa-solid.fa-circle-check
+        h2 50+
+        p Projects Completed
+      .stat
+        .stat-icon
+          i.fa-solid.fa-hands-holding-child
+        h2 500+
+        p Volunteers Engaged
+
+    //- CALL ON ACTION
+    section.get-involved
+      h1 Get Involved
+      p Join us in making a real difference in people's lives. Your support matters.
+      a.get-involved-btn(href="/payment") Get Involved
+
+  include ../partials/_footer
+
+  script(src="/js/main.js")

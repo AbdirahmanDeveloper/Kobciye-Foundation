@@ -1,0 +1,102 @@
+include ../layout/_head
+
+body
+  include ../partials/_navbar
+
+  block content
+
+    section.contact-hero.hero
+      .hero-content.contact-hero-content
+        .hero-txt
+          h1 Get in Touch
+          p Your voice matters. Reach out and be part of the change with Kobciye Foundation.
+
+    section.contact-section
+      section.contacts-section
+        .contacts-container
+          a.contact-card(href="tel:+254700000000")
+            i.fa-solid.fa-phone
+            h3 Call Us
+            p +254 700 000 000
+            p +254 701 111 111
+
+          a.contact-card(href="mailto:info@kobciye.org")
+            i.fa-solid.fa-envelope
+            h3 Email Us
+            p info@kobciye.org
+            p support@kobciye.org
+
+          a.contact-card(href="https://maps.google.com/?q=123+Street+Nairobi+Kenya" target="_blank" rel="noopener")
+            i.fa-solid.fa-location-dot
+            h3 Our Office
+            p 123 Street, Nairobi, Kenya
+
+      form.contact-form#contactForm
+        .input-box
+          label(for="name") Full Name
+          input(type="text" id="name" name="name" placeholder="Your full name" required)
+        .input-box
+          label(for="email") Email Address
+          input(type="email" id="email" name="email" placeholder="your@email.com" required)
+        .input-box
+          label(for="subject") Subject
+          input(type="text" id="subject" name="subject" placeholder="Subject" required)
+        .input-box
+          label(for="message") Message
+          textarea(id="message" name="message" rows="6" placeholder="Write your message here..." required)
+        button.contact-btn(type="submit") Send Message
+
+    .message-modal#contactMessageModal
+      .message-content.success#contactSuccessMessage
+        i.fa-solid.fa-circle-check
+        h2 Message Sent!
+        p We've received your message and will get back to you soon.
+        button.ok-btn OK
+      .message-content.error#contactErrorMessage
+        i.fa-solid.fa-circle-xmark
+        h2 Message Failed
+        p Something went wrong. Please try again.
+        button.ok-btn OK
+
+    section.testimonials
+      .section-divider
+        .divider-line
+        .divider-label What People Said About Us
+        .divider-line
+      .testimonial-cards
+        .testimonial-card
+          .quote-icon "
+          p "Kobciye helped my community get clean water. Truly life-changing!"
+          h3 — Amina, Nairobi
+        .testimonial-card
+          .quote-icon "
+          p "Volunteering here taught me the value of giving back."
+          h3 — John, Volunteer
+
+    .section-divider
+      .divider-label Our Impact
+    section.impact-stats
+      .stat
+        .stat-icon
+          i.fa-solid.fa-people-group
+        h2 200+
+        p Communities Served
+      .stat
+        .stat-icon
+          i.fa-solid.fa-circle-check
+        h2 50+
+        p Projects Completed
+      .stat
+        .stat-icon
+          i.fa-solid.fa-hands-holding-child
+        h2 500+
+        p Volunteers Engaged
+
+    section.get-involved
+      h1 Get Involved
+      p Join us in making a real difference in people's lives. Your support matters.
+      a.get-involved-btn(href="/payment") Get Involved
+
+  include ../partials/_footer
+  script(src="/js/main.js")
+  script(src="/js/contact.js")

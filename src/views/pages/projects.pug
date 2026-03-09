@@ -1,0 +1,112 @@
+include ../layout/_head
+
+body
+  include ../partials/_navbar
+
+  block content
+
+    section.hero.projects-hero
+      .hero-content.projects-hero-content
+        .hero-txt
+          h1 Our Projects
+          h3 See how we are transforming lives through impactful initiatives
+
+    section.projects-section
+      .section-header
+        span.section-eyebrow Our Work
+
+      .section-divider
+        .divider-line
+        .divider-label Ongoing Missions
+        .divider-line
+
+      .projects-container
+        if ongoingProjects.length > 0
+          each project in ongoingProjects
+            .project-card
+              .project-img
+                img(src=project.image ? `/uploads/projects/${project.image}` : "")
+                .card-badge.active Active
+              .card-content
+                h2.project-title= project.title
+                p.project-desc= project.description
+                .progress-wrapper
+                  .progress-bar-container
+                    .progress-bar(style=`width: ${project.progressPercentage}%`)
+                  .goal-raised
+                    p.goal-amount 🎯 KSh #{project.goalAmount.toLocaleString()}
+                    p.raised-amount 💰 KSh #{project.raisedAmount.toLocaleString()}
+                  p.progress-percentage= `${project.progressPercentage}% Funded`
+                a.donate-btn(href="/payment" data-project-id=`${project._id}`) Donate Now →
+        else
+          p.empty-state No active projects available.
+
+      .section-divider
+        .divider-line
+        .divider-label Completed Missions
+        .divider-line
+
+      .projects-container
+        if completedProjects.length > 0
+          each project in completedProjects
+            .project-card.completed
+              .project-img
+                img(src=project.image ? `/uploads/projects/${project.image}` : "")
+                .card-badge.done ✓ Funded
+              .card-content
+                h2.project-title= project.title
+                p.project-desc= project.description
+                .progress-wrapper
+                  .progress-bar-container
+                    .progress-bar(style=`width: ${project.progressPercentage}%`)
+                  .goal-raised
+                    p.goal-amount 🎯 KSh #{project.goalAmount.toLocaleString()}
+                    p.raised-amount 💰 KSh #{project.raisedAmount.toLocaleString()}
+                  p.progress-percentage= `${project.progressPercentage}% Funded`
+                button.donate-btn.completed-btn(disabled) ✓ Goal Reached
+        else
+          p.empty-state No completed projects available.
+
+    section.testimonials
+      .section-divider
+        .divider-line
+        .divider-label What People Said About Us
+        .divider-line
+      .testimonial-cards
+        .testimonial-card
+          .quote-icon "
+          p "Kobciye helped my community get clean water. Truly life-changing!"
+          h3 — Amina, Nairobi
+        .testimonial-card
+          .quote-icon "
+          p "Volunteering here taught me the value of giving back."
+          h3 — John, Volunteer
+
+    .section-divider
+      .divider-label Our Impact
+    section.impact-stats
+      .stat
+        .stat-icon
+          i.fa-solid.fa-people-group
+        h2 200+
+        p Communities Served
+      .stat
+        .stat-icon
+          i.fa-solid.fa-circle-check
+        h2 50+
+        p Projects Completed
+      .stat
+        .stat-icon
+          i.fa-solid.fa-hands-holding-child
+        h2 500+
+        p Volunteers Engaged
+
+    section.get-involved
+      h1 Get Involved
+      p Join us in making a real difference in people's lives. Your support matters.
+      a.get-involved-btn(href="/payment") Get Involved
+
+    include ../partials/_footer
+
+  script(src="/js/main.js")
+  script(src="/js/project.js")

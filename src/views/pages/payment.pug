@@ -1,0 +1,49 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title Payment Gateway
+    link(rel="stylesheet" href="/css/payment.css")
+
+  body
+    .payment-form
+      .form
+
+        h2 Make a Donation
+
+        //- Project Selection
+        label(for="project-category") Choose Project *
+        select#project-category(name="project" required)
+          option(value="" disabled selected) Select a project
+          each project in projects
+            option(value=project._id)= project.title
+
+        //- Phone Number for STK Push
+        label(for="phone") M-Pesa Phone Number *
+        input#phone(
+          type="tel"
+          name="phone"
+          placeholder="e.g. 0712345678"
+          required
+        )
+
+        //- Amount Presets
+        label(for="amount") Enter Amount *
+        .amount-btns
+          button.amount-btn(type="button" data-amount="200") KES 200
+          button.amount-btn(type="button" data-amount="500") KES 500
+          button.amount-btn(type="button" data-amount="1000") KES 1,000
+          button.amount-btn(type="button" data-amount="2000") KES 2,000
+        input#amount(type="number" name="amount" placeholder="Or enter amount (KES)" required)
+
+        //- Pay Button
+        button#payBtn.payBtn(type="button")
+          i.fa-solid.fa-mobile-screen-button
+          |  Pay with M-Pesa
+
+        //- Status message — shown/hidden by payment.js
+        #paymentStatus(style="display:none")
+
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js")
+    script(src="/js/payment.js")

@@ -1,0 +1,72 @@
+[
+  {
+    "_id": "653000000000000000000001",
+    "title": "Water Well Project Launched",
+    "content": "The water well project has officially started.",
+    "project": "651000000000000000000001",
+    "publishedBy": "650000000000000000000001"
+  },
+  {
+    "_id": "653000000000000000000002",
+    "title": "School Supplies Delivered",
+    "content": "Children received school supplies.",
+    "project": "651000000000000000000002",
+    "publishedBy": "650000000000000000000001"
+  },
+  {
+    "_id": "653000000000000000000003",
+    "title": "Medical Aid Update",
+    "content": "Funds used to support hospital patients.",
+    "project": "651000000000000000000003",
+    "publishedBy": "650000000000000000000002"
+  },
+  {
+    "_id": "653000000000000000000004",
+    "title": "Food Relief Completed",
+    "content": "Food packages distributed successfully.",
+    "project": "651000000000000000000004",
+    "publishedBy": "650000000000000000000002"
+  },
+  {
+    "_id": "653000000000000000000005",
+    "title": "Orphan Program Progress",
+    "content": "New orphans added to the program.",
+    "project": "651000000000000000000005",
+    "publishedBy": "650000000000000000000001"
+  },
+  {
+    "_id": "653000000000000000000006",
+    "title": "Mosque Renovation Update",
+    "content": "Renovation nearing completion.",
+    "project": "651000000000000000000006",
+    "publishedBy": "650000000000000000000002"
+  },
+  {
+    "_id": "653000000000000000000007",
+    "title": "Emergency Relief Distribution",
+    "content": "Emergency kits delivered.",
+    "project": "651000000000000000000007",
+    "publishedBy": "650000000000000000000001"
+  },
+  {
+    "_id": "653000000000000000000008",
+    "title": "Women Empowerment Training",
+    "content": "Training sessions started.",
+    "project": "651000000000000000000008",
+    "publishedBy": "650000000000000000000002"
+  },
+  {
+    "_id": "653000000000000000000009",
+    "title": "Tree Planting Drive",
+    "content": "Volunteers planted trees.",
+    "project": "651000000000000000000009",
+    "publishedBy": "650000000000000000000001"
+  },
+  {
+    "_id": "653000000000000000000010",
+    "title": "Refugee Assistance Update",
+    "content": "More families supported.",
+    "project": "651000000000000000000010",
+    "publishedBy": "650000000000000000000002"
+  }
+]

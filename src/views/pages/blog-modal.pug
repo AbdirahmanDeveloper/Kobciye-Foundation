@@ -1,0 +1,70 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title #{news.title} || Kobciye Foundation
+    link(rel="stylesheet" href="/css/index.css")
+    link(rel="stylesheet" href="/css/blog.css")
+    link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css")
+
+  body
+    block content
+      section.blog-modal-section
+        a.back-btn(href="/blog")
+          i.fa-solid.fa-arrow-left
+          |  Back to News
+
+        article.blog-modal
+          .blog-modal-img
+            img(src=news.image ? `/uploads/news/${news.image}` : "/images/blog-hero.png" alt=news.title)
+            .blog-modal-overlay
+              span.blog-modal-category News
+
+          .blog-modal-txt
+            .blog-modal-meta
+              i.fa-regular.fa-calendar
+              span= news.createdAt.toDateString()
+            h1.blog-modal-title= news.title
+            p.blog-modal-script= news.content
+    //- TESTIMONIALS
+    section.testimonials
+      .section-divider
+        .divider-line
+        .divider-label What People Said About Us
+        .divider-line
+      .testimonial-cards
+        .testimonial-card
+          .quote-icon "
+          p "Kobciye helped my community get clean water. Truly life-changing!"
+          h3 — Amina, Nairobi
+        .testimonial-card
+          .quote-icon "
+          p "Volunteering here taught me the value of giving back."
+          h3 — John, Volunteer
+
+    //- IMPACTS
+    .section-divider
+      .divider-label Our Impact
+    section.impact-stats
+      .stat
+        .stat-icon
+          i.fa-solid.fa-people-group
+        h2 200+
+        p Communities Served
+      .stat
+        .stat-icon
+          i.fa-solid.fa-circle-check
+        h2 50+
+        p Projects Completed
+      .stat
+        .stat-icon
+          i.fa-solid.fa-hands-holding-child
+        h2 500+
+        p Volunteers Engaged
+
+    //- CALL ON ACTION
+    section.get-involved
+      h1 Get Involved
+      p Join us in making a real difference in people's lives. Your support matters.
+      a.get-involved-btn(href="/payment") Get Involved

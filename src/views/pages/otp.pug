@@ -1,0 +1,57 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title Reset Password || Kobciye Foundation
+    link(rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap")
+    link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css")
+    link(rel="stylesheet" href="/css/auth.css")
+  body
+    .otp-page
+      .otp-card
+
+        .otp-card-top
+          .shield-icon
+            i.fa-solid.fa-lock
+          h1 Reset Password
+          p Enter your email to receive a verification code
+
+        //- STEP 1 — Email
+        .step#step1
+          .input-box
+            label Email Address
+            .inline-row
+              .input-with-icon
+                i.fa-solid.fa-envelope
+                input#email(type="email" placeholder="your@email.com" autocomplete="email")
+              button.otp-submit#sendOtpBtn(type="submit")
+                span Send OTP
+                i.fa-solid.fa-paper-plane
+          .error-msg#emailError
+
+        //- STEP 2 — OTP (locked until email sent)
+        .step#step2
+          .input-box
+            label Verification Code
+            .inline-row
+              .otp-boxes
+                input.otp-box(type="text" maxlength="1" inputmode="numeric" autocomplete="off")
+                input.otp-box(type="text" maxlength="1" inputmode="numeric" autocomplete="off")
+                input.otp-box(type="text" maxlength="1" inputmode="numeric" autocomplete="off")
+                input.otp-box(type="text" maxlength="1" inputmode="numeric" autocomplete="off")
+              button.otp-submit#verifyOtpBtn(type="button" disabled)
+                span Verify
+                i.fa-solid.fa-arrow-right
+          .error-msg#otpError
+
+          .otp-footer
+            span Didn't receive it?
+            button.resend-link(type="button" id="resendBtn" disabled) Resend
+            span.resend-timer#resendTimer
+
+        a.back-link(href="/login")
+          i.fa-solid.fa-chevron-left
+          |  Back to login
+
+    script(src="/js/reset-password.js")

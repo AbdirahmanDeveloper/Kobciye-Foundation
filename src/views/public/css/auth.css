@@ -1,0 +1,534 @@
+/* ============================================================
+   IMPORTS & RESET
+============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* ============================================================
+   AUTH BACKGROUND PAGE (login, signup, reset, otp)
+============================================================ */
+
+body,
+.otp-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url("/images/home-hero.png");
+  background-size: cover;
+  background-position: center;
+  padding: 2rem;
+  position: relative;
+}
+
+body::before,
+.otp-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 10, 18, 0.68);
+  backdrop-filter: blur(2px);
+  z-index: 0;
+}
+
+/* ============================================================
+   CARD (shared by .form and .otp-card)
+============================================================ */
+
+.form,
+.otp-card {
+  position: relative;
+  z-index: 1;
+  background: #ffffff;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 480px;
+  padding: 2.8rem 2.5rem 2.2rem;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+  animation: cardIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(24px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ============================================================
+   CARD TOP (icon + heading + subtitle)
+============================================================ */
+
+.otp-card-top {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.otp-card-top h1,
+.form h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #0f0e0c;
+  margin: 0;
+}
+
+.otp-card-top p,
+.form > p {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin: 0;
+  text-align: center;
+}
+
+/* ============================================================
+   SHIELD / ICON BADGE
+============================================================ */
+
+.shield-icon {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #eef3ff, #dce8ff);
+  border: 2px solid rgba(37, 117, 252, 0.13);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  color: #2575fc;
+  animation: pulse 2.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(37, 117, 252, 0.2); }
+  50%       { box-shadow: 0 0 0 10px rgba(37, 117, 252, 0); }
+}
+
+/* ============================================================
+   INPUT BOX
+============================================================ */
+
+.input-box {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.input-box label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #374151;
+  letter-spacing: 0.3px;
+}
+
+/* Input with icon */
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-with-icon > i {
+  position: absolute;
+  left: 14px;
+  color: #9ca3af;
+  font-size: 14px;
+  pointer-events: none;
+  transition: color 0.2s ease;
+  z-index: 1;
+}
+
+.input-with-icon:focus-within > i {
+  color: #2575fc;
+}
+
+.input-with-icon input,
+.input-box input {
+  width: 100%;
+  padding: 0.78rem 1rem 0.78rem 2.6rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  color: #0f0e0c;
+  background: #fafafa;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+/* Plain input (no icon) */
+.input-box > input {
+  padding: 0.78rem 1rem;
+}
+
+.input-with-icon input:focus,
+.input-box input:focus {
+  border-color: #2575fc;
+  background: #f0f5ff;
+  box-shadow: 0 0 0 3px rgba(37, 117, 252, 0.12);
+}
+
+/* ============================================================
+   INLINE ROW — email + send btn / otp + verify btn
+============================================================ */
+
+.inline-row {
+  display: flex;
+  gap: 10px;
+  align-items: stretch;
+}
+
+.inline-row .input-with-icon {
+  flex: 1;
+}
+
+.inline-row .otp-submit {
+  width: auto;
+  padding: 0 22px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  white-space: nowrap;
+}
+
+/* ============================================================
+   OTP BOXES
+============================================================ */
+
+.otp-boxes {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.otp-box {
+  width: 50px;
+  height: 56px;
+  text-align: center;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0f0e0c;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  outline: none;
+  background: #fafafa;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.otp-box:focus {
+  border-color: #2575fc;
+  background: #f0f5ff;
+  box-shadow: 0 0 0 3px rgba(37, 117, 252, 0.12);
+}
+
+.otp-box.filled {
+  border-color: #2575fc;
+  background: #eef3ff;
+}
+
+.otp-box.error {
+  border-color: #ef4444;
+  background: #fff5f5;
+  animation: shake 0.35s ease;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25%       { transform: translateX(-5px); }
+  75%       { transform: translateX(5px); }
+}
+
+/* ============================================================
+   SUBMIT BUTTON (shared .otp-submit and .auth-btn)
+============================================================ */
+
+.otp-submit,
+button.auth-btn {
+  width: 100%;
+  height: 50px;
+  background: #2575fc;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.otp-submit:hover,
+button.auth-btn:hover {
+  background: #1a5ed0;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(37, 117, 252, 0.28);
+}
+
+.otp-submit:active,
+button.auth-btn:active {
+  transform: translateY(0);
+}
+
+.otp-submit:disabled,
+button.auth-btn:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ============================================================
+   ERROR MESSAGE
+============================================================ */
+
+.error-msg {
+  font-size: 0.83rem;
+  color: #ef4444;
+  text-align: center;
+  min-height: 18px;
+}
+
+/* ============================================================
+   RESEND ROW
+============================================================ */
+
+.otp-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 0.86rem;
+  color: #6b7280;
+}
+
+.resend-link {
+  background: none;
+  border: none;
+  color: #2575fc;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.86rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s ease;
+}
+
+.resend-link:hover {
+  color: #1a5ed0;
+  text-decoration: underline;
+}
+
+.resend-link:disabled {
+  color: #9ca3af;
+  cursor: not-allowed;
+  text-decoration: none;
+}
+
+.resend-timer {
+  font-size: 0.82rem;
+  color: #9ca3af;
+}
+
+/* ============================================================
+   BACK LINK
+============================================================ */
+
+.back-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: #6b7280;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.back-link:hover {
+  color: #2575fc;
+}
+
+/* ============================================================
+   SWITCH LINK (login/signup toggle)
+============================================================ */
+
+p.switch {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+p.switch a {
+  color: #2575fc;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+p.switch a:hover {
+  text-decoration: underline;
+}
+
+/* ============================================================
+   FORGOT PASSWORD LINK
+============================================================ */
+
+.forgot-link {
+  font-size: 0.82rem;
+  color: #2575fc;
+  text-decoration: none;
+  font-weight: 600;
+  align-self: flex-end;
+  transition: color 0.2s ease;
+}
+
+.forgot-link:hover {
+  color: #1a5ed0;
+  text-decoration: underline;
+}
+
+/* ============================================================
+   MODAL OVERLAY (forgot password modal on login page)
+============================================================ */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.modal-overlay.active {
+  display: flex;
+}
+
+.modal-box {
+  background: white;
+  border-radius: 14px;
+  width: 100%;
+  max-width: 440px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+  animation: cardIn 0.3s ease;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem;
+  color: #0f0e0c;
+  font-weight: 700;
+}
+
+.modal-close {
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 50%;
+  background: #f3f4f6;
+  color: #6b7280;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  transition: all 0.2s ease;
+}
+
+.modal-close:hover {
+  background: #e5e7eb;
+  color: #0f0e0c;
+}
+
+.modal-step {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.modal-step p {
+  font-size: 0.92rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+.modal-step.hidden {
+  display: none;
+}
+
+.modal-step h3 {
+  text-align: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  color: #0f0e0c;
+}
+
+.modal-step#step2 p {
+  text-align: center;
+}
+
+.success-icon {
+  text-align: center;
+}
+
+.success-icon i {
+  font-size: 56px;
+  color: #10b981;
+}
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+@media (max-width: 480px) {
+  .form,
+  .otp-card {
+    padding: 2rem 1.4rem;
+    border-radius: 16px;
+  }
+
+  .otp-box {
+    width: 42px;
+    height: 50px;
+    font-size: 1.2rem;
+  }
+
+  .inline-row {
+    flex-direction: column;
+  }
+
+  .inline-row .otp-submit {
+    width: 100%;
+    padding: 0;
+  }
+}

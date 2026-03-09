@@ -1,0 +1,288 @@
+/* ===== BLOG HERO ===== */
+.blog-hero {
+    position: relative;
+    background-image: url("/images/home-hero.png");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+  
+    height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .blog-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+  
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 1;
+  }
+  
+  .blog-hero * {
+    position: relative;
+    z-index: 2;
+  }
+/* ===== BLOG SECTION ===== */
+.blog-section {
+    background: #ffffff;
+    padding: 80px 60px;
+    font-family: 'Outfit', sans-serif;
+  }
+  
+  /* ---- Grid ---- */
+  .blog-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+  }
+  
+  /* ---- Card ---- */
+  .blog-card {
+    width: 420px;
+    background: #fff;
+    border: 1px solid #e8e3db;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+  }
+  
+  .blog-card:hover {
+    box-shadow: 0 10px 32px rgba(0, 0, 0, 0.13);
+    transform: translateY(-4px);
+  }
+  
+  /* ---- Image ---- */
+  .blog-img {
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+  }
+  
+  .blog-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  /* ---- Content ---- */
+  .blog-content {
+    padding: 20px 22px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+  }
+  
+  .blog-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0;
+    line-height: 1.3;
+  }
+  
+  .blog-script {
+    font-size: 14px;
+    color: #777;
+    line-height: 1.7;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  /* ---- Date ---- */
+  .blogDate {
+    font-size: 12px;
+    color: #aaa;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: auto;
+  }
+  
+  .blogDate i {
+    color: #c0873f;
+  }
+  
+  /* ---- Read More ---- */
+  .read-more {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 9px 20px;
+    background: #c0873f;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 6px;
+    align-self: flex-start;
+    transition: background 0.2s ease;
+  }
+  
+  .read-more:hover {
+    background: #a8722f;
+  }
+  
+  /* ---- Responsive ---- */
+  @media (max-width: 900px) {
+    .blog-section {
+      padding: 60px 30px;
+    }
+  }
+  
+  @media (max-width: 500px) {
+    .blog-section {
+      padding: 50px 16px;
+    }
+  
+    .blog-card {
+      width: 100%;
+    }
+  }
+
+/* ==============================
+   BLOG MODAL PAGE
+============================== */
+
+.blog-modal-section {
+    min-height: 100vh;
+    background: #f7f5f2;
+    padding: 60px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    font-family: 'Outfit', sans-serif;
+  }
+  
+  /* ---- Back Button ---- */
+  .back-btn {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #c0873f;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    transition: gap 0.2s ease, color 0.2s ease;
+  }
+  
+  .back-btn:hover {
+    gap: 12px;
+    color: #a8722f;
+  }
+  
+  .back-btn i {
+    font-size: 12px;
+  }
+  
+  /* ---- Modal Card ---- */
+  .blog-modal {
+    width: 100%;
+    max-width: 780px;
+    background: #ffffff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* ---- Image ---- */
+  .blog-modal-img {
+    position: relative;
+    width: 100%;
+    height: 420px;
+  }
+  
+  .blog-modal-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  
+  .blog-modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 60%);
+  }
+  
+  .blog-modal-category {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: #c0873f;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 2px;
+  }
+  
+  /* ---- Text ---- */
+  .blog-modal-txt {
+    padding: 36px 44px 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .blog-modal-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: #aaa;
+  }
+  
+  .blog-modal-meta i {
+    color: #c0873f;
+  }
+  
+  .blog-modal-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0;
+    line-height: 1.25;
+  }
+  
+  .blog-modal-script {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.9;
+    font-weight: 400;
+  }
+  
+  /* ---- Responsive ---- */
+  @media (max-width: 768px) {
+    .blog-modal-section {
+      padding: 40px 20px;
+    }
+  
+    .blog-modal-img {
+      height: 260px;
+    }
+  
+    .blog-modal-txt {
+      padding: 24px 22px 36px;
+    }
+  
+    .blog-modal-title {
+      font-size: 1.7rem;
+    }
+  }

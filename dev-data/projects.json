@@ -1,0 +1,93 @@
+[
+  {
+    "_id": "651000000000000000000001",
+    "title": "Build a Water Well",
+    "description": "Clean water for rural villages.",
+    "goalAmount": 5000,
+    "raisedAmount": 1200,
+    "status": "active",
+    "createdBy": "650000000000000000000001"
+  },
+  {
+    "_id": "651000000000000000000002",
+    "title": "School Supplies Drive",
+    "description": "Books and stationery for kids.",
+    "goalAmount": 3000,
+    "raisedAmount": 800,
+    "status": "active",
+    "createdBy": "650000000000000000000001",
+    "coverImage": "user-2.jpeg"
+  },
+  {
+    "_id": "651000000000000000000003",
+    "title": "Medical Aid Program",
+    "description": "Support hospital patients.",
+    "goalAmount": 10000,
+    "raisedAmount": 6400,
+    "status": "active",
+    "createdBy": "650000000000000000000002"
+  },
+  {
+    "_id": "651000000000000000000004",
+    "title": "Food Relief Campaign",
+    "description": "Food packages for families.",
+    "goalAmount": 4000,
+    "raisedAmount": 4000,
+    "status": "completed",
+    "createdBy": "650000000000000000000002"
+  },
+  {
+    "_id": "651000000000000000000005",
+    "title": "Orphan Support Fund",
+    "description": "Monthly support for orphans.",
+    "goalAmount": 7000,
+    "raisedAmount": 1500,
+    "status": "active",
+    "createdBy": "650000000000000000000001"
+  },
+  {
+    "_id": "651000000000000000000006",
+    "title": "Mosque Renovation",
+    "description": "Renovation of community mosque.",
+    "goalAmount": 12000,
+    "raisedAmount": 9000,
+    "status": "active",
+    "createdBy": "650000000000000000000002"
+  },
+  {
+    "_id": "651000000000000000000007",
+    "title": "Emergency Relief",
+    "description": "Help during emergencies.",
+    "goalAmount": 6000,
+    "raisedAmount": 2200,
+    "status": "active",
+    "createdBy": "650000000000000000000001"
+  },
+  {
+    "_id": "651000000000000000000008",
+    "title": "Women Empowerment",
+    "description": "Skills training for women.",
+    "goalAmount": 8000,
+    "raisedAmount": 3000,
+    "status": "active",
+    "createdBy": "650000000000000000000002"
+  },
+  {
+    "_id": "651000000000000000000009",
+    "title": "Tree Planting",
+    "description": "Environmental conservation.",
+    "goalAmount": 2000,
+    "raisedAmount": 500,
+    "status": "active",
+    "createdBy": "650000000000000000000001"
+  },
+  {
+    "_id": "651000000000000000000010",
+    "title": "Refugee Assistance",
+    "description": "Support displaced families.",
+    "goalAmount": 9000,
+    "raisedAmount": 4200,
+    "status": "active",
+    "createdBy": "650000000000000000000002"
+  }
+]

@@ -1,0 +1,160 @@
+include ../layout/_head
+
+body
+  include ../partials/_navbar
+    
+  block content
+    //- HERO SECTION
+    section.hero.home-hero
+      .hero-content.home-hero-content
+        .hero-txt
+          h1 Welcome To Kobciye Foundation
+          p Where Humanity Exists
+
+    //- PROJECTS SECTION
+    section.home-projects-section
+      .section-divider
+        .divider-line
+        .divider-label Ongoing Missions
+        .divider-line
+      
+      .projects-wrapper
+        button.project-scroll-btn.ps-left
+          i.fa-solid.fa-chevron-left
+        if ongoingProjects && ongoingProjects.length > 0
+          .home-projects-container
+            each project, index in ongoingProjects
+              a.home-project-card(href="/projects")
+                .home-project-img
+                  img(src=project.image ? `/uploads/projects/${project.image}` : "/images/placeholder.jpg" alt=project.title)
+                .home-card-overlay
+                  .home-card-top
+                    span.home-card-badge Active
+                  .home-card-bottom
+                    h2.home-project-title= project.title
+                    .home-card-progress
+                      .home-card-progress-bar
+                        .home-card-progress-fill(style=`width: ${Math.min(Math.round((project.raisedAmount / project.goalAmount) * 100), 100)}%`)
+                      .home-card-amounts
+                        span KSh #{project.raisedAmount ? project.raisedAmount.toLocaleString() : '0'} raised
+                        span #{Math.min(Math.round((project.raisedAmount / project.goalAmount) * 100), 100)}%
+                    span.home-donate-cta
+                      | Support This →
+        else
+          .empty-state
+            i.fa-solid.fa-folder-open
+            p No active projects at the moment
+            a.get-involved-btn(href="/contact") Contact Us
+        button.project-scroll-btn.ps-right
+          i.fa-solid.fa-chevron-right
+
+    //- TEAM SECTION
+    section.team
+      .section-divider
+        .divider-line
+        .divider-label Meet Our Team
+        .divider-line
+
+      .team-wrapper
+        button.scroll-btn.left
+          i.fa-solid.fa-chevron-left
+
+        .team-container
+          if members && members.length > 0
+            each member in members
+              .team-card
+                .team-card-img
+                  img(src=`/uploads/members/${member.memberImage}` alt=member.name)
+                .team-card-info
+                  h3.team-name= member.name
+                  p.team-role= member.role
+          else
+            p.empty-state No team members found.
+
+        button.scroll-btn.right
+          i.fa-solid.fa-chevron-right
+
+    //- LATEST NEWS SECTION
+    section.home-news-section
+      .section-divider
+        .divider-line
+        .divider-label Latest News
+        .divider-line
+
+      if latestNews && latestNews.length > 0
+        .home-news-grid
+          each article, index in latestNews
+            article.home-news-card(class=index === 0 ? 'featured' : '')
+              .home-news-img-wrapper
+                img.home-news-img(
+                  src=article.image ? `/uploads/news/${article.image}` : "/images/placeholder.jpg"
+                  alt=article.title
+                )
+                span.home-news-tag News
+              .home-news-body
+                .home-news-meta
+                  i.fa-solid.fa-calendar-days
+                  time= article.createdAt ? new Date(article.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : ''
+                h3.home-news-title= article.title
+                p.home-news-excerpt= article.content ? article.content.substring(0, index === 0 ? 180 : 100) + '...' : ''
+                a.home-news-readmore(href=`/blog/${article._id}`)
+                  span Read More
+                  i.fa-solid.fa-arrow-right
+      else
+        .empty-state
+          i.fa-solid.fa-newspaper
+          p No news articles yet
+          a.get-involved-btn(href="/blog") Visit Blog
+
+      .home-news-footer
+        a.view-all-news-btn(href="/blog")
+          i.fa-solid.fa-newspaper
+          span View All News
+
+    //- TESTIMONIALS
+    section.testimonials
+      .section-divider
+        .divider-line
+        .divider-label What People Said About Us
+        .divider-line
+      .testimonial-cards
+        .testimonial-card
+          .quote-icon "
+          p "Kobciye helped my community get clean water. Truly life-changing!"
+          h3 — Amina, Nairobi
+        .testimonial-card
+          .quote-icon "
+          p "Volunteering here taught me the value of giving back."
+          h3 — John, Volunteer
+
+    //- IMPACTS
+    .section-divider
+      .divider-label Our Impact
+    section.impact-stats
+      .stat
+        .stat-icon
+          i.fa-solid.fa-people-group
+        h2 200+
+        p Communities Served
+      .stat
+        .stat-icon
+          i.fa-solid.fa-circle-check
+        h2 50+
+        p Projects Completed
+      .stat
+        .stat-icon
+          i.fa-solid.fa-hands-holding-child
+        h2 500+
+        p Volunteers Engaged
+
+    //- CALL ON ACTION
+    section.get-involved
+      h1 Get Involved
+      p Join us in making a real difference in people's lives. Your support matters.
+      a.get-involved-btn(href="/payment") Get Involved
+
+
+  include ../partials/_footer
+
+  script(src="/js/main.js")
+  script(src="/js/about.js")

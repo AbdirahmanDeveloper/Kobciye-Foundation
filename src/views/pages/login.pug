@@ -1,0 +1,54 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title Login || Kobciye Foundation
+    link(rel="stylesheet" href="/css/auth.css")
+  body
+    form.form#login-form
+      h1 Welcome Back
+      p Please login to your account
+
+      .input-box
+        label(for="email") Email
+        input(type="text" id="email" placeholder="Enter your email")
+
+      .input-box
+        label(for="password") Password
+        input(type="password" id="password" placeholder="Enter your password")
+        a.forgot-link#forgotBtn(href="#") Forgot password?
+
+      .error-msg#errorMsg
+
+      button.auth-btn(type="submit") Login
+
+      p.switch
+        | Don't have an account?
+        a(href="/signup")  Sign Up
+
+    //- FORGOT PASSWORD MODAL
+    .modal-overlay#forgotModal
+      .modal-box
+        .modal-header
+          h2 Reset Password
+          button.modal-close#modalClose
+            i.fa-solid.fa-xmark
+
+        .modal-step#step1
+          p Enter your email and we'll send you a reset link.
+          .input-box
+            label Email
+            input#forgotEmail(type="email" placeholder="your@email.com")
+          .error-msg#forgotError
+          button.auth-btn#sendResetBtn Send Reset Link
+
+        .modal-step.hidden#step2
+          .success-icon
+            i.fa-solid.fa-circle-check
+          h3 Email Sent!
+          p Check your inbox for a password reset link.
+          button.auth-btn#backToLoginBtn Back to Login
+
+    link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css")
+    script(src="/js/login.js")

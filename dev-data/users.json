@@ -1,0 +1,73 @@
+[
+  {
+    "_id": "650000000000000000000001",
+    "name": "Admin One",
+    "email": "admin1@charity.org",
+    "password": "password123",
+    "role": "admin"
+  },
+  {
+    "_id": "650000000000000000000002",
+    "name": "Admin Two",
+    "email": "admin2@charity.org",
+    "password": "password123",
+    "role": "admin"
+  },
+
+  {
+    "_id": "650000000000000000000003",
+    "name": "John Doe",
+    "email": "john@example.com",
+    "password": "password123",
+    "role": "user"
+  },
+  {
+    "_id": "650000000000000000000004",
+    "name": "Jane Smith",
+    "email": "jane@example.com",
+    "password": "password123",
+    "role": "user"
+  },
+  {
+    "_id": "650000000000000000000005",
+    "name": "Ali Hassan",
+    "email": "ali@example.com",
+    "password": "password123",
+    "role": "user"
+  },
+  {
+    "_id": "650000000000000000000006",
+    "name": "Mary Ann",
+    "email": "mary@example.com",
+    "password": "password123",
+    "role": "user"
+  },
+  {
+    "_id": "650000000000000000000007",
+    "name": "Ahmed Noor",
+    "email": "ahmed@example.com",
+    "password": "password123",
+    "role": "user"
+  },
+  {
+    "_id": "650000000000000000000008",
+    "name": "Fatima Yusuf",
+    "email": "fatima@example.com",
+    "password": "password123",
+    "role": "user"
+  },
+  {
+    "_id": "650000000000000000000009",
+    "name": "Peter Mwangi",
+    "email": "peter@example.com",
+    "password": "password123",
+    "role": "user"
+  },
+  {
+    "_id": "650000000000000000000010",
+    "name": "Amina Sule",
+    "email": "amina@example.com",
+    "password": "password123",
+    "role": "user"
+  }
+]
