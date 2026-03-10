@@ -1,23 +1,25 @@
 header
-  a.logo(href="/")
-    img.logo-img(src="/images/logo.jpeg" alt="Kobciye Foundation")
   .navigation-btn
     i.fa-solid.fa-bars
   nav
+    .sidebar-top
+      a.logo(href="/")
+        img.logo-img(src="/images/logo.jpeg")
     ul.nav-links
       li
-        a(href="/" class=activePage === 'home' ? 'active' : '') Home
+        a(href="/") Home
       li
-        a(href="/about" class=activePage === 'about' ? 'active' : '') About Us
+        a(href="/about") About Us
       li
-        a(href="/projects" class=activePage === 'projects' ? 'active' : '') Projects
+        a(href="/projects") Projects
       li
-        a(href="/blog" class=activePage === 'blog' ? 'active' : '') Blog
+        a(href="/blog") Blog
       li
-        a(href="/contact" class=activePage === 'contact' ? 'active' : '') Contact Us
-  .header-btns
-    a.donate-btn(href="/payment") Donate Now
-    a.login-btn#loginBtn(href="/login") Login
+        a(href="/contact") Contact
+
+    .header-btns
+      a.donate-btn(href="/payment") Donate Now
+      a.login-btn(href="/login") Login
   
   .user-profile
     button.profile-btn#profileBtn

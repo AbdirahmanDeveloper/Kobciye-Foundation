@@ -13,19 +13,44 @@ window.addEventListener("scroll", () => {
   }
 });
 
-
 /* ============================================================
    MOBILE NAVIGATION TOGGLE
 ============================================================ */
-
 const mobileNav = document.querySelector("nav");
-const navigationToggleBtn = document.querySelector(".navigation-btn");
+const navToggleBtn = document.querySelector(".navigation-btn");
 
-navigationToggleBtn?.addEventListener("click", (e) => {
+const overlay = document.createElement("div");
+overlay.className = "nav-overlay";
+document.body.appendChild(overlay);
+
+function openNav() {
+  mobileNav.classList.add("active");
+  navToggleBtn.classList.add("open");
+  overlay.classList.add("show");
+  document.body.style.overflow = "hidden";
+}
+
+function closeNav() {
+  mobileNav.classList.remove("active");
+  navToggleBtn.classList.remove("open");
+  overlay.classList.remove("show");
+  document.body.style.overflow = "";
+}
+
+navToggleBtn?.addEventListener("click", (e) => {
   e.stopPropagation();
-  mobileNav.classList.toggle("active");
+  mobileNav.classList.contains("active") ? closeNav() : openNav();
 });
 
+document.querySelectorAll(".nav-links a").forEach((link) => {
+  link.addEventListener("click", closeNav);
+});
+
+document.addEventListener("click", (e) => {
+  if (!mobileNav.contains(e.target)) {
+    mobileNav.classList.remove("active");
+  }
+});
 
 /* ============================================================
    USER PROFILE MODAL
@@ -52,7 +77,6 @@ profileModal?.addEventListener("click", (e) => {
     profileModal.classList.remove("active");
   }
 });
-
 
 /* ============================================================
    PROFILE TABS NAVIGATION
@@ -90,7 +114,6 @@ function switchTab(tabName) {
 
 // Set default tab
 switchTab("overview");
-
 
 /* ============================================================
    USER PROFILE DATA LOADING
@@ -142,10 +165,13 @@ async function loadUserProfile() {
       // Update member since date
       const memberSinceElement = document.getElementById("memberSince");
       if (memberSinceElement) {
-        const memberSinceDate = new Date(userData.createdAt).toLocaleDateString("en-US", {
-          month: "short",
-          year: "numeric",
-        });
+        const memberSinceDate = new Date(userData.createdAt).toLocaleDateString(
+          "en-US",
+          {
+            month: "short",
+            year: "numeric",
+          }
+        );
         memberSinceElement.textContent = memberSinceDate;
       }
 
@@ -162,7 +188,6 @@ async function loadUserProfile() {
 
       // Load donation statistics
       loadDonationStatistics();
-
     } else {
       console.error("❌ Failed to load user:", data.message);
 
@@ -180,7 +205,6 @@ async function loadUserProfile() {
     window.location.href = "/login";
   }
 }
-
 
 /* ============================================================
    DONATION STATISTICS
@@ -210,7 +234,9 @@ async function loadDonationStatistics() {
         .reduce((sum, donation) => sum + donation.amount, 0);
 
       // Update total donations count
-      const totalDonationsElement = document.querySelector("#overview #totalDonations");
+      const totalDonationsElement = document.querySelector(
+        "#overview #totalDonations"
+      );
       if (totalDonationsElement) {
         totalDonationsElement.textContent = totalDonationsCount;
       }
@@ -228,7 +254,6 @@ async function loadDonationStatistics() {
         count: totalDonationsCount,
         amount: totalDonationAmount,
       });
-
     } else {
       console.error("❌ Failed to load donation stats");
     }
@@ -236,7 +261,6 @@ async function loadDonationStatistics() {
     console.error("❌ Error loading donation stats:", error);
   }
 }
-
 
 /* ============================================================
    USER DONATIONS LIST
@@ -296,7 +320,9 @@ async function loadUserDonations(filter = "all") {
           <div class="donation-card-header">
             <div>
               <h4>${donation.project?.title || "Unknown Project"}</h4>
-              <span class="status-badge ${donation.status}">${donation.status}</span>
+              <span class="status-badge ${donation.status}">${
+            donation.status
+          }</span>
             </div>
             <h3 class="donation-amount">KES ${donation.amount.toLocaleString()}</h3>
           </div>
@@ -325,8 +351,9 @@ async function loadUserDonations(filter = "all") {
         )
         .join("");
 
-      console.log(`✅ Loaded ${donations.length} donations (filter: ${filter})`);
-
+      console.log(
+        `✅ Loaded ${donations.length} donations (filter: ${filter})`
+      );
     } else {
       console.error("❌ Failed to load donations");
       donationsListContainer.innerHTML = `
@@ -351,7 +378,6 @@ async function loadUserDonations(filter = "all") {
   }
 }
 
-
 /* ============================================================
    DONATION FILTERS
 ============================================================ */
@@ -375,7 +401,6 @@ filterButtons.forEach((button) => {
   });
 });
 
-
 /* ============================================================
    AUTHENTICATION STATE MANAGEMENT
 ============================================================ */
@@ -394,7 +419,6 @@ if (authToken) {
 
   // Load user profile data
   loadUserProfile();
-
 } else {
   // User is not logged in
   console.log("❌ User not authenticated");
@@ -402,7 +426,6 @@ if (authToken) {
   if (loginButton) loginButton.style.display = "block";
   if (userProfileSection) userProfileSection.style.display = "none";
 }
-
 
 /* ============================================================
    LOGOUT FUNCTIONALITY
@@ -425,7 +448,6 @@ logoutButton?.addEventListener("click", (e) => {
     window.location.href = "/login";
   }
 });
-
 
 /* ============================================================
    NEWSLETTER SUBSCRIPTION (FOOTER)
@@ -493,26 +515,26 @@ function showMessage(type, message) {
 }
 
 // Close message modal on OK button click
-document.querySelector(".message-modal .ok-btn")?.addEventListener("click", () => {
-  const modal = document.querySelector(".message-modal");
-  const content = modal?.querySelector(".message-content");
+document
+  .querySelector(".message-modal .ok-btn")
+  ?.addEventListener("click", () => {
+    const modal = document.querySelector(".message-modal");
+    const content = modal?.querySelector(".message-content");
 
-  if (modal) modal.style.display = "none";
-  if (content) content.style.display = "none";
-});
-
+    if (modal) modal.style.display = "none";
+    if (content) content.style.display = "none";
+  });
 
 /* ============================================================
    COMPLETE THE PROJECT AFTER RAISE GOAL AMOUNT
 ============================================================ */
 async function completeProject() {
-  try{
+  try {
     const response = await fetch("/api/projects");
     const data = await response.json();
     console.log(data);
-  }catch(error){
+  } catch (error) {
     console.error(error);
-    
   }
 }
 
@@ -522,6 +544,14 @@ async function completeProject() {
 
 const token = localStorage.getItem("token");
 const API = "";
+
+const loginBtn = document.querySelector(".login-btn");
+
+if (token) {
+  loginBtn.style.display = "none";
+} else {
+  loginBtn.style.display = "block";
+}
 
 /* ============================================================
    TOAST NOTIFICATIONS
@@ -533,7 +563,9 @@ function showToast(message, type = "success") {
   const toast = document.createElement("div");
   toast.className = `toast toast-${type}`;
   toast.innerHTML = `
-    <i class="fa-solid ${type === "success" ? "fa-circle-check" : "fa-circle-xmark"}"></i>
+    <i class="fa-solid ${
+      type === "success" ? "fa-circle-check" : "fa-circle-xmark"
+    }"></i>
     <span>${message}</span>
   `;
 
@@ -550,10 +582,14 @@ function showToast(message, type = "success") {
    UPDATE ACCOUNT INFO (name & email)
 ============================================================ */
 
-document.getElementById("acountInfo")?.addEventListener("submit", handleAccountUpdate);
+document
+  .getElementById("acountInfo")
+  ?.addEventListener("submit", handleAccountUpdate);
 
 // Also trigger on the save button since it's type="button"
-document.querySelector("#acountInfo .save-btn")?.addEventListener("click", handleAccountUpdate);
+document
+  .querySelector("#acountInfo .save-btn")
+  ?.addEventListener("click", handleAccountUpdate);
 
 async function handleAccountUpdate() {
   const name = document.getElementById("editName")?.value?.trim();
@@ -578,7 +614,9 @@ async function handleAccountUpdate() {
     if (!res.ok) throw new Error(data.message);
 
     // Update displayed name everywhere
-    document.querySelectorAll("#userName").forEach((el) => (el.textContent = data.data.name));
+    document
+      .querySelectorAll("#userName")
+      .forEach((el) => (el.textContent = data.data.name));
 
     showToast("Profile updated successfully!", "success");
   } catch (err) {
@@ -590,47 +628,49 @@ async function handleAccountUpdate() {
    UPDATE PASSWORD
 ============================================================ */
 
-document.querySelector("#changePassword .save-btn")?.addEventListener("click", async () => {
-  const currentPassword = document.getElementById("currentPassword")?.value;
-  const newPassword = document.getElementById("newPassword")?.value;
-  const confirmPassword = document.getElementById("confirmPassword")?.value;
+document
+  .querySelector("#changePassword .save-btn")
+  ?.addEventListener("click", async () => {
+    const currentPassword = document.getElementById("currentPassword")?.value;
+    const newPassword = document.getElementById("newPassword")?.value;
+    const confirmPassword = document.getElementById("confirmPassword")?.value;
 
-  if (!currentPassword || !newPassword || !confirmPassword) {
-    return showToast("All password fields are required", "error");
-  }
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      return showToast("All password fields are required", "error");
+    }
 
-  if (newPassword !== confirmPassword) {
-    return showToast("New passwords do not match", "error");
-  }
+    if (newPassword !== confirmPassword) {
+      return showToast("New passwords do not match", "error");
+    }
 
-  if (newPassword.length < 8) {
-    return showToast("Password must be at least 8 characters", "error");
-  }
+    if (newPassword.length < 8) {
+      return showToast("Password must be at least 8 characters", "error");
+    }
 
-  try {
-    const res = await fetch(`/api/users/me/password`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ currentPassword, newPassword, confirmPassword }),
-    });
+    try {
+      const res = await fetch(`/api/users/me/password`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ currentPassword, newPassword, confirmPassword }),
+      });
 
-    const data = await res.json();
+      const data = await res.json();
 
-    if (!res.ok) throw new Error(data.message);
+      if (!res.ok) throw new Error(data.message);
 
-    // Clear password fields
-    document.getElementById("currentPassword").value = "";
-    document.getElementById("newPassword").value = "";
-    document.getElementById("confirmPassword").value = "";
+      // Clear password fields
+      document.getElementById("currentPassword").value = "";
+      document.getElementById("newPassword").value = "";
+      document.getElementById("confirmPassword").value = "";
 
-    showToast("Password updated successfully!", "success");
-  } catch (err) {
-    showToast(err.message || "Password update failed", "error");
-  }
-});
+      showToast("Password updated successfully!", "success");
+    } catch (err) {
+      showToast(err.message || "Password update failed", "error");
+    }
+  });
 
 /* ============================================================
    SCROLL BEHAVIOR

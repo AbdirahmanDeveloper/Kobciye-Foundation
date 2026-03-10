@@ -47,7 +47,7 @@
   }
   
   select,
-  input[type="number"] {
+  input {
     width: 100%;
     padding: 15px;
     border: 2px solid #e5e7eb;
@@ -58,7 +58,7 @@
   }
   
   select:focus,
-  input[type="number"]:focus {
+  input:focus {
     outline: none;
     border-color: #667eea;
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
