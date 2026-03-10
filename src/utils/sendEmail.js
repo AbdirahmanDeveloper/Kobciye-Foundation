@@ -2,17 +2,17 @@ const nodemailer = require('nodemailer');
 
 const sendEmail = async (options) => {
   try {
-    // Create transporter
     const transporter = nodemailer.createTransport({
       host: process.env.EMAIL_HOST,
-      port: process.env.EMAIL_PORT,
+      port: Number(process.env.EMAIL_PORT),
+      secure: true,
+      family: 4,
       auth: {
         user: process.env.EMAIL_USERNAME,
         pass: process.env.EMAIL_PASSWORD,
       },
     });
 
-    // Email options
     const mailOptions = {
       from: `Kobciye Foundation <${process.env.EMAIL_FROM}>`,
       to: options.email,
@@ -21,7 +21,6 @@ const sendEmail = async (options) => {
       html: options.html,
     };
 
-    // Send email
     await transporter.sendMail(mailOptions);
     console.log('Email sent successfully');
   } catch (error) {
