@@ -1,7 +1,7 @@
 // controllers/contactController.js
 
 const Newsletter   = require("../models/Newsletter");
-const Contact      = require("../models/ContactModel");
+const Contact      = require("../models/Contact");
 const sendEmail    = require("../utils/sendEmail");
 
 exports.submitContact = async (req, res) => {

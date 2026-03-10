@@ -113,7 +113,6 @@ exports.initializePayment = async (req, res) => {
     console.log("📤 STK Push payload:", JSON.stringify(payload, null, 2));
 
     // ── Save donation BEFORE STK Push ────────────────────────
-    // This ensures the callback always finds the donation record
     const tempRef = `PENDING_${req.user.id}_${Date.now()}`;
     const donation = await Donation.create({
       donor: req.user.id,
@@ -146,7 +145,6 @@ exports.initializePayment = async (req, res) => {
       stkResponse.data;
 
     if (ResponseCode !== "0") {
-      // STK Push rejected — remove the pending donation
       await Donation.findByIdAndDelete(donation._id);
       return res.status(400).json({
         status: "fail",
@@ -157,6 +155,33 @@ exports.initializePayment = async (req, res) => {
     // ── Update donation with real CheckoutRequestID ──────────
     donation.reference = CheckoutRequestID;
     await donation.save();
+
+    // ── Sandbox auto-confirm (remove in production) ──────────
+    if (process.env.NODE_ENV !== "production") {
+      const checkoutId = CheckoutRequestID;
+      const donationId = donation._id;
+      setTimeout(async () => {
+        try {
+          const d = await Donation.findById(donationId);
+          if (d && d.status === "pending") {
+            d.status = "success";
+            await d.save();
+
+            const proj = await Project.findById(d.project);
+            if (proj) {
+              proj.raisedAmount += d.amount;
+              if (proj.raisedAmount >= proj.goalAmount) {
+                proj.status = "completed";
+              }
+              await proj.save();
+            }
+            console.log("✅ Sandbox: auto-confirmed donation", checkoutId);
+          }
+        } catch (err) {
+          console.error("Sandbox auto-confirm error:", err.message);
+        }
+      }, 10000); // 10 seconds — enough time for user to enter PIN
+    }
 
     res.status(200).json({
       status: "success",
@@ -203,11 +228,10 @@ exports.handleWebhook = async (req, res) => {
 
     if (!donation) {
       console.error("❌ Callback: donation not found for", CheckoutRequestID);
-      return res.status(200).json({ message: "Received" }); // always 200 to Safaricom
+      return res.status(200).json({ message: "Received" });
     }
 
     if (ResultCode === 0) {
-      // ── Payment successful ──────────────────────────────
       donation.status = "success";
       await donation.save();
 
@@ -221,7 +245,6 @@ exports.handleWebhook = async (req, res) => {
       }
       console.log("✅ Payment successful:", CheckoutRequestID);
     } else {
-      // ── Payment failed or cancelled ───────────────────────
       donation.status = "failed";
       await donation.save();
       console.log("❌ Payment failed:", ResultDesc);
@@ -269,9 +292,11 @@ exports.getMyDonations = async (req, res) => {
       .populate("project", "title goalAmount image")
       .sort({ createdAt: -1 });
 
-    res
-      .status(200)
-      .json({ status: "success", results: donations.length, data: donations });
+    res.status(200).json({
+      status: "success",
+      results: donations.length,
+      data: donations,
+    });
   } catch (err) {
     res.status(500).json({ status: "error", message: err.message });
   }
@@ -288,9 +313,11 @@ exports.getAllDonations = async (req, res) => {
       .populate("project", "title")
       .sort({ createdAt: -1 });
 
-    res
-      .status(200)
-      .json({ status: "success", results: donations.length, data: donations });
+    res.status(200).json({
+      status: "success",
+      results: donations.length,
+      data: donations,
+    });
   } catch (err) {
     res.status(500).json({ status: "error", message: err.message });
   }
@@ -321,9 +348,10 @@ exports.calculateTotalDonations = async (req, res) => {
           }
         : { totalAmount: 0, totalCount: 0 };
 
-    res
-      .status(200)
-      .json({ status: "success", data: { ...data, currency: "KES" } });
+    res.status(200).json({
+      status: "success",
+      data: { ...data, currency: "KES" },
+    });
   } catch (error) {
     res.status(500).json({ status: "error", message: error.message });
   }
@@ -392,19 +420,10 @@ exports.getMonthlyStats = async (req, res) => {
     ]);
 
     const months = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
+      "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
     ];
+
     const formatted = stats.map((i) => ({
       month: months[i._id - 1],
       totalAmount: i.totalAmount,
@@ -437,12 +456,10 @@ exports.donateToProject = async (req, res) => {
         .json({ status: "fail", message: "Project not found" });
     }
     if (project.status === "completed") {
-      return res
-        .status(400)
-        .json({
-          status: "fail",
-          message: "This project has already reached its goal",
-        });
+      return res.status(400).json({
+        status: "fail",
+        message: "This project has already reached its goal",
+      });
     }
 
     project.raisedAmount += Number(amount);
