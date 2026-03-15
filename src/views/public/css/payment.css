@@ -241,3 +241,52 @@
       grid-template-columns: 1fr;
     }
   }
+
+  /* ── Payment Methods ── */
+.payment-methods {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.method-option {
+  flex: 1;
+  cursor: pointer;
+}
+
+.method-option input[type="radio"] {
+  display: none;
+}
+
+.method-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px;
+  border: 2px solid var(--border, #e5e7eb);
+  border-radius: 12px;
+  transition: all 0.25s ease;
+  background: #f9fafb;
+}
+
+.method-card i {
+  font-size: 1.6rem;
+  color: #888;
+}
+
+.method-card span {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #555;
+}
+
+.method-option.active .method-card {
+  border-color: #2886f1;
+  background: #eff6ff;
+}
+
+.method-option.active .method-card i,
+.method-option.active .method-card span {
+  color: #2886f1;
+}

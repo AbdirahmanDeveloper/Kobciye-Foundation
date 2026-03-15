@@ -22,7 +22,7 @@ const donationSchema = new mongoose.Schema(
 
     paymentMethod: {
       type: String,
-      enum: ["mpesa", "card", "cash"],
+      enum: ["mpesa", "card", "cash", "paystack"],
       required: true,
     },
 

@@ -1,14 +1,8 @@
 /* ============================================================
-   payment.js
-   Handles: M-Pesa STK Push initiation + payment status polling
-   Used on: /payment page
-   Pug file: views/payment.pug
+   payment.js — Paystack (Card + M-Pesa)
 ============================================================ */
 
-/* ============================================================
-   1. AMOUNT PRESET BUTTONS
-============================================================ */
-
+/* ── Amount preset buttons ── */
 const amountButtons = document.querySelectorAll(".amount-btn");
 const amountInput   = document.getElementById("amount");
 
@@ -20,35 +14,45 @@ amountButtons.forEach((btn) => {
   });
 });
 
-/* ============================================================
-   2. PAY BUTTON — TRIGGER STK PUSH
-============================================================ */
+/* ── Payment method toggle ── */
+const methodMpesa  = document.getElementById("method-mpesa");
+const methodCard   = document.getElementById("method-card");
+const phoneField   = document.getElementById("phone-field");
+const payBtn       = document.getElementById("payBtn");
+const mpesaOption  = document.getElementById("mpesa-option");
+const cardOption   = document.getElementById("card-option");
 
-const payBtn         = document.getElementById("payBtn");
-const statusBox      = document.getElementById("paymentStatus");
-let   pollingInterval = null;
+function updateMethodUI() {
+  if (methodMpesa.checked) {
+    phoneField.style.display = "block";
+    payBtn.innerHTML = '<i class="fa-solid fa-mobile-screen-button"></i>  Pay with M-Pesa';
+    mpesaOption.classList.add("active");
+    cardOption.classList.remove("active");
+  } else {
+    phoneField.style.display = "none";
+    payBtn.innerHTML = '<i class="fa-solid fa-credit-card"></i>  Pay with Card';
+    cardOption.classList.add("active");
+    mpesaOption.classList.remove("active");
+  }
+}
+
+methodMpesa.addEventListener("change", updateMethodUI);
+methodCard.addEventListener("change", updateMethodUI);
+updateMethodUI(); // set initial state
+
+/* ── Pay button ── */
+const statusBox = document.getElementById("paymentStatus");
 
 payBtn.addEventListener("click", async () => {
+  const project       = document.getElementById("project-category").value;
+  const amount        = document.getElementById("amount").value;
+  const phone         = document.getElementById("phone").value.trim();
+  const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
 
-  const project = document.getElementById("project-category").value;
-  const amount  = document.getElementById("amount").value;
-  const phone   = document.getElementById("phone").value.trim();
+  if (!project) { showStatus("Please select a project", "error"); return; }
+  if (!amount || Number(amount) < 10) { showStatus("Minimum donation is KES 10", "error"); return; }
+  if (paymentMethod === "mpesa" && !phone) { showStatus("Please enter your M-Pesa phone number", "error"); return; }
 
-  /* ── Validation ── */
-  if (!project) {
-    showStatus("Please select a project", "error");
-    return;
-  }
-  if (!phone) {
-    showStatus("Please enter your M-Pesa phone number", "error");
-    return;
-  }
-  if (!amount || Number(amount) < 10) {
-    showStatus("Minimum donation amount is KES 10", "error");
-    return;
-  }
-
-  /* ── Auth check ── */
   const token = localStorage.getItem("token");
   if (!token) {
     showStatus("Please login first", "error");
@@ -56,95 +60,32 @@ payBtn.addEventListener("click", async () => {
     return;
   }
 
-  /* ── Loading state ── */
-  payBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>  Sending request...';
+  payBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>  Processing...';
   payBtn.disabled  = true;
-  showStatus("Sending STK Push to your phone...", "info");
+  showStatus("Connecting to payment gateway...", "info");
 
   try {
     const response = await fetch("/api/donations/initialize-payment", {
-      method:  "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization:  `Bearer ${token}`,
-      },
-      body: JSON.stringify({ project, amount, phone }),
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ project, amount, phone, paymentMethod }),
     });
 
     const data = await response.json();
 
     if (response.ok && data.status === "success") {
-      const checkoutRequestId = data.data.checkoutRequestId;
-
-      showStatus(
-        "📱 Check your phone! Enter your M-Pesa PIN to complete the donation.",
-        "info"
-      );
-
-      /* ── Start polling for payment status ── */
-      startPolling(checkoutRequestId, token);
-
+      showStatus("Redirecting to payment page...", "info");
+      setTimeout(() => { window.location.href = data.data.redirectUrl; }, 800);
     } else {
-      showStatus(data.message || "Payment request failed. Try again.", "error");
+      showStatus(data.message || "Payment failed. Try again.", "error");
       resetPayBtn();
     }
-
   } catch (error) {
     console.error("Payment error:", error);
     showStatus("Network error. Please try again.", "error");
     resetPayBtn();
   }
 });
-
-/* ============================================================
-   3. POLLING — CHECK PAYMENT STATUS EVERY 3 SECONDS
-============================================================ */
-
-function startPolling(checkoutRequestId, token) {
-  let attempts = 0;
-  const maxAttempts = 20; // 60 seconds total (20 × 3s)
-
-  pollingInterval = setInterval(async () => {
-    attempts++;
-
-    try {
-      const response = await fetch(`/api/donations/verify/${checkoutRequestId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      const data = await response.json();
-      const paymentStatus = data.data?.paymentStatus;
-
-      if (paymentStatus === "success") {
-        /* ── Payment confirmed ── */
-        clearInterval(pollingInterval);
-        showStatus("✅ Payment successful! Thank you for your donation.", "success");
-        payBtn.innerHTML = '<i class="fa-solid fa-circle-check"></i>  Donated!';
-        payBtn.style.background = "#22c55e";
-
-      } else if (paymentStatus === "failed") {
-        /* ── Payment failed or cancelled ── */
-        clearInterval(pollingInterval);
-        showStatus("❌ Payment was cancelled or failed. Please try again.", "error");
-        resetPayBtn();
-
-      } else if (attempts >= maxAttempts) {
-        /* ── Timeout ── */
-        clearInterval(pollingInterval);
-        showStatus("⏱ Payment timed out. If you paid, it will be confirmed shortly.", "warning");
-        resetPayBtn();
-      }
-
-    } catch (err) {
-      console.error("Polling error:", err);
-    }
-
-  }, 3000);
-}
-
-/* ============================================================
-   4. HELPERS
-============================================================ */
 
 function showStatus(message, type) {
   statusBox.style.display = "block";
@@ -153,7 +94,10 @@ function showStatus(message, type) {
 }
 
 function resetPayBtn() {
-  payBtn.innerHTML = '<i class="fa-solid fa-mobile-screen-button"></i>  Pay with M-Pesa';
-  payBtn.disabled  = false;
+  const method = document.querySelector('input[name="paymentMethod"]:checked').value;
+  payBtn.innerHTML = method === "mpesa"
+    ? '<i class="fa-solid fa-mobile-screen-button"></i>  Pay with M-Pesa'
+    : '<i class="fa-solid fa-credit-card"></i>  Pay with Card';
+  payBtn.disabled = false;
   payBtn.style.background = "";
 }

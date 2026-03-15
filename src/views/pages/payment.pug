@@ -5,6 +5,7 @@ html(lang="en")
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
     title Payment Gateway
     link(rel="stylesheet" href="/css/payment.css")
+    link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css")
 
   body
     .payment-form
@@ -19,17 +20,31 @@ html(lang="en")
           each project in projects
             option(value=project._id)= project.title
 
-        //- Phone Number for STK Push
-        label(for="phone") M-Pesa Phone Number *
-        input#phone(
-          type="tel"
-          name="phone"
-          placeholder="e.g. 0712345678"
-          required
-        )
+        //- Payment Method
+        label Payment Method *
+        .payment-methods
+          label.method-option#mpesa-option
+            input#method-mpesa(type="radio" name="paymentMethod" value="mpesa" checked)
+            .method-card
+              i.fa-solid.fa-mobile-screen-button
+              span M-Pesa
+          label.method-option#card-option
+            input#method-card(type="radio" name="paymentMethod" value="card")
+            .method-card
+              i.fa-solid.fa-credit-card
+              span Card
+
+        //- Phone (shown for M-Pesa only)
+        #phone-field
+          label(for="phone") M-Pesa Phone Number *
+          input#phone(
+            type="tel"
+            name="phone"
+            placeholder="e.g. 0712345678"
+          )
 
         //- Amount Presets
-        label(for="amount") Enter Amount *
+        label(for="amount") Enter Amount (KES) *
         .amount-btns
           button.amount-btn(type="button" data-amount="200") KES 200
           button.amount-btn(type="button" data-amount="500") KES 500
@@ -42,8 +57,7 @@ html(lang="en")
           i.fa-solid.fa-mobile-screen-button
           |  Pay with M-Pesa
 
-        //- Status message — shown/hidden by payment.js
+        //- Status message
         #paymentStatus(style="display:none")
 
-    script(src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js")
     script(src="/js/payment.js")
