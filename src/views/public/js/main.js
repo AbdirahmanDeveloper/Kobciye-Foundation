@@ -16,6 +16,9 @@ window.addEventListener("scroll", () => {
 /* ============================================================
    MOBILE NAVIGATION TOGGLE
 ============================================================ */
+/* ============================================================
+   MOBILE NAVIGATION TOGGLE
+============================================================ */
 const mobileNav = document.querySelector("nav");
 const navToggleBtn = document.querySelector(".navigation-btn");
 
@@ -34,7 +37,8 @@ function closeNav() {
   mobileNav.classList.remove("active");
   navToggleBtn.classList.remove("open");
   overlay.classList.remove("show");
-  document.body.style.overflow = "";
+  document.body.style.overflow = "";  // ← restore scroll
+  document.documentElement.style.overflow = ""; // ← also reset html element
 }
 
 navToggleBtn?.addEventListener("click", (e) => {
@@ -42,15 +46,16 @@ navToggleBtn?.addEventListener("click", (e) => {
   mobileNav.classList.contains("active") ? closeNav() : openNav();
 });
 
+// Close on overlay click
+overlay.addEventListener("click", closeNav);
+
+// Close on nav link click
 document.querySelectorAll(".nav-links a").forEach((link) => {
   link.addEventListener("click", closeNav);
 });
 
-document.addEventListener("click", (e) => {
-  if (!mobileNav.contains(e.target)) {
-    mobileNav.classList.remove("active");
-  }
-});
+// Remove the document.addEventListener("click") — it was closing nav
+// without calling closeNav, so overflow never got reset
 
 /* ============================================================
    USER PROFILE MODAL
