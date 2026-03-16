@@ -377,6 +377,11 @@
 /* =========================
    RESPONSIVE
 ========================= */
+@media (max-width: 1200px) {
+  .scroll-btn {
+    display: none;
+  }
+}
 @media (max-width: 900px) {
   .about-us,
   .team,
