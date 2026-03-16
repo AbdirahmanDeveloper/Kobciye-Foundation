@@ -243,17 +243,67 @@
   grid-column: 1 / -1;
 }
 
-/* ---- Responsive ---- */
 @media (max-width: 768px) {
   .projects-section {
-    padding: 50px 20px;
+    padding: 40px 16px;
   }
 
   .section-title {
-    font-size: 30px;
+    font-size: 26px;
   }
 
   .projects-container {
     grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+
+  .project-card {
+    border-radius: 12px;
+  }
+
+  .project-img {
+    height: 160px;
+  }
+
+  .card-content {
+    padding: 14px 16px 18px;
+    gap: 8px;
+  }
+
+  .project-title {
+    font-size: 16px;
+  }
+
+  .project-desc {
+    font-size: 13px;
+    -webkit-line-clamp: 2;
+  }
+
+  .progress-bar-container {
+    height: 6px;
+  }
+
+  .goal-amount,
+  .raised-amount,
+  .progress-percentage {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 480px) {
+  .projects-section {
+    padding: 30px 12px;
+  }
+
+  .project-img {
+    height: 140px;
+  }
+
+  .card-content {
+    padding: 12px 14px 16px;
+  }
+
+  .project-title {
+    font-size: 15px;
   }
 }

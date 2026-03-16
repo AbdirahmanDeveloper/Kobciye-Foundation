@@ -1,9 +1,13 @@
 header
+  //- LEFT: hamburger
   .navigation-btn
     i.fa-solid.fa-bars
-  a.logo
+
+  //- CENTER: logo
+  a.logo(href="/")
     h1.logo-text KF
 
+  //- NAV DRAWER
   nav
     .sidebar-top
 
@@ -21,9 +25,9 @@ header
 
     .header-btns
       a.donate-btn(href="/payment") Donate Now
-      a(href="/login").login-btn
-        button.login-btn#loginBtn Login
+      a.login-btn#loginBtn(href="/login") Login
 
+  //- RIGHT: profile
   .user-profile
     button.profile-btn#profileBtn
       .avator
@@ -87,34 +91,27 @@ header
         .setting-form
           form.acount-info#acountInfo
             h3 Account Information
-
             .form-group
               label(for="editName") Full Name
               input#editName(type="text" placeholder="Your Name")
-
             .form-group
               label(for="editEmail") Email Address
               input#editEmail(type="email" placeholder="Your Email")
-
             button.save-btn(type="button")
               i.fa-solid.fa-floppy-disk
               |  Save Changes
 
           form.change-password#changePassword
             h3 Change Password
-
             .form-group
               label(for="currentPassword") Current Password
               input#currentPassword(type="password" placeholder="Current Password")
-
             .form-group
               label(for="newPassword") New Password
               input#newPassword(type="password" placeholder="New Password")
-
             .form-group
               label(for="confirmPassword") Confirm Password
               input#confirmPassword(type="password" placeholder="Confirm Password")
-
             button.save-btn(type="submit")
               i.fa-solid.fa-lock
               |  Update Password
@@ -122,10 +119,3 @@ header
           button.logout-btn#logoutBtn(type="button")
             i.fa-solid.fa-right-from-bracket
             span Logout
-
-.message-modal
-  .message-content
-    i.fa-solid.fa-circle-check
-    h2 Success!
-    p Message here
-    button.ok-btn OK

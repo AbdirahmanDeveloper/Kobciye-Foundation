@@ -127,9 +127,11 @@
    TEAM SECTION
 ========================= */
 .team {
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 2.5rem;
   padding: 80px 60px;
   background: #ffffff;
@@ -140,6 +142,7 @@
   position: relative;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 12px;
   padding: 10px 0;
   width: 100%;
@@ -219,8 +222,7 @@
   letter-spacing: 1.5px;
 }
 
-.scroll-btn,
-.project-scroll-btn {
+.scroll-btn {
   flex-shrink: 0;
   width: 42px;
   height: 42px;
@@ -244,11 +246,6 @@
   color: #fff;
   border-color: #c0873f;
   transform: scale(1.08);
-}
-
-.scroll-btn:active,
-.project-scroll-btn:active {
-  transform: scale(0.96);
 }
 
 /* =========================
