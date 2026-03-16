@@ -223,28 +223,6 @@
 }
 
 /* ---- Buttons ---- */
-.donate-btn {
-  display: inline-block;
-  margin-top: 14px;
-  padding: 11px 22px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  font-family: 'DM Sans', sans-serif;
-  cursor: pointer;
-  text-align: center;
-  text-decoration: none;
-  border: none;
-  transition: background 0.2s ease, transform 0.2s ease;
-  background: #c0873f;
-  color: #fff;
-}
-
-.donate-btn:hover {
-  background: #a8722f;
-  transform: translateY(-1px);
-}
-
 .completed-btn {
   background: #e3f2fd;
   color: #1565c0;
