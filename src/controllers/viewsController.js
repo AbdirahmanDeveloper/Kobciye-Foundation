@@ -8,7 +8,7 @@ exports.getHomePage = async (req, res) => {
   try {
     const ongoingProjects = await Project.find({ status: "active" }).limit(6);
     const members = await Members.find().sort({ createdAt: -1 });
-    const latestNews = await News.find().sort({ createdAt: -1 }).limit(3); // add this
+    const latestNews = await News.find().sort({ createdAt: -1 }).limit(1); 
     res.render("pages/index", {
       title: "Home page",
       activePage: "home",
