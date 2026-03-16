@@ -1,17 +1,12 @@
 footer
-  .footer-content
-
-    .office
-      h2 Our Office
-      p
-        i.fa-solid.fa-location-dot
-        | 123 Street, Nairobi, Kenya
-      p
-        i.fa-solid.fa-phone
-        | +254 700 000 000
-      p
-        i.fa-solid.fa-envelope
-        | info@kobciye.org
+  .footer-top
+    .footer-brand
+      a.footer-logo(href="/")
+        .logo-icon KF
+        .logo-brand
+          span.logo-brand-main Kobciye
+          span.logo-brand-sub Foundation
+      p.footer-desc A nonprofit organization dedicated to transforming lives through education, healthcare, and community development across Kenya.
       .social-links
         a(href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram")
           i.fa-brands.fa-instagram
@@ -24,28 +19,40 @@ footer
         a(href="https://youtube.com" target="_blank" rel="noopener" aria-label="YouTube")
           i.fa-brands.fa-youtube
 
-    .quick-links
-      h2 Quick Links
+    .footer-col
+      h3 Navigate
       ul
-        li
-          a(href="/") Home
-        li
-          a(href="/about") About Us
-        li
-          a(href="/projects") Projects
-        li
-          a(href="/blog") Blog
-        li
-          a(href="/contact") Contact Us
+        li: a(href="/") Home
+        li: a(href="/about") About Us
+        li: a(href="/projects") Projects
+        li: a(href="/blog") Blog
+        li: a(href="/contact") Contact Us
 
-    .newsletter
-      h2 Stay Updated
-      p Subscribe to our newsletter for the latest updates
-      form.newsletter-form#footerNewsletterForm
-        input#footer-newsletter-email(type="email" name="email" placeholder="Your email address" required)
-        button(type="submit")
-          i.fa-solid.fa-paper-plane
-          span Subscribe
+    .footer-col
+      h3 Our Projects
+      ul
+        each project in (typeof footerProjects !== 'undefined' ? footerProjects : [])
+          li: span= project.title
+        if (typeof footerProjects === 'undefined' || footerProjects.length === 0)
+          li: span Clean Water Initiative
+          li: span Education for All
+          li: span Healthcare Outreach
+          li: span Women Empowerment
+          li: span Youth Development
+
+    .footer-col.footer-cta-col
+      h3 Make a Difference
+      p Every contribution helps us reach more communities in need.
+      a.footer-cta-btn(href="/payment")
+        i.fa-solid.fa-heart
+        | Donate Now
+      .footer-contact
+        p
+          i.fa-solid.fa-envelope
+          | info@kobciye.org
+        p
+          i.fa-solid.fa-phone
+          | +254 700 000 000
 
   .footer-bottom
     p &copy; #{new Date().getFullYear()} Kobciye Foundation. All rights reserved.
@@ -53,18 +60,5 @@ footer
       a(href="/privacy") Privacy Policy
       span |
       a(href="/terms") Terms of Service
-
-//- Newsletter modal — overlays full page
-.message-modal#footerNewsletterModal
-  .message-content.success#footerNewsletterSuccess
-    i.fa-solid.fa-circle-check
-    h2 Subscribed Successfully!
-    p Thank you for subscribing to our newsletter.
-    button.ok-btn OK
-  .message-content.error#footerNewsletterError
-    i.fa-solid.fa-circle-xmark
-    h2 Subscription Failed
-    p Something went wrong. Please try again.
-    button.ok-btn OK
 
 script(src="/js/footer.js")

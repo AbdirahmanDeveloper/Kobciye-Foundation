@@ -6,7 +6,6 @@ const router = express.Router();
 
 // Public routes
 router.post('/submit', contactController.submitContact);
-router.post('/newsletter/subscribe', contactController.subscribeNewsletter);
 
 
 module.exports = router;
