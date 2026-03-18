@@ -1,7 +1,5 @@
-// controllers/contactController.js
-
-const Contact      = require("../models/Contact");
-const sendEmail    = require("../utils/sendEmail");
+const Contact = require("../models/Contact");
+const sendEmail = require("../utils/sendEmail");
 
 exports.submitContact = async (req, res) => {
   try {
@@ -9,17 +7,17 @@ exports.submitContact = async (req, res) => {
 
     await Contact.create({ name, email, subject, message });
 
+    // Email 1 — confirmation (goes to admin in sandbox, pretends to be for user)
     await sendEmail({
-      email,
-      subject: "We received your message - Kobciye Foundation",
+      subject: `Message Received: ${subject}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border:1px solid #e5e7eb; border-radius:10px; overflow:hidden;">
-          <div style="background-color:#667eea; color:white; padding:20px; text-align:center;">
+          <div style="background-color:#c0873f; color:white; padding:20px; text-align:center;">
             <h1 style="margin:0; font-size:24px;">Kobciye Foundation</h1>
             <p style="margin:5px 0 0; font-size:14px;">We value your message</p>
           </div>
           <div style="padding:30px; color:#1f2937;">
-            <h2 style="color:#667eea; margin-top:0;">Hello ${name},</h2>
+            <h2 style="color:#c0873f; margin-top:0;">Hello ${name},</h2>
             <p>Thank you for contacting us! We have received your message and will get back to you as soon as possible.</p>
             <div style="background:#f3f4f6; padding:20px; border-radius:10px; margin:20px 0;">
               <h3 style="margin-top:0;">Your Message Details</h3>
@@ -36,12 +34,12 @@ exports.submitContact = async (req, res) => {
       `,
     });
 
+    // Email 2 — admin notification
     await sendEmail({
-      email: process.env.ADMIN_EMAIL,
       subject: `New Contact Form Submission: ${subject}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width:600px; margin:0 auto; padding:20px; color:#1f2937; border:1px solid #e5e7eb; border-radius:10px;">
-          <h2 style="background-color:#667eea; color:white; padding:20px; text-align:center;">New Contact Form Submission</h2>
+          <h2 style="background-color:#c0873f; color:white; padding:20px; text-align:center; margin:0 0 20px;">New Contact Form Submission</h2>
           <p><strong>From:</strong> ${name} (${email})</p>
           <p><strong>Subject:</strong> ${subject}</p>
           <p><strong>Message:</strong><br>${message}</p>

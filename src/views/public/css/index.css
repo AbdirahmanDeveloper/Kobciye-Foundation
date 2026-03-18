@@ -165,14 +165,13 @@ header.active {
   font-size: large;
   font-weight: bold;
   transition: background 0.4s ease;
-  text-decoration: none;
   cursor: pointer;
 }
 
 .donate-btn {
   width: 200px;
   padding: 0.5rem 0;
-  background: #c0873f;
+  background: var(--gold);
   color: var(--white);
   margin: auto;
   border: none;
@@ -209,7 +208,7 @@ header.active {
 }
 
 /* ============================================================
-   HERO SECTION
+   HERO
 ============================================================ */
 
 .hero {
@@ -244,8 +243,6 @@ header.active {
 }
 
 .hero-content {
-  border-radius: var(--radius);
-  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -255,8 +252,6 @@ header.active {
 }
 
 .hero-txt {
-  position: relative;
-  z-index: 1;
   color: var(--white);
   text-align: center;
 }
@@ -289,8 +284,6 @@ header.active {
 
 .home-projects-container {
   display: flex;
-  align-items: center;
-  justify-content: center;
   flex-direction: row;
   overflow-x: auto;
   overflow-y: hidden;
@@ -298,10 +291,8 @@ header.active {
   justify-content: flex-start;
   gap: 1.8rem;
   flex-wrap: nowrap;
-  margin: 2.5rem;
+  margin: 2.5rem 0;
   width: 100%;
-  height: 50vh;
-  background: var(--paper);
 }
 
 .projects-wrapper {
@@ -310,12 +301,12 @@ header.active {
   gap: 1rem;
   align-items: center;
   justify-content: center;
-  background: var(--paper);
 }
 
 .project-scroll-btn {
   position: absolute;
   top: 50%;
+  transform: translateY(-50%);
   width: 42px;
   height: 42px;
   border-radius: 50%;
@@ -337,6 +328,13 @@ header.active {
 }
 .project-scroll-btn.ps-right {
   right: -10px;
+}
+
+.project-scroll-btn:hover {
+  background: var(--gold);
+  color: #fff;
+  border-color: var(--gold);
+  transform: translateY(-50%) scale(1.08);
 }
 
 .home-project-card {
@@ -651,7 +649,7 @@ header.active {
 }
 
 /* ============================================================
-   TESTIMONIALS SECTION
+   TESTIMONIALS
 ============================================================ */
 
 .testimonials {
@@ -661,27 +659,6 @@ header.active {
   flex-direction: column;
   align-items: center;
   gap: 2rem;
-}
-
-.section-title {
-  font-family: "Cormorant Garamond", serif;
-  font-size: 2.8rem;
-  color: #484747;
-  position: relative;
-  margin-bottom: 2rem;
-  text-align: center;
-}
-
-.section-title::after {
-  content: "";
-  width: 100%;
-  height: 6px;
-  background: var(--blue);
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: -12px;
-  border-radius: 0 0 20px 20px;
 }
 
 .testimonial-cards {
@@ -698,6 +675,7 @@ header.active {
   background: var(--white);
   box-shadow: var(--shadow-md);
   text-align: center;
+  position: relative;
   transition: transform var(--transition);
 }
 
@@ -718,8 +696,19 @@ header.active {
   font-size: 1.1rem;
 }
 
+.quote-icon {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 80px;
+  color: #c0873f22;
+  line-height: 1;
+  position: absolute;
+  top: 10px;
+  left: 20px;
+  font-weight: 700;
+}
+
 /* ============================================================
-   IMPACT STATS SECTION
+   IMPACT STATS
 ============================================================ */
 
 .impact-stats {
@@ -738,6 +727,20 @@ header.active {
   gap: 8px;
 }
 
+.stat-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #c0873f22;
+  border: 1px solid #c0873f44;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+
 .stat h2 {
   font-family: "Cormorant Garamond", serif;
   font-size: 2.8rem;
@@ -754,7 +757,7 @@ header.active {
 }
 
 /* ============================================================
-   GET INVOLVED SECTION
+   GET INVOLVED
 ============================================================ */
 
 .get-involved {
@@ -776,7 +779,7 @@ header.active {
   line-height: 1.2;
 }
 
-.get-involved h3 {
+.get-involved p {
   font-size: 1.3rem;
   font-weight: 400;
   max-width: 700px;
@@ -1120,7 +1123,7 @@ header.active {
 }
 
 /* ============================================================
-   DONATIONS SECTION (PROFILE)
+   DONATIONS (PROFILE)
 ============================================================ */
 
 .donations-header {
@@ -1133,7 +1136,6 @@ header.active {
 .donations-header h2 {
   margin: 0;
 }
-
 .filter-buttons {
   display: flex;
   gap: 5px;
@@ -1193,7 +1195,6 @@ header.active {
   font-size: 25px;
   color: #1f2937;
 }
-
 .donation-amount {
   margin: 0;
   font-size: 20px;
@@ -1214,7 +1215,7 @@ header.active {
 }
 
 /* ============================================================
-   SETTINGS SECTION (PROFILE)
+   SETTINGS (PROFILE)
 ============================================================ */
 
 .setting-form {
@@ -1228,7 +1229,6 @@ header.active {
   margin: 0 0 20px 0;
   color: #1f2937;
 }
-
 .form-group {
   margin-bottom: 20px;
 }
@@ -1600,7 +1600,6 @@ footer {
   font-size: 0.85rem;
   color: #666;
 }
-
 .footer-links {
   display: flex;
   gap: 1rem;
@@ -1624,7 +1623,6 @@ footer {
    MEDIA QUERIES
 ============================================================ */
 
-/* ---- Large desktop (1200px+) ---- */
 @media (min-width: 1200px) {
   header.active .profile-btn {
     border-color: rgba(0, 0, 0, 0.15);
@@ -1637,13 +1635,11 @@ footer {
   header.active .avator i {
     color: var(--ink);
   }
-
   .nav-links a:hover,
   .nav-links a.active {
     border-bottom: 8px solid var(--gold);
     border-radius: 10px;
   }
-
   nav {
     display: flex;
     align-items: center;
@@ -1654,12 +1650,10 @@ footer {
   }
 }
 
-/* ---- Tablet / mobile nav (max 1200px) ---- */
 @media (max-width: 1200px) {
   header {
     justify-content: space-between;
   }
-
   header.active {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     background: #1a1a2e;
@@ -1683,7 +1677,6 @@ footer {
   nav.active {
     transform: translateX(0);
   }
-
   .nav-links {
     flex-direction: column;
     padding: 20px;
@@ -1727,15 +1720,12 @@ footer {
     color: white;
   }
 
-  /* Hide scroll arrows on mobile */
   .project-scroll-btn {
     display: none;
   }
 }
 
-/* ---- News grid (max 1024px) ---- */
 @media (max-width: 1024px) {
-  /* --- News --- */
   .home-news-grid {
     grid-template-columns: 1fr 1fr;
   }
@@ -1748,9 +1738,8 @@ footer {
   }
 }
 
-/* ---- Tablet / mobile (max 768px) ---- */
 @media (max-width: 768px) {
-  /* --- Projects --- */
+  /* Projects */
   .home-projects-section {
     padding: 40px 16px;
   }
@@ -1758,7 +1747,7 @@ footer {
     gap: 1rem;
     width: 100%;
   }
-  .projects-wrapper{
+  .projects-wrapper {
     width: 100%;
   }
   .home-project-card {
@@ -1772,7 +1761,7 @@ footer {
     font-size: 11px;
   }
 
-  /* --- News --- */
+  /* News */
   .home-news-section {
     padding: 40px 16px;
   }
@@ -1791,7 +1780,10 @@ footer {
     -webkit-line-clamp: 2;
   }
 
-  /* --- Testimonials --- */
+  /* Testimonials */
+  .testimonials {
+    padding: 3rem 1.5rem;
+  }
   .testimonial-card {
     max-width: 100%;
     padding: 1.5rem;
@@ -1800,11 +1792,11 @@ footer {
     font-size: 0.9rem;
   }
 
-  /* --- Get involved --- */
+  /* Get involved */
   .get-involved h1 {
     font-size: 2rem;
   }
-  .get-involved h3 {
+  .get-involved p {
     font-size: 1rem;
   }
   .get-involved-btn {
@@ -1813,7 +1805,7 @@ footer {
     font-size: 1rem;
   }
 
-  /* --- Impact stats --- */
+  /* Impact stats */
   .stat h2 {
     font-size: 2rem;
   }
@@ -1821,14 +1813,15 @@ footer {
     flex-direction: column;
     align-items: center;
     gap: 2.5rem;
+    padding: 3rem 1.5rem;
   }
 
-  /* --- Profile --- */
+  /* Profile */
   .profile-modal {
     width: 100%;
   }
 
-  /* --- Footer --- */
+  /* Footer */
   .footer-top {
     padding: 3rem 1.5rem;
     gap: 2rem;
@@ -1847,9 +1840,7 @@ footer {
   }
 }
 
-/* ---- Small mobile (max 640px) ---- */
 @media (max-width: 640px) {
-  /* --- News --- */
   .home-news-section {
     padding: 40px 20px;
   }
@@ -1861,9 +1852,7 @@ footer {
   }
 }
 
-/* ---- Extra small (max 480px) ---- */
 @media (max-width: 480px) {
-  /* --- Projects --- */
   .home-project-card {
     width: 240px;
     height: 280px;
@@ -1874,16 +1863,12 @@ footer {
   .home-card-amounts {
     font-size: 10px;
   }
-
-  /* --- News --- */
   .home-news-img-wrapper {
     height: 140px;
   }
   .home-news-title {
     font-size: 0.95rem;
   }
-
-  /* --- Footer --- */
   .footer-col {
     flex: 1 1 100%;
   }

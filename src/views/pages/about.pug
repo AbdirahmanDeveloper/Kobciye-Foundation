@@ -7,31 +7,31 @@ body
     //- HERO SECTION
     section.hero.about-hero
       .hero-content.about-hero-content
-        .hero-txt
+        .hero-txt(data-aos="fade-up" data-aos-duration="800")
           h1 About Us
           p Learn how Kobciye Foundation is transforming communities and creating hope, one project at a time.
 
     //- ABOUT SECTION
     section.about-us
-      .section-divider
+      .section-divider(data-aos="fade-up")
         .divider-line
         .divider-label About Kobciye
         .divider-line
 
       .about-cards-container
-        .about-card
+        .about-card(data-aos="fade-up" data-aos-delay="0" data-aos-duration="600")
           .about-card-icon
             i.fa-solid.fa-flag
           h2 Our Story
           p Our story began with a simple desire to make a difference in the lives of those who need it most. We started as a small initiative and have grown into a community-driven organization committed to creating meaningful impact. Guided by compassion and the belief that change starts locally, we work closely with communities to understand their needs and provide practical, sustainable solutions.
 
-        .about-card
+        .about-card(data-aos="fade-up" data-aos-delay="150" data-aos-duration="600")
           .about-card-icon
             i.fa-solid.fa-bullseye
           h2 Our Mission
           p Our mission is driven by a commitment to support and uplift vulnerable individuals and communities. We focus on providing essential resources, opportunities, and guidance that improve lives and create lasting change. Guided by compassion and responsibility, we work hand in hand with communities to address real needs and promote sustainable development.
 
-        .about-card
+        .about-card(data-aos="fade-up" data-aos-delay="300" data-aos-duration="600")
           .about-card-icon
             i.fa-solid.fa-eye
           h2 Our Vision
@@ -39,7 +39,7 @@ body
 
     //- TEAM MEMBERS SECTION
     section.team
-      .section-divider
+      .section-divider(data-aos="fade-up")
         .divider-line
         .divider-label Meet Our Team
         .divider-line
@@ -50,8 +50,12 @@ body
 
         .team-container
           if members && members.length > 0
-            each member in members
-              .team-card
+            each member, index in members
+              .team-card(
+                data-aos="fade-up"
+                data-aos-delay=`${index * 100}`
+                data-aos-duration="500"
+              )
                 .team-card-img
                   img(src=`/uploads/members/${member.memberImage}` alt=member.name)
                 .team-card-info
@@ -65,42 +69,47 @@ body
 
     //- TESTIMONIALS
     section.testimonials
-      .section-divider
+      .section-divider(data-aos="fade-up")
         .divider-line
         .divider-label What People Said About Us
         .divider-line
+
       .testimonial-cards
-        .testimonial-card
+        .testimonial-card(data-aos="fade-up" data-aos-delay="0" data-aos-duration="600")
           .quote-icon "
           p "Kobciye helped my community get clean water. Truly life-changing!"
           h3 — Amina, Nairobi
-        .testimonial-card
+
+        .testimonial-card(data-aos="fade-up" data-aos-delay="200" data-aos-duration="600")
           .quote-icon "
           p "Volunteering here taught me the value of giving back."
           h3 — John, Volunteer
 
     //- IMPACTS
-    .section-divider
+    .section-divider(data-aos="fade-up")
       .divider-label Our Impact
+
     section.impact-stats
-      .stat
+      .stat(data-aos="fade-up" data-aos-delay="0" data-aos-duration="600")
         .stat-icon
           i.fa-solid.fa-people-group
         h2 200+
         p Communities Served
-      .stat
+
+      .stat(data-aos="fade-up" data-aos-delay="150" data-aos-duration="600")
         .stat-icon
           i.fa-solid.fa-circle-check
         h2 50+
         p Projects Completed
-      .stat
+
+      .stat(data-aos="fade-up" data-aos-delay="300" data-aos-duration="600")
         .stat-icon
           i.fa-solid.fa-hands-holding-child
         h2 500+
         p Volunteers Engaged
 
     //- CALL ON ACTION
-    section.get-involved
+    section.get-involved(data-aos="fade-up" data-aos-duration="700")
       h1 Get Involved
       p Join us in making a real difference in people's lives. Your support matters.
       a.get-involved-btn(href="/payment") Get Involved

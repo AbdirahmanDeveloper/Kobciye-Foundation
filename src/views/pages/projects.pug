@@ -7,23 +7,27 @@ body
 
     section.hero.projects-hero
       .hero-content.projects-hero-content
-        .hero-txt
+        .hero-txt(data-aos="fade-up" data-aos-duration="800")
           h1 Our Projects
           h3 See how we are transforming lives through impactful initiatives
 
     section.projects-section
-      .section-header
+      .section-header(data-aos="fade-up")
         span.section-eyebrow Our Work
 
-      .section-divider
+      .section-divider(data-aos="fade-up")
         .divider-line
         .divider-label Ongoing Missions
         .divider-line
 
       .projects-container
         if ongoingProjects.length > 0
-          each project in ongoingProjects
-            .project-card
+          each project, index in ongoingProjects
+            .project-card(
+              data-aos="fade-up"
+              data-aos-delay=`${index * 100}`
+              data-aos-duration="600"
+            )
               .project-img
                 img(src=project.image ? `/uploads/projects/${project.image}` : "")
                 .card-badge.active Active
@@ -41,15 +45,19 @@ body
         else
           p.empty-state No active projects available.
 
-      .section-divider
+      .section-divider(data-aos="fade-up")
         .divider-line
         .divider-label Completed Missions
         .divider-line
 
       .projects-container
         if completedProjects.length > 0
-          each project in completedProjects
-            .project-card.completed
+          each project, index in completedProjects
+            .project-card.completed(
+              data-aos="fade-up"
+              data-aos-delay=`${index * 100}`
+              data-aos-duration="600"
+            )
               .project-img
                 img(src=project.image ? `/uploads/projects/${project.image}` : "")
                 .card-badge.done ✓ Funded
@@ -67,46 +75,48 @@ body
         else
           p.empty-state No completed projects available.
 
+    //- TESTIMONIALS
     section.testimonials
-      .section-divider
+      .section-divider(data-aos="fade-up")
         .divider-line
         .divider-label What People Said About Us
         .divider-line
       .testimonial-cards
-        .testimonial-card
+        .testimonial-card(data-aos="fade-up" data-aos-delay="0" data-aos-duration="600")
           .quote-icon "
           p "Kobciye helped my community get clean water. Truly life-changing!"
           h3 — Amina, Nairobi
-        .testimonial-card
+        .testimonial-card(data-aos="fade-up" data-aos-delay="200" data-aos-duration="600")
           .quote-icon "
           p "Volunteering here taught me the value of giving back."
           h3 — John, Volunteer
 
-    .section-divider
+    //- IMPACTS
+    .section-divider(data-aos="fade-up")
       .divider-label Our Impact
     section.impact-stats
-      .stat
+      .stat(data-aos="fade-up" data-aos-delay="0" data-aos-duration="600")
         .stat-icon
           i.fa-solid.fa-people-group
         h2 200+
         p Communities Served
-      .stat
+      .stat(data-aos="fade-up" data-aos-delay="150" data-aos-duration="600")
         .stat-icon
           i.fa-solid.fa-circle-check
         h2 50+
         p Projects Completed
-      .stat
+      .stat(data-aos="fade-up" data-aos-delay="300" data-aos-duration="600")
         .stat-icon
           i.fa-solid.fa-hands-holding-child
         h2 500+
         p Volunteers Engaged
 
-    section.get-involved
+    section.get-involved(data-aos="fade-up" data-aos-duration="700")
       h1 Get Involved
       p Join us in making a real difference in people's lives. Your support matters.
       a.get-involved-btn(href="/payment") Get Involved
 
-    include ../partials/_footer
+  include ../partials/_footer
 
   script(src="/js/main.js")
   script(src="/js/project.js")
