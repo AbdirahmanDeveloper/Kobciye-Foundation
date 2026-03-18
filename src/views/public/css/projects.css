@@ -7,7 +7,6 @@
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
-
   height: 80vh;
   display: flex;
   align-items: center;
@@ -28,21 +27,17 @@
 }
 
 /* ================================
-   PROJECTS SECTION — REFINED
+   PROJECTS SECTION
 ================================ */
-
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600&display=swap');
-
 .projects-section {
   padding: 80px 60px;
   background: #f7f5f2;
-  font-family: 'DM Sans', sans-serif;
+  font-family: "DM Sans", sans-serif;
   display: flex;
   flex-direction: column;
   gap: 3rem;
 }
 
-/* ---- Section Header ---- */
 .section-header {
   display: flex;
   flex-direction: column;
@@ -59,14 +54,13 @@
 }
 
 .section-title {
-  font-family: 'Playfair Display', serif;
+  font-family: "Cormorant Garamond", serif;
   font-size: 42px;
   color: #1a1a1a;
   text-align: center;
   margin: 0;
 }
 
-/* ---- Projects Grid ---- */
 .projects-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -92,12 +86,10 @@
 .project-card.completed {
   opacity: 0.88;
 }
-
 .project-card.completed:hover {
   transform: translateY(-4px);
 }
 
-/* ---- Card Image ---- */
 .project-img {
   position: relative;
   width: 100%;
@@ -116,7 +108,6 @@
   transform: scale(1.05);
 }
 
-/* ---- Badge ---- */
 .card-badge {
   position: absolute;
   top: 14px;
@@ -141,7 +132,6 @@
   border: 1px solid #90caf9;
 }
 
-/* ---- Card Content ---- */
 .card-content {
   padding: 20px 22px 24px;
   display: flex;
@@ -151,7 +141,7 @@
 }
 
 .project-title {
-  font-family: 'Playfair Display', serif;
+  font-family: "Cormorant Garamond", serif;
   font-size: 20px;
   color: #1a1a1a;
   margin: 0;
@@ -169,7 +159,6 @@
   overflow: hidden;
 }
 
-/* ---- Progress ---- */
 .progress-wrapper {
   display: flex;
   flex-direction: column;
@@ -222,7 +211,6 @@
   color: #1565c0;
 }
 
-/* ---- Buttons ---- */
 .completed-btn {
   background: #e3f2fd;
   color: #1565c0;
@@ -234,55 +222,38 @@
   transform: none;
 }
 
-/* ---- Empty State ---- */
-.empty-state {
-  color: #aaa;
-  font-style: italic;
-  text-align: center;
-  padding: 40px 0;
-  grid-column: 1 / -1;
-}
-
+/* ---- Responsive ---- */
 @media (max-width: 768px) {
   .projects-section {
     padding: 40px 16px;
   }
-
   .section-title {
     font-size: 26px;
   }
-
   .projects-container {
     grid-template-columns: 1fr;
     gap: 1.2rem;
   }
-
   .project-card {
     border-radius: 12px;
   }
-
   .project-img {
     height: 160px;
   }
-
   .card-content {
     padding: 14px 16px 18px;
     gap: 8px;
   }
-
   .project-title {
     font-size: 16px;
   }
-
   .project-desc {
     font-size: 13px;
     -webkit-line-clamp: 2;
   }
-
   .progress-bar-container {
     height: 6px;
   }
-
   .goal-amount,
   .raised-amount,
   .progress-percentage {
@@ -294,15 +265,12 @@
   .projects-section {
     padding: 30px 12px;
   }
-
   .project-img {
     height: 140px;
   }
-
   .card-content {
     padding: 12px 14px 16px;
   }
-
   .project-title {
     font-size: 15px;
   }
