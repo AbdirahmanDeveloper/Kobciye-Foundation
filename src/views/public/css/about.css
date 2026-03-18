@@ -50,7 +50,6 @@
   max-width: 1200px;
 }
 
-/* ---- About Card ---- */
 .about-card {
   flex: 1 1 300px;
   max-width: 360px;
@@ -134,7 +133,7 @@
   justify-content: center;
   gap: 2.5rem;
   padding: 80px 60px;
-  background: #ffffff;
+  background: black;
   font-family: "DM Sans", sans-serif;
 }
 
@@ -171,14 +170,15 @@
   background: #ffffff;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
-  border: 1px solid #f0ece4;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 .team-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.13);
+  border-color: #ffffff;
+  box-shadow: 0 0 6px #fff, 0 0 14px rgba(255, 255, 255, 0.5),
+    0 0 28px rgba(255, 255, 255, 0.2), 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
 .team-card-img {
@@ -195,9 +195,6 @@
   transition: transform 0.5s ease;
 }
 
-.team-card:hover .team-card-img img {
-  transform: scale(1.05);
-}
 
 .team-card-info {
   padding: 16px 18px 20px;
@@ -240,8 +237,7 @@
   z-index: 2;
 }
 
-.scroll-btn:hover,
-.project-scroll-btn:hover {
+.scroll-btn:hover {
   background: #c0873f;
   color: #fff;
   border-color: #c0873f;
@@ -377,11 +373,15 @@
 /* =========================
    RESPONSIVE
 ========================= */
+
+/* ---- max 1200px ---- */
 @media (max-width: 1200px) {
   .scroll-btn {
     display: none;
   }
 }
+
+/* ---- max 900px ---- */
 @media (max-width: 900px) {
   .about-us,
   .team,
@@ -408,11 +408,158 @@
   }
 }
 
-@media (max-width: 600px) {
+/* ---- max 768px ---- */
+@media (max-width: 768px) {
   .about-us,
   .team,
   .testimonials,
   .impact-stats {
     padding: 50px 20px;
+  }
+
+  .about-card {
+    flex: 1 1 100%;
+    max-width: 100%;
+    padding: 2rem 1.5rem;
+  }
+
+  .about-card h2 {
+    font-size: 1.4rem;
+  }
+  .about-card p {
+    font-size: 14px;
+  }
+
+  .team-card {
+    width: 180px;
+  }
+
+  .team-card-img {
+    height: 180px;
+  }
+  .team-name {
+    font-size: 16px;
+  }
+  .team-role {
+    font-size: 11px;
+  }
+
+  .testimonial-card {
+    flex: 1 1 100%;
+    max-width: 100%;
+    padding: 2rem 1.5rem;
+  }
+
+  .stat h2 {
+    font-size: 2.4rem;
+  }
+  .stat p {
+    font-size: 11px;
+    letter-spacing: 1.5px;
+  }
+}
+
+/* ---- max 600px ---- */
+@media (max-width: 600px) {
+  .about-us,
+  .team,
+  .testimonials,
+  .impact-stats {
+    padding: 40px 16px;
+  }
+
+  .about-card {
+    gap: 0.8rem;
+  }
+  .about-card-icon {
+    width: 46px;
+    height: 46px;
+    font-size: 18px;
+  }
+
+  .team-card {
+    width: 160px;
+  }
+  .team-card-img {
+    height: 160px;
+  }
+
+  .quote-icon {
+    font-size: 60px;
+  }
+  .testimonial-card p {
+    font-size: 14px;
+  }
+}
+
+/* ---- max 460px ---- */
+@media (max-width: 460px) {
+  .about-us,
+  .team,
+  .testimonials,
+  .impact-stats {
+    padding: 32px 12px;
+  }
+
+  .about-card {
+    padding: 1.5rem 1.2rem;
+    border-radius: 12px;
+  }
+
+  .about-card h2 {
+    font-size: 1.2rem;
+  }
+  .about-card p {
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  .about-card-icon {
+    width: 42px;
+    height: 42px;
+    font-size: 16px;
+    border-radius: 10px;
+  }
+
+  .team-card {
+    width: 145px;
+  }
+  .team-card-img {
+    height: 145px;
+  }
+  .team-name {
+    font-size: 14px;
+  }
+  .team-role {
+    font-size: 10px;
+    letter-spacing: 1px;
+  }
+  .team-card-info {
+    padding: 12px 10px 14px;
+  }
+
+  .testimonial-card {
+    padding: 1.5rem 1.2rem 1.2rem;
+    border-radius: 12px;
+  }
+  .testimonial-card p {
+    font-size: 13px;
+  }
+  .quote-icon {
+    font-size: 50px;
+    top: 6px;
+    left: 12px;
+  }
+
+  .stat h2 {
+    font-size: 2rem;
+  }
+  .stat p {
+    font-size: 10px;
+    letter-spacing: 1px;
+  }
+  .stat-icon {
+    width: 46px;
+    height: 46px;
+    font-size: 18px;
   }
 }

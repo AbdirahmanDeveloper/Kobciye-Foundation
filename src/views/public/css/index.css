@@ -289,6 +289,8 @@ header.active {
 
 .home-projects-container {
   display: flex;
+  align-items: center;
+  justify-content: center;
   flex-direction: row;
   overflow-x: auto;
   overflow-y: hidden;
@@ -298,6 +300,8 @@ header.active {
   flex-wrap: nowrap;
   margin: 2.5rem;
   width: 100%;
+  height: 50vh;
+  background: var(--paper);
 }
 
 .projects-wrapper {
@@ -306,6 +310,7 @@ header.active {
   gap: 1rem;
   align-items: center;
   justify-content: center;
+  background: var(--paper);
 }
 
 .project-scroll-btn {
@@ -344,12 +349,13 @@ header.active {
   display: block;
   flex: 0 0 auto;
   color: inherit;
-  box-shadow: var(--shadow-lg);
   transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease;
 }
 
 .home-project-card:hover {
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+  box-shadow: 0 0 8px #4e7bdb, 0 0 20px #4e7bdb55, 0 0 40px #4e7bdb22;
+  border: 1px solid var(--blue);
+  transform: translateY(-5px);
 }
 
 .home-project-img {
@@ -1750,10 +1756,14 @@ footer {
   }
   .home-projects-container {
     gap: 1rem;
+    width: 100%;
+  }
+  .projects-wrapper{
+    width: 100%;
   }
   .home-project-card {
-    width: 280px;
-    height: 320px;
+    width: 250px;
+    height: 300px;
   }
   .home-project-title {
     font-size: 16px;

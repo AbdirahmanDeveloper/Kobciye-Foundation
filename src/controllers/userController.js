@@ -1,14 +1,18 @@
 const User = require("../models/User");
 const Member = require("../models/members");
-const nodemailer = require("nodemailer");
+const { Resend } = require("resend");
 const crypto = require("crypto");
-const bcrypt = require("bcryptjs"); // ← fixed: was "bycrpt" AND aliased wrong
+const bcrypt = require("bcryptjs");
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Get All users (only Admin)
 exports.getAllUsers = async (req, res) => {
   try {
     const users = await User.find();
-    res.status(200).json({ status: "success", results: users.length, data: users });
+    res
+      .status(200)
+      .json({ status: "success", results: users.length, data: users });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -45,13 +49,17 @@ exports.updatePassword = async (req, res) => {
     const { currentPassword, newPassword, confirmPassword } = req.body;
 
     if (!currentPassword || !newPassword || !confirmPassword)
-      return res.status(400).json({ message: "All password fields are required" });
+      return res
+        .status(400)
+        .json({ message: "All password fields are required" });
 
     if (newPassword !== confirmPassword)
       return res.status(400).json({ message: "New passwords do not match" });
 
     if (newPassword.length < 8)
-      return res.status(400).json({ message: "Password must be at least 8 characters" });
+      return res
+        .status(400)
+        .json({ message: "Password must be at least 8 characters" });
 
     const user = await User.findById(req.user._id).select("+password");
     const isCorrect = await bcrypt.compare(currentPassword, user.password);
@@ -61,7 +69,9 @@ exports.updatePassword = async (req, res) => {
     user.password = await bcrypt.hash(newPassword, 12);
     await user.save();
 
-    res.status(200).json({ status: "success", message: "Password updated successfully" });
+    res
+      .status(200)
+      .json({ status: "success", message: "Password updated successfully" });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -102,39 +112,48 @@ exports.getAllMembers = async (req, res) => {
 exports.sendOTP = async (req, res) => {
   try {
     const { email } = req.body;
-    if (!email) return res.status(400).json({ message: "Please provide your email" });
+    if (!email)
+      return res.status(400).json({ message: "Please provide your email" });
 
     const user = await User.findOne({ email });
-    if (!user) return res.status(404).json({ message: "No account found with that email" });
+    if (!user)
+      return res
+        .status(404)
+        .json({ message: "No account found with that email" });
 
     const otp = Math.floor(1000 + Math.random() * 9000).toString();
 
-    user.passwordResetOTP = crypto.createHash("sha256").update(otp).digest("hex");
+    user.passwordResetOTP = crypto
+      .createHash("sha256")
+      .update(otp)
+      .digest("hex");
     user.passwordResetOTPExpires = Date.now() + 10 * 60 * 1000;
     await user.save({ validateBeforeSave: false });
 
-    const transporter = nodemailer.createTransport({
-      host: process.env.EMAIL_HOST,
-      port: process.env.EMAIL_PORT,
-      auth: { user: process.env.EMAIL_USERNAME, pass: process.env.EMAIL_PASSWORD },
-    });
-
-    await transporter.sendMail({
-      from: `"Kobciye Foundation" <${process.env.EMAIL_USER}>`,
-      to: user.email,
+    const { error } = await resend.emails.send({
+      from: "Kobciye Foundation <onboarding@resend.dev>",
+      to: process.env.ADMIN_EMAIL, 
       subject: "Your Password Reset Code",
       html: `
         <div style="font-family:sans-serif;max-width:480px;margin:auto;padding:30px;border-radius:12px;border:1px solid #e5e7eb;">
-          <h2 style="color:#2575fc;">Password Reset Code</h2>
+          <h2 style="color:#c0873f;">Password Reset Code</h2>
           <p style="color:#555;">Use the code below to reset your password. It expires in <strong>10 minutes</strong>.</p>
           <div style="font-size:2.5rem;font-weight:800;letter-spacing:12px;text-align:center;color:#0f0e0c;background:#f0f5ff;padding:20px;border-radius:10px;">
             ${otp}
           </div>
           <p style="margin-top:24px;color:#9ca3af;font-size:13px;">If you didn't request this, ignore this email.</p>
-        </div>`,
+        </div>
+      `,
     });
 
-    res.status(200).json({ status: "success", message: "OTP sent to your email" });
+    if (error) {
+      console.error("Resend OTP error:", error);
+      return res.status(500).json({ message: "Failed to send OTP email" });
+    }
+
+    res
+      .status(200)
+      .json({ status: "success", message: "OTP sent to your email" });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -155,10 +174,14 @@ exports.verifyOTP = async (req, res) => {
       passwordResetOTPExpires: { $gt: Date.now() },
     }).select("+passwordResetOTP +passwordResetOTPExpires");
 
-    if (!user) return res.status(400).json({ message: "Invalid or expired OTP" });
+    if (!user)
+      return res.status(400).json({ message: "Invalid or expired OTP" });
 
     const resetToken = crypto.randomBytes(32).toString("hex");
-    const hashedToken = crypto.createHash("sha256").update(resetToken).digest("hex");
+    const hashedToken = crypto
+      .createHash("sha256")
+      .update(resetToken)
+      .digest("hex");
 
     user.passwordResetOTP = undefined;
     user.passwordResetOTPExpires = undefined;
@@ -166,28 +189,33 @@ exports.verifyOTP = async (req, res) => {
     user.passwordResetExpires = Date.now() + 15 * 60 * 1000;
     await user.save({ validateBeforeSave: false });
 
-    res.status(200).json({ status: "success", message: "OTP verified", token: resetToken });
+    res
+      .status(200)
+      .json({ status: "success", message: "OTP verified", token: resetToken });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
 
-// Reset password using token (after OTP verified)  ← FIXED & COMPLETED
+// Reset password using token
 exports.resetPassword = async (req, res) => {
   try {
     const { token } = req.params;
     const { password, confirmPassword } = req.body;
 
     if (!password || !confirmPassword)
-      return res.status(400).json({ message: "Both password fields are required" });
+      return res
+        .status(400)
+        .json({ message: "Both password fields are required" });
 
     if (password !== confirmPassword)
       return res.status(400).json({ message: "Passwords do not match" });
 
     if (password.length < 8)
-      return res.status(400).json({ message: "Password must be at least 8 characters" });
+      return res
+        .status(400)
+        .json({ message: "Password must be at least 8 characters" });
 
-    // Hash the incoming raw token and look it up
     const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
 
     const user = await User.findOne({
@@ -195,14 +223,19 @@ exports.resetPassword = async (req, res) => {
       passwordResetExpires: { $gt: Date.now() },
     }).select("+passwordResetToken +passwordResetExpires");
 
-    if (!user) return res.status(400).json({ message: "Token is invalid or has expired" });
+    if (!user)
+      return res
+        .status(400)
+        .json({ message: "Token is invalid or has expired" });
 
-    user.password = await bcrypt.hash(password, 12); // ← await was missing before
+    user.password = await bcrypt.hash(password, 12);
     user.passwordResetToken = undefined;
     user.passwordResetExpires = undefined;
     await user.save();
 
-    res.status(200).json({ status: "success", message: "Password reset successfully" });
+    res
+      .status(200)
+      .json({ status: "success", message: "Password reset successfully" });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
