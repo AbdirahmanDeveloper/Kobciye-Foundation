@@ -1,5 +1,7 @@
 const Contact = require("../models/Contact");
-const sendEmail = require("../utils/sendEmail");
+const { Resend } = require("resend");
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 exports.submitContact = async (req, res) => {
   try {
@@ -7,8 +9,10 @@ exports.submitContact = async (req, res) => {
 
     await Contact.create({ name, email, subject, message });
 
-    // Email 1 — confirmation (goes to admin in sandbox, pretends to be for user)
-    await sendEmail({
+    // Email 1 — confirmation
+    const { error: err1 } = await resend.emails.send({
+      from: "Kobciye Foundation <onboarding@resend.dev>",
+      to: process.env.ADMIN_EMAIL,
       subject: `Message Received: ${subject}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border:1px solid #e5e7eb; border-radius:10px; overflow:hidden;">
@@ -34,9 +38,13 @@ exports.submitContact = async (req, res) => {
       `,
     });
 
+    if (err1) console.error("Resend confirmation error:", err1);
+
     // Email 2 — admin notification
-    await sendEmail({
-      subject: `New Contact Form Submission: ${subject}`,
+    const { error: err2 } = await resend.emails.send({
+      from: "Kobciye Foundation <onboarding@resend.dev>",
+      to: process.env.ADMIN_EMAIL,
+      subject: `New Contact Form Submission from ${name}: ${subject}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width:600px; margin:0 auto; padding:20px; color:#1f2937; border:1px solid #e5e7eb; border-radius:10px;">
           <h2 style="background-color:#c0873f; color:white; padding:20px; text-align:center; margin:0 0 20px;">New Contact Form Submission</h2>
@@ -48,7 +56,11 @@ exports.submitContact = async (req, res) => {
       `,
     });
 
-    res.status(200).json({ status: "success", message: "Message sent successfully" });
+    if (err2) console.error("Resend admin notification error:", err2);
+
+    res
+      .status(200)
+      .json({ status: "success", message: "Message sent successfully" });
   } catch (error) {
     console.error("Contact form error:", error);
     res.status(500).json({ status: "error", message: error.message });
@@ -58,7 +70,9 @@ exports.submitContact = async (req, res) => {
 exports.getAllContacts = async (req, res) => {
   try {
     const contacts = await Contact.find().sort({ createdAt: -1 });
-    res.status(200).json({ status: "success", results: contacts.length, data: contacts });
+    res
+      .status(200)
+      .json({ status: "success", results: contacts.length, data: contacts });
   } catch (error) {
     res.status(500).json({ status: "error", message: error.message });
   }

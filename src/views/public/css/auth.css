@@ -2,7 +2,7 @@
    IMPORTS & RESET
 ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap");
 
 * {
   margin: 0;
@@ -11,7 +11,7 @@
 }
 
 body {
-  font-family: 'DM Sans', sans-serif;
+  font-family: "DM Sans", sans-serif;
 }
 
 /* ============================================================
@@ -62,8 +62,14 @@ body::before,
 }
 
 @keyframes cardIn {
-  from { opacity: 0; transform: translateY(24px) scale(0.97); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 /* ============================================================
@@ -80,7 +86,7 @@ body::before,
 
 .otp-card-top h1,
 .form h1 {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: "Cormorant Garamond", serif;
   font-size: 2rem;
   font-weight: 700;
   color: #0f0e0c;
@@ -114,8 +120,13 @@ body::before,
 }
 
 @keyframes pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(37, 117, 252, 0.2); }
-  50%       { box-shadow: 0 0 0 10px rgba(37, 117, 252, 0); }
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(37, 117, 252, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(37, 117, 252, 0);
+  }
 }
 
 /* ============================================================
@@ -162,7 +173,7 @@ body::before,
   padding: 0.78rem 1rem 0.78rem 2.6rem;
   border: 2px solid #e5e7eb;
   border-radius: 12px;
-  font-family: 'DM Sans', sans-serif;
+  font-family: "DM Sans", sans-serif;
   font-size: 0.95rem;
   color: #0f0e0c;
   background: #fafafa;
@@ -212,22 +223,7 @@ body::before,
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 8px;
-}
-
-.otp-box {
-  width: 50px;
-  height: 56px;
-  text-align: center;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #0f0e0c;
-  border: 2px solid #e5e7eb;
-  border-radius: 12px;
-  outline: none;
-  background: #fafafa;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  gap: 10px;
 }
 
 .otp-box:focus {
@@ -248,9 +244,16 @@ body::before,
 }
 
 @keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25%       { transform: translateX(-5px); }
-  75%       { transform: translateX(5px); }
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
 }
 
 /* ============================================================
@@ -265,7 +268,7 @@ button.auth-btn {
   color: white;
   border: none;
   border-radius: 12px;
-  font-family: 'DM Sans', sans-serif;
+  font-family: "DM Sans", sans-serif;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
@@ -324,7 +327,7 @@ button.auth-btn:disabled {
   background: none;
   border: none;
   color: #2575fc;
-  font-family: 'DM Sans', sans-serif;
+  font-family: "DM Sans", sans-serif;
   font-size: 0.86rem;
   font-weight: 600;
   cursor: pointer;
@@ -444,7 +447,7 @@ p.switch a:hover {
 }
 
 .modal-header h2 {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: "Cormorant Garamond", serif;
   font-size: 1.4rem;
   color: #0f0e0c;
   font-weight: 700;
@@ -488,7 +491,7 @@ p.switch a:hover {
 
 .modal-step h3 {
   text-align: center;
-  font-family: 'Cormorant Garamond', serif;
+  font-family: "Cormorant Garamond", serif;
   font-size: 1.3rem;
   color: #0f0e0c;
 }

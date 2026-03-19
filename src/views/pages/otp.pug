@@ -7,6 +7,7 @@ html(lang="en")
     link(rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap")
     link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css")
     link(rel="stylesheet" href="/css/auth.css")
+
   body
     .otp-page
       .otp-card
@@ -25,25 +26,25 @@ html(lang="en")
               .input-with-icon
                 i.fa-solid.fa-envelope
                 input#email(type="email" placeholder="your@email.com" autocomplete="email")
-              button.otp-submit#sendOtpBtn(type="submit")
+              button.otp-submit#sendOtpBtn(type="button")
                 span Send OTP
                 i.fa-solid.fa-paper-plane
           .error-msg#emailError
 
-        //- STEP 2 — OTP (locked until email sent)
+        //- STEP 2 — OTP
         .step#step2
           .input-box
             label Verification Code
-            .inline-row
-              .otp-boxes
-                input.otp-box(type="text" maxlength="1" inputmode="numeric" autocomplete="off")
-                input.otp-box(type="text" maxlength="1" inputmode="numeric" autocomplete="off")
-                input.otp-box(type="text" maxlength="1" inputmode="numeric" autocomplete="off")
-                input.otp-box(type="text" maxlength="1" inputmode="numeric" autocomplete="off")
-              button.otp-submit#verifyOtpBtn(type="button" disabled)
-                span Verify
-                i.fa-solid.fa-arrow-right
+            .otp-boxes
+              input.otp-box(type="text" maxlength="1" inputmode="numeric" autocomplete="off")
+              input.otp-box(type="text" maxlength="1" inputmode="numeric" autocomplete="off")
+              input.otp-box(type="text" maxlength="1" inputmode="numeric" autocomplete="off")
+              input.otp-box(type="text" maxlength="1" inputmode="numeric" autocomplete="off")
           .error-msg#otpError
+
+          button.otp-submit#verifyOtpBtn(type="button" disabled)
+            span Verify
+            i.fa-solid.fa-arrow-right
 
           .otp-footer
             span Didn't receive it?
