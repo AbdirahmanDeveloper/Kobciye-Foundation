@@ -272,18 +272,6 @@
     font-size: 14px;
   }
 
-  .team-card {
-    width: 180px;
-  }
-  .team-card-img {
-    height: 180px;
-  }
-  .team-name {
-    font-size: 16px;
-  }
-  .team-role {
-    font-size: 11px;
-  }
 }
 
 @media (max-width: 600px) {
@@ -299,13 +287,6 @@
     width: 46px;
     height: 46px;
     font-size: 18px;
-  }
-
-  .team-card {
-    width: 160px;
-  }
-  .team-card-img {
-    height: 160px;
   }
 
   .quote-icon {
@@ -335,23 +316,6 @@
     height: 42px;
     font-size: 16px;
     border-radius: 10px;
-  }
-
-  .team-card {
-    width: 145px;
-  }
-  .team-card-img {
-    height: 145px;
-  }
-  .team-name {
-    font-size: 14px;
-  }
-  .team-role {
-    font-size: 10px;
-    letter-spacing: 1px;
-  }
-  .team-card-info {
-    padding: 12px 10px 14px;
   }
 
   .quote-icon {
