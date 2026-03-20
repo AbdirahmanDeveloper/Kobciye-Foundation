@@ -20,7 +20,7 @@ const membersRoutes = require("./routes/membersRoutes");
 // ============================================================
 const app = express();
 
-app.set('trust proxy', 1);
+app.set("trust proxy", 1);
 
 // ============================================================
 // VIEW ENGINE — pug templates
@@ -37,59 +37,62 @@ app.use(express.static(path.join(__dirname, "views/public")));
 app.use(cors());
 
 // 2. Helmet — sets secure HTTP response headers
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
 
-      scriptSrc: [
-        "'self'",
-        "'unsafe-inline'",
-        "https://cdn.jsdelivr.net",
-        "https://cdnjs.cloudflare.com",
-        "https://unpkg.com",
-      ],
+        scriptSrc: [
+          "'self'",
+          "'unsafe-inline'",
+          "https://cdn.jsdelivr.net",
+          "https://cdnjs.cloudflare.com",
+          "https://unpkg.com",
+        ],
 
-      styleSrc: [
-        "'self'",
-        "'unsafe-inline'",
-        "https://fonts.googleapis.com",
-        "https://cdnjs.cloudflare.com",
-        "https://unpkg.com",
-        "https://cdn.jsdelivr.net",
-      ],
+        styleSrc: [
+          "'self'",
+          "'unsafe-inline'",
+          "https://fonts.googleapis.com",
+          "https://cdnjs.cloudflare.com",
+          "https://unpkg.com",
+          "https://cdn.jsdelivr.net",
+        ],
 
-      fontSrc: [
-        "'self'",
-        "https://fonts.gstatic.com",
-        "https://cdnjs.cloudflare.com",
-      ],
+        fontSrc: [
+          "'self'",
+          "https://fonts.gstatic.com",
+          "https://cdnjs.cloudflare.com",
+        ],
 
-      imgSrc: [
-        "'self'",
-        "data:",
-        "blob:",
-        "https://res.cloudinary.com",
-        "https://images.unsplash.com",
-      ],
+        imgSrc: [
+          "'self'",
+          "data:",
+          "blob:",
+          "https://res.cloudinary.com",
+          "https://images.unsplash.com",
+        ],
 
-      connectSrc: [
-        "'self'",
-        "https://api.paystack.co",
-      ],
+        connectSrc: [
+          "'self'",
+          "https://api.paystack.co",
+          "https://cdn.jsdelivr.net",
+        ],
 
-      frameSrc:   ["'none'"],
-      objectSrc:  ["'none'"],
-      baseUri:    ["'self'"],
-      formAction: ["'self'"],
+        frameSrc: ["'none'"],
+        objectSrc: ["'none'"],
+        baseUri: ["'self'"],
+        formAction: ["'self'"],
+      },
     },
-  },
 
-  crossOriginEmbedderPolicy: false,
-  crossOriginOpenerPolicy: { policy: "same-origin" },
-  crossOriginResourcePolicy: { policy: "cross-origin" },
-  referrerPolicy: { policy: "strict-origin-when-cross-origin" },
-}));
+    crossOriginEmbedderPolicy: false,
+    crossOriginOpenerPolicy: { policy: "same-origin" },
+    crossOriginResourcePolicy: { policy: "cross-origin" },
+    referrerPolicy: { policy: "strict-origin-when-cross-origin" },
+  })
+);
 
 // 3. Body parser — limit 10kb prevents payload DoS attacks
 app.use(express.json({ limit: "10kb" }));
@@ -162,9 +165,10 @@ app.use((err, req, res, next) => {
   console.error("Global error:", err);
   res.status(err.statusCode || 500).json({
     status: "error",
-    message: process.env.NODE_ENV === "production"
-      ? "Something went wrong"
-      : err.message,
+    message:
+      process.env.NODE_ENV === "production"
+        ? "Something went wrong"
+        : err.message,
   });
 });
 

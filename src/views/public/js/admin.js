@@ -6,7 +6,7 @@ const token = localStorage.getItem("token");
 
 if (!token) {
   window.location.href = "/login";
-  throw new Error("Unauthorized - redirecting to login");
+  throw new Error("Unauthorized");
 }
 
 /* ============================================================
@@ -28,7 +28,9 @@ goToLoginBtn?.addEventListener("click", (e) => {
   e.preventDefault();
   goToLoginBtn.disabled = true;
   goToLoginBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Redirecting...</span>`;
-  setTimeout(() => { window.location.href = "/login"; }, 300);
+  setTimeout(() => {
+    window.location.href = "/login";
+  }, 300);
 });
 
 adminLogoutBtn?.addEventListener("click", (e) => {
@@ -40,9 +42,29 @@ adminLogoutBtn?.addEventListener("click", (e) => {
     localStorage.removeItem("user");
     localStorage.removeItem("userId");
     sessionStorage.clear();
-    setTimeout(() => { window.location.href = "/login"; }, 500);
+    setTimeout(() => {
+      window.location.href = "/login";
+    }, 500);
   }
 });
+
+/* ============================================================
+   LOGIN / LOGOUT VISIBILITY BASED ON TOKEN
+============================================================ */
+
+const loginBtn = document.querySelector(".login-btn");
+const logoutBtn = document.getElementById("logoutBtn");
+const userProfileSection = document.querySelector(".user-profile");
+
+if (token) {
+  if (loginBtn) loginBtn.style.display = "none";
+  if (logoutBtn) logoutBtn.style.display = "block";
+  if (userProfileSection) userProfileSection.style.display = "block";
+} else {
+  if (loginBtn) loginBtn.style.display = "block";
+  if (logoutBtn) logoutBtn.style.display = "none";
+  if (userProfileSection) userProfileSection.style.display = "none";
+}
 
 /* ============================================================
    NAVIGATION & SIDEBAR
@@ -57,7 +79,9 @@ navigationLinks.forEach((link) => {
     navigationLinks.forEach((l) => l.classList.remove("active"));
     contentSections.forEach((s) => s.classList.remove("active"));
     link.classList.add("active");
-    const target = document.getElementById(link.getAttribute("href").substring(1));
+    const target = document.getElementById(
+      link.getAttribute("href").substring(1)
+    );
     if (target) target.classList.add("active");
   });
 });
@@ -83,9 +107,12 @@ async function fetchTotalDonationAmount() {
     });
     const data = await response.json();
     const el = document.getElementById("totalDonatedAmount");
-    if (el) el.textContent = response.ok ? `KES ${(data.data.totalAmount || 0).toLocaleString()}` : "KES 0";
-  } catch (error) {
-    console.error("Error fetching total donation amount:", error);
+    if (el)
+      el.textContent = response.ok
+        ? `KES ${(data.data.totalAmount || 0).toLocaleString()}`
+        : "KES 0";
+  } catch {
+    /* silent fail */
   }
 }
 
@@ -97,8 +124,8 @@ async function fetchTotalUsersCount() {
     const data = await response.json();
     const el = document.getElementById("totalUsers");
     if (el) el.textContent = response.ok ? data.data.totalUsers : "0";
-  } catch (error) {
-    console.error("Error fetching total users:", error);
+  } catch {
+    /* silent fail */
   }
 }
 
@@ -110,8 +137,8 @@ async function fetchTotalMembersCount() {
     const data = await response.json();
     const el = document.getElementById("totalMembers");
     if (el) el.textContent = response.ok ? data.data.totalMembers : "0";
-  } catch (error) {
-    console.error("Error fetching total members:", error);
+  } catch {
+    /* silent fail */
   }
 }
 
@@ -121,14 +148,14 @@ async function fetchProjectCounts() {
       headers: { Authorization: `Bearer ${token}` },
     });
     const data = await response.json();
-    const activeEl = document.getElementById("activeProjects");
-    const completedEl = document.getElementById("completedProjects");
     if (response.ok) {
+      const activeEl = document.getElementById("activeProjects");
+      const completedEl = document.getElementById("completedProjects");
       if (activeEl) activeEl.textContent = data.data.countActive;
       if (completedEl) completedEl.textContent = data.data.countCompleted;
     }
-  } catch (error) {
-    console.error("Error fetching project counts:", error);
+  } catch {
+    /* silent fail */
   }
 }
 
@@ -154,15 +181,17 @@ document.addEventListener("DOMContentLoaded", async () => {
       type: "line",
       data: {
         labels: monthlyStatsData.map((i) => i.month),
-        datasets: [{
-          label: "Monthly Donations (KES)",
-          data: monthlyStatsData.map((i) => i.totalAmount),
-          borderWidth: 2,
-          tension: 0.3,
-          fill: true,
-          borderColor: "#667eea",
-          backgroundColor: "rgba(102, 126, 234, 0.1)",
-        }],
+        datasets: [
+          {
+            label: "Monthly Donations (KES)",
+            data: monthlyStatsData.map((i) => i.totalAmount),
+            borderWidth: 2,
+            tension: 0.3,
+            fill: true,
+            borderColor: "#667eea",
+            backgroundColor: "rgba(102, 126, 234, 0.1)",
+          },
+        ],
       },
       options: {
         responsive: true,
@@ -170,13 +199,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         scales: { y: { beginAtZero: true } },
       },
     });
-  } catch (error) {
-    console.error("Chart rendering error:", error);
+  } catch {
+    /* silent fail */
   }
 });
 
 /* ============================================================
-   PROJECTS MANAGEMENT
+   PROJECTS — CREATE
 ============================================================ */
 
 const createProjectBtn = document.getElementById("addProject");
@@ -192,7 +221,8 @@ createProjectBtn?.addEventListener("click", (e) => {
 });
 
 createProjectModal?.addEventListener("click", (e) => {
-  if (e.target === createProjectModal) createProjectModal.classList.remove("active");
+  if (e.target === createProjectModal)
+    createProjectModal.classList.remove("active");
 });
 
 createProjectForm?.addEventListener("submit", async (e) => {
@@ -212,17 +242,48 @@ createProjectForm?.addEventListener("submit", async (e) => {
     } else {
       if (projectErrorModal) projectErrorModal.style.display = "flex";
     }
-  } catch (error) {
-    console.error("Project creation error:", error);
+  } catch {
     if (projectErrorModal) projectErrorModal.style.display = "flex";
   }
 });
+/* ============================================================
+   PROJECTS — DELETE
+============================================================ */
 
-// Edit project
+document.querySelectorAll(".delete-project-btn").forEach((btn) => {
+  btn.addEventListener("click", async (e) => {
+    e.preventDefault();
+    const projectId = btn.getAttribute("data-id");
+    if (!confirm("Are you sure you want to delete this project?")) return;
+
+    try {
+      const response = await fetch(`/api/projects/${projectId}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (response.ok || response.status === 204) {
+        btn.closest("tr")?.remove();
+        alert("Project deleted successfully!");
+      } else {
+        const data = await response.json();
+        alert(data.message || "Failed to delete project");
+      }
+    } catch {
+      alert("An error occurred while deleting project");
+    }
+  });
+});
+/* ============================================================
+   PROJECTS — EDIT
+============================================================ */
+
 const editProjectModal = document.querySelector(".edit-project");
 const editProjectForm = document.getElementById("editProjectForm");
 const editProjectFormWrapper = document.querySelector(".edit-project .form");
-const projectUpdateSuccessModal = document.getElementById("projectUpdateSuccess");
+const projectUpdateSuccessModal = document.getElementById(
+  "projectUpdateSuccess"
+);
 const projectUpdateErrorModal = document.getElementById("projectUpdateError");
 
 document.querySelectorAll(".edit-project-btn").forEach((btn) => {
@@ -248,8 +309,8 @@ document.querySelectorAll(".edit-project-btn").forEach((btn) => {
 
         editProjectModal.classList.add("active");
       }
-    } catch (error) {
-      console.error("Fetch project error:", error);
+    } catch {
+      /* silent fail */
     }
   });
 });
@@ -276,18 +337,22 @@ editProjectForm?.addEventListener("submit", async (e) => {
 
     if (response.ok) {
       if (editProjectFormWrapper) editProjectFormWrapper.style.display = "none";
-      if (projectUpdateErrorModal) projectUpdateErrorModal.style.display = "none";
-      if (projectUpdateSuccessModal) projectUpdateSuccessModal.style.display = "flex";
+      if (projectUpdateErrorModal)
+        projectUpdateErrorModal.style.display = "none";
+      if (projectUpdateSuccessModal)
+        projectUpdateSuccessModal.style.display = "flex";
       editProjectForm.reset();
     } else {
       if (editProjectFormWrapper) editProjectFormWrapper.style.display = "none";
-      if (projectUpdateSuccessModal) projectUpdateSuccessModal.style.display = "none";
-      if (projectUpdateErrorModal) projectUpdateErrorModal.style.display = "flex";
+      if (projectUpdateSuccessModal)
+        projectUpdateSuccessModal.style.display = "none";
+      if (projectUpdateErrorModal)
+        projectUpdateErrorModal.style.display = "flex";
     }
-  } catch (error) {
-    console.error("Project update error:", error);
+  } catch {
     if (editProjectFormWrapper) editProjectFormWrapper.style.display = "none";
-    if (projectUpdateSuccessModal) projectUpdateSuccessModal.style.display = "none";
+    if (projectUpdateSuccessModal)
+      projectUpdateSuccessModal.style.display = "none";
     if (projectUpdateErrorModal) projectUpdateErrorModal.style.display = "flex";
   }
 });
@@ -296,19 +361,24 @@ editProjectModal?.addEventListener("click", (e) => {
   if (e.target === editProjectModal) {
     editProjectModal.classList.remove("active");
     if (editProjectFormWrapper) editProjectFormWrapper.style.display = "flex";
-    if (projectUpdateSuccessModal) projectUpdateSuccessModal.style.display = "none";
+    if (projectUpdateSuccessModal)
+      projectUpdateSuccessModal.style.display = "none";
     if (projectUpdateErrorModal) projectUpdateErrorModal.style.display = "none";
   }
 });
 
-document.getElementById("projectUpdateOkBtn")?.addEventListener("click", closeAndReload);
-document.getElementById("projectUpdateErrorBtn")?.addEventListener("click", () => {
-  if (projectUpdateErrorModal) projectUpdateErrorModal.style.display = "none";
-  if (editProjectFormWrapper) editProjectFormWrapper.style.display = "flex";
-});
+document
+  .getElementById("projectUpdateOkBtn")
+  ?.addEventListener("click", closeAndReload);
+document
+  .getElementById("projectUpdateErrorBtn")
+  ?.addEventListener("click", () => {
+    if (projectUpdateErrorModal) projectUpdateErrorModal.style.display = "none";
+    if (editProjectFormWrapper) editProjectFormWrapper.style.display = "flex";
+  });
 
 /* ============================================================
-   NEWS MANAGEMENT
+   NEWS — CREATE
 ============================================================ */
 
 const createNewsBtn = document.getElementById("addNews");
@@ -343,13 +413,15 @@ createNewsForm?.addEventListener("submit", async (e) => {
     } else {
       if (newsErrorModal) newsErrorModal.style.display = "flex";
     }
-  } catch (error) {
-    console.error("News creation error:", error);
+  } catch {
     if (newsErrorModal) newsErrorModal.style.display = "flex";
   }
 });
 
-// Delete news
+/* ============================================================
+   NEWS — DELETE
+============================================================ */
+
 document.querySelectorAll(".delete-btn").forEach((btn) => {
   btn.addEventListener("click", async (e) => {
     e.preventDefault();
@@ -369,14 +441,16 @@ document.querySelectorAll(".delete-btn").forEach((btn) => {
         const data = await response.json();
         alert(data.message || "Failed to delete news");
       }
-    } catch (error) {
-      console.error("Delete news error:", error);
+    } catch {
       alert("An error occurred while deleting news");
     }
   });
 });
 
-// Edit news
+/* ============================================================
+   NEWS — EDIT
+============================================================ */
+
 const editNewsSection = document.querySelector(".edit-news");
 const editNewsForm = document.getElementById("editNewsForm");
 const editNewsFormWrapper = document.querySelector(".edit-news .form");
@@ -392,13 +466,8 @@ document.querySelectorAll(".edit-btn").forEach((btn) => {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
+      if (!res.ok) return;
 
-      if (!res.ok) {
-        console.error("Failed to fetch news:", data.message);
-        return;
-      }
-
-      // Safe null-checked assignments
       const editNewsId = document.getElementById("editNewsId");
       const editNewsTitle = document.getElementById("editNewsTitle");
       const editNewsContent = document.getElementById("editNewsContent");
@@ -407,12 +476,12 @@ document.querySelectorAll(".edit-btn").forEach((btn) => {
       if (editNewsId) editNewsId.value = data.data._id;
       if (editNewsTitle) editNewsTitle.value = data.data.title;
       if (editNewsContent) editNewsContent.value = data.data.content;
-      if (editNewsPreview) editNewsPreview.src = `/uploads/news/${data.data.image}`;
+      if (editNewsPreview)
+        editNewsPreview.src = `/uploads/news/${data.data.image}`;
 
       if (editNewsSection) editNewsSection.classList.add("active");
-
-    } catch (error) {
-      console.error("Fetch news error:", error);
+    } catch {
+      /* silent fail */
     }
   });
 });
@@ -421,7 +490,6 @@ editNewsSection?.addEventListener("click", (e) => {
   if (e.target === editNewsSection) editNewsSection.classList.remove("active");
 });
 
-// Cancel edit news button
 document.getElementById("cancelEditNews")?.addEventListener("click", () => {
   editNewsSection?.classList.remove("active");
 });
@@ -429,11 +497,7 @@ document.getElementById("cancelEditNews")?.addEventListener("click", () => {
 editNewsForm?.addEventListener("submit", async (e) => {
   e.preventDefault();
   const newsId = document.getElementById("editNewsId")?.value;
-
-  if (!newsId) {
-    console.error("News ID not found");
-    return;
-  }
+  if (!newsId) return;
 
   try {
     const response = await fetch(`/api/news/${newsId}`, {
@@ -452,22 +516,23 @@ editNewsForm?.addEventListener("submit", async (e) => {
       if (newsUpdateSuccess) newsUpdateSuccess.style.display = "none";
       if (newsUpdateError) newsUpdateError.style.display = "flex";
     }
-  } catch (error) {
-    console.error("Update news error:", error);
+  } catch {
     if (editNewsFormWrapper) editNewsFormWrapper.style.display = "none";
     if (newsUpdateSuccess) newsUpdateSuccess.style.display = "none";
     if (newsUpdateError) newsUpdateError.style.display = "flex";
   }
 });
 
-document.getElementById("newsUpdateOkBtn")?.addEventListener("click", closeAndReload);
+document
+  .getElementById("newsUpdateOkBtn")
+  ?.addEventListener("click", closeAndReload);
 document.getElementById("newsUpdateErrorBtn")?.addEventListener("click", () => {
   if (newsUpdateError) newsUpdateError.style.display = "none";
   if (editNewsFormWrapper) editNewsFormWrapper.style.display = "flex";
 });
 
 /* ============================================================
-   MEMBERS MANAGEMENT
+   MEMBERS — CREATE
 ============================================================ */
 
 const addMemberBtn = document.getElementById("addMember");
@@ -496,7 +561,6 @@ addMemberForm?.addEventListener("submit", async (e) => {
       body: new FormData(addMemberForm),
       headers: { Authorization: `Bearer ${token}` },
     });
-    const data = await response.json();
 
     if (response.ok) {
       if (memberErrorModal) memberErrorModal.style.display = "none";
@@ -505,16 +569,17 @@ addMemberForm?.addEventListener("submit", async (e) => {
     } else {
       if (memberSuccessModal) memberSuccessModal.style.display = "none";
       if (memberErrorModal) memberErrorModal.style.display = "flex";
-      console.error("Error:", data.message);
     }
-  } catch (error) {
-    console.error("Member creation error:", error);
+  } catch {
     if (memberSuccessModal) memberSuccessModal.style.display = "none";
     if (memberErrorModal) memberErrorModal.style.display = "flex";
   }
 });
 
-// Delete member
+/* ============================================================
+   MEMBERS — DELETE
+============================================================ */
+
 document.querySelectorAll(".delete-member-btn").forEach((btn) => {
   btn.addEventListener("click", async (e) => {
     e.preventDefault();
@@ -534,15 +599,14 @@ document.querySelectorAll(".delete-member-btn").forEach((btn) => {
         const data = await response.json();
         alert(data.message || "Failed to delete member");
       }
-    } catch (error) {
-      console.error("Delete member error:", error);
+    } catch {
       alert("An error occurred while deleting member");
     }
   });
 });
 
 /* ============================================================
-   DONATIONS MANAGEMENT
+   DONATIONS — CREATE (MANUAL ENTRY)
 ============================================================ */
 
 const addDonorBtn = document.getElementById("addDonor");
@@ -587,15 +651,14 @@ addDonorForm?.addEventListener("submit", async (e) => {
       if (donorSuccessModal) donorSuccessModal.style.display = "none";
       if (donorErrorModal) donorErrorModal.style.display = "flex";
     }
-  } catch (error) {
-    console.error("Donor creation error:", error);
+  } catch {
     if (donorSuccessModal) donorSuccessModal.style.display = "none";
     if (donorErrorModal) donorErrorModal.style.display = "flex";
   }
 });
 
 /* ============================================================
-   GLOBAL OK BUTTONS — ALL RELOAD
+   GLOBAL OK BUTTONS — RELOAD ON CLICK
 ============================================================ */
 
 document.querySelectorAll(".ok-btn, .ok-error-btn").forEach((btn) => {

@@ -9,8 +9,8 @@ head
   body
     //- SIDEBAR
     header
-      a.logo(href="/")
-        img.logo-img(src="/images/logo.jpeg" alt="Kobciye Foundation")
+      .logo
+        h1.logo-text KF
       .navigation-btn
         i.fa-solid.fa-bars
       nav.side-bar
@@ -57,7 +57,6 @@ head
     //- ==================
     section.content-section.active#dashboard
       .dashboard-container
-        //- Top Stats Cards
         .stats-grid
           .stat-card
             .stat-icon.donations
@@ -94,9 +93,7 @@ head
               h3#completedProjects 0
               p Completed Projects
 
-        //- Bottom Large Cards
         .dashboard-grid
-          //- Donations Chart Card
           .dashboard-card.chart-card
             .card-header
               h2
@@ -105,7 +102,6 @@ head
             .card-body
               canvas#donationsChart
 
-          //- Latest Donations Card
           .dashboard-card.donations-card
             .card-header
               h2
@@ -294,10 +290,13 @@ head
                 td= project.goalAmount
                 td= project.raisedAmount
                 td= project.status
-                td
+                td.action-row
                   button.edit-btn.edit-project-btn(data-id=project._id)
                     i.fa-solid.fa-pen
                     |  Edit
+                  button.delete-btn.delete-project-btn(data-id=project._id)
+                    i.fa-solid.fa-trash
+                    |  Delete
           else
             tr
               td(colspan="5")
