@@ -3,15 +3,18 @@ header
   .navigation-btn
     i.fa-solid.fa-bars
 
+
   //- CENTER: logo
   a.logo(href="/")
     h1.logo-text KF
 
   //- NAV DRAWER
   nav
-    .sidebar-top
+      
 
     ul.nav-links
+      .close-btn
+        i.fa-solid.fa-x
       li
         a(href="/" class=activePage === 'home' ? 'active' : '') Home
       li

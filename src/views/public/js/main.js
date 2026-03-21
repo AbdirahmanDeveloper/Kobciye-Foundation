@@ -18,35 +18,23 @@ window.addEventListener("scroll", () => {
 ============================================================ */
 const mobileNav = document.querySelector("nav");
 const navToggleBtn = document.querySelector(".navigation-btn");
-const navIcon = navToggleBtn?.querySelector("i");
-
-const overlay = document.createElement("div");
-overlay.className = "nav-overlay";
-document.body.appendChild(overlay);
+const navCloseBtn = document.querySelector(".close-btn");
 
 function openNav() {
   mobileNav.classList.add("active");
   document.body.style.overflow = "hidden";
   document.documentElement.style.overflow = "hidden";
-  navIcon?.classList.remove("fa-bars");
-  navIcon?.classList.add("fa-xmark");
 }
 
 function closeNav() {
   mobileNav.classList.remove("active");
-  overlay.classList.remove("show");
   document.body.style.overflow = "";
   document.documentElement.style.overflow = "";
-  navIcon?.classList.remove("fa-xmark");
-  navIcon?.classList.add("fa-bars");
 }
 
-navToggleBtn?.addEventListener("click", (e) => {
-  e.stopPropagation();
-  mobileNav.classList.contains("active") ? closeNav() : openNav();
-});
+navToggleBtn.addEventListener("click", openNav);
 
-overlay.addEventListener("click", closeNav);
+navCloseBtn.addEventListener("click", closeNav);
 
 document.querySelectorAll(".nav-links a").forEach((link) => {
   link.addEventListener("click", closeNav);

@@ -1645,13 +1645,14 @@ footer {
     align-items: center;
     gap: 3rem;
   }
-  .navigation-btn {
+  .navigation-btn,
+  .close-btn {
     display: none;
   }
 }
 
 @media (max-width: 1200px) {
-  .logo{
+  .logo {
     display: none;
   }
   header {
@@ -1664,7 +1665,7 @@ footer {
 
   nav {
     position: fixed;
-    top: 80px;
+    top: 0;
     left: 0;
     width: 280px;
     height: 100vh;
@@ -1684,6 +1685,7 @@ footer {
     flex-direction: column;
     padding: 20px;
     gap: 30px;
+    position: relative;
   }
   .nav-links li {
     width: 100%;
@@ -1722,7 +1724,29 @@ footer {
     font-size: 2rem;
     color: white;
   }
-
+  .close-btn {
+    position: absolute;
+    right: 8px;
+    top: 10px;
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+    backdrop-filter: blur(4px);
+  }
+  
+  .close-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+  }
   .project-scroll-btn {
     display: none;
   }
