@@ -61,13 +61,18 @@
   margin: 0;
 }
 
+/* ================================
+   PROJECTS CONTAINER & CARDS
+================================ */
 .projects-container {
   display: grid;
+  align-items: center;
+  justify-items: center;
+  justify-content: center;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 2rem;
 }
 
-/* ---- Project Card ---- */
 .project-card {
   background: #ffffff;
   border-radius: 16px;
@@ -76,6 +81,7 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 .project-card:hover {
@@ -159,6 +165,9 @@
   overflow: hidden;
 }
 
+/* ================================
+   PROGRESS BAR
+================================ */
 .progress-wrapper {
   display: flex;
   flex-direction: column;
@@ -222,7 +231,40 @@
   transform: none;
 }
 
-/* ---- Responsive ---- */
+/* ================================
+   EMPTY STATE
+================================ */
+.projects-container .empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 80px 20px;
+  background: #f9fafb;
+  border-radius: 16px;
+  margin: 0 auto;
+  max-width: 600px;
+  width: 100%;
+}
+
+.projects-container .empty-state i {
+  font-size: 80px;
+  color: #d1d5db;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.projects-container .empty-state p {
+  font-size: 1.2rem;
+  color: #6b7280;
+  margin-bottom: 30px;
+}
+
+.projects-container .empty-state .get-involved-btn {
+  margin: 0 auto;
+}
+
+/* ================================
+   RESPONSIVE
+================================ */
 @media (max-width: 768px) {
   .projects-section {
     padding: 40px 16px;

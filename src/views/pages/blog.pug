@@ -15,25 +15,32 @@ body
     section.blog-section
       .section-divider(data-aos="fade-up")
         .divider-label Explore Our News
-      .blog-container
-        each item, index in news
-          article.blog-card(
-            data-aos="fade-up"
-            data-aos-delay=`${index * 100}`
-            data-aos-duration="600"
-          )
-            .blog-card-img
-              img(src=item.image ? `/uploads/news/${item.image}` : "/images/blog-hero.png" alt=item.title)
-            .blog-card-body
-              h2.blog-card-title= item.title
-              p.blog-card-text= item.content ? item.content.substring(0, 120) + '...' : ''
-              .blog-card-btn-time
-                a.blog-card-btn(href=`/blog/${item._id}`)
-                  span Read More
-                  i.fa-solid.fa-arrow-right
-                .blog-card-meta
-                  i.fa-regular.fa-calendar
-                  time= item.createdAt ? item.createdAt.toDateString() : ''
+
+      if news && news.length > 0
+        .blog-container
+          each item, index in news
+            article.blog-card(
+              data-aos="fade-up"
+              data-aos-delay=`${index * 100}`
+              data-aos-duration="600"
+            )
+              .blog-card-img
+                img(src=item.image ? `/uploads/news/${item.image}` : "/images/blog-hero.png" alt=item.title)
+              .blog-card-body
+                h2.blog-card-title= item.title
+                p.blog-card-text= item.content ? item.content.substring(0, 120) + '...' : ''
+                .blog-card-btn-time
+                  a.blog-card-btn(href=`/blog/${item._id}`)
+                    span Read More
+                    i.fa-solid.fa-arrow-right
+                  .blog-card-meta
+                    i.fa-regular.fa-calendar
+                    time= item.createdAt ? item.createdAt.toDateString() : ''
+      else
+        .empty-state(data-aos="fade-up")
+          i.fa-solid.fa-newspaper
+          p No blog posts available yet. Check back soon!
+          a.get-involved-btn(href="/contact") Contact Us
 
     //- TESTIMONIALS
     section.testimonials

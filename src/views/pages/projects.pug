@@ -21,7 +21,7 @@ body
         .divider-line
 
       .projects-container
-        if ongoingProjects.length > 0
+        if ongoingProjects && ongoingProjects.length > 0
           each project, index in ongoingProjects
             .project-card(
               data-aos="fade-up"
@@ -43,7 +43,10 @@ body
                   p.progress-percentage= `${project.progressPercentage}% Funded`
                 a.donate-btn(href="/payment" data-project-id=`${project._id}`) Donate Now →
         else
-          p.empty-state No active projects available.
+          .empty-state(data-aos="fade-up")
+            i.fa-solid.fa-folder-open
+            p No active projects at the moment.
+            a.get-involved-btn(href="/contact") Contact Us
 
       .section-divider(data-aos="fade-up")
         .divider-line
@@ -51,7 +54,7 @@ body
         .divider-line
 
       .projects-container
-        if completedProjects.length > 0
+        if completedProjects && completedProjects.length > 0
           each project, index in completedProjects
             .project-card.completed(
               data-aos="fade-up"
@@ -73,7 +76,10 @@ body
                   p.progress-percentage= `${project.progressPercentage}% Funded`
                 button.donate-btn.completed-btn(disabled) ✓ Goal Reached
         else
-          p.empty-state No completed projects available.
+          .empty-state(data-aos="fade-up")
+            i.fa-solid.fa-circle-check
+            p No completed projects yet.
+            a.get-involved-btn(href="/contact") Contact Us
 
     //- TESTIMONIALS
     section.testimonials
