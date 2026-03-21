@@ -1651,9 +1651,6 @@ footer {
 }
 
 @media (max-width: 1200px) {
-  .logo {
-    display: none;
-  }
   header {
     justify-content: space-between;
   }
