@@ -6,6 +6,7 @@ html(lang="en")
     title Payment Gateway
     link(rel="stylesheet" href="/css/payment.css")
     link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css")
+    link(rel="icon" type="image/x-icon" href="/images/favicon.ico")
 
   body
     .payment-form
@@ -23,12 +24,12 @@ html(lang="en")
         //- Payment Method
         label Payment Method *
         .payment-methods
-          label.method-option#mpesa-option
+          .method-option#mpesa-option.active
             input#method-mpesa(type="radio" name="paymentMethod" value="mpesa" checked)
             .method-card
               i.fa-solid.fa-mobile-screen-button
               span M-Pesa
-          label.method-option#card-option
+          .method-option#card-option
             input#method-card(type="radio" name="paymentMethod" value="card")
             .method-card
               i.fa-solid.fa-credit-card
