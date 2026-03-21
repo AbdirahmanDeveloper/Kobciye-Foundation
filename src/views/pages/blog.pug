@@ -25,7 +25,7 @@ body
               data-aos-duration="600"
             )
               .blog-card-img
-                img(src=item.image ? `/uploads/news/${item.image}` : "/images/blog-hero.png" alt=item.title)
+                img(src=item.image alt=item.title)
               .blog-card-body
                 h2.blog-card-title= item.title
                 p.blog-card-text= item.content ? item.content.substring(0, 120) + '...' : ''

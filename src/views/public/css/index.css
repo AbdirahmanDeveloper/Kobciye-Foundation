@@ -324,10 +324,10 @@ header.active {
 }
 
 .project-scroll-btn.ps-left {
-  left: -10px;
+  left: -50px;
 }
 .project-scroll-btn.ps-right {
-  right: -10px;
+  right: -50px;
 }
 
 .project-scroll-btn:hover {

@@ -84,7 +84,7 @@ exports.createProject = async (req, res) => {
     }
 
     const projectData = {
-      image: req.file.filename,
+      image: req.file.path,
       title: req.body.title,
       description: req.body.description,
       goalAmount: req.body.goalAmount,

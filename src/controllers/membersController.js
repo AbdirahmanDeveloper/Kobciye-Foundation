@@ -6,7 +6,7 @@ exports.addMember = async (req, res) => {
     const memberData = {
       name: req.body.name,
       role: req.body.role,
-      memberImage: req.file.filename,
+      memberImage: req.file.path,
     };
 
     const member = await Members.create(memberData);

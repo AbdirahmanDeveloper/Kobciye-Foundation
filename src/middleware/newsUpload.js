@@ -1,25 +1,24 @@
+const cloudinary = require("cloudinary").v2;
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const multer = require("multer");
-const path = require("path");
-const crypto = require("crypto");
-const fs = require("fs");
 
-const newsDir = "uploads/news"
-if(!fs.existsSync(newsDir)){
-  fs.mkdirSync(newsDir, {recursive: true});
-}
+// Cloudinary config
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
-// create storage
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/news");
-  },
-  filename: (req, file, cb) => {
-    const uniqueId = crypto.randomBytes(6).toString("hex");
-    cb(null, uniqueId + path.extname(file.originalname));
+// Cloudinary storage
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: "kobciye-foundation",
+    allowed_formats: ["jpg", "jpeg", "png", "webp"],
   },
 });
 
-// file filter
+// File filter
 const fileFilter = (req, file, cb) => {
   if (file.mimetype.startsWith("image/")) {
     cb(null, true);
@@ -28,9 +27,6 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-const upload = multer({
-  storage,
-  fileFilter,
-});
+const upload = multer({ storage, fileFilter });
 
 module.exports = upload;

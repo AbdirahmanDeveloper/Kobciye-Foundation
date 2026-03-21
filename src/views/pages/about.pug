@@ -57,7 +57,7 @@ body
                 data-aos-duration="500"
               )
                 .team-card-img
-                  img(src=`/uploads/members/${member.memberImage}` alt=member.name)
+                  img(src=member.memberImage alt=member.name)
                 .team-card-info
                   h3.team-name= member.name
                   p.team-role= member.role

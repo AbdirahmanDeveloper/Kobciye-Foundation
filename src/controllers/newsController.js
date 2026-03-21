@@ -62,7 +62,7 @@ exports.createNews = async (req, res) => {
       title: req.body.title,
       content: req.body.content,
       project: req.body.project,
-      image: req.file.filename,
+      image: req.file.path,
       publishedBy: req.user.id,
     };
 
