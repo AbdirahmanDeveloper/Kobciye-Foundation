@@ -13,7 +13,13 @@ body {
   justify-content: center;
   padding: 20px;
 }
-
+.payment-status {
+  color: red;
+  text-align: center;
+  font-weight: 600;
+  font-size: 16px;
+  padding: 10px;
+}
 .payment-form {
   width: 100%;
   max-width: 550px;

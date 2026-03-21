@@ -11,7 +11,8 @@ html(lang="en")
   body
     .payment-form
       .form
-
+        //- Status message
+        #paymentStatus.payment-status(style="display:none" )
         h2 Make a Donation
 
         //- Project Selection
@@ -57,8 +58,5 @@ html(lang="en")
         button#payBtn.payBtn(type="button")
           i.fa-solid.fa-mobile-screen-button
           |  Pay with M-Pesa
-
-        //- Status message
-        #paymentStatus(style="display:none")
 
     script(src="/js/payment.js")
