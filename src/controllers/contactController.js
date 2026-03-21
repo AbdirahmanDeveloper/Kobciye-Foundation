@@ -11,8 +11,8 @@ exports.submitContact = async (req, res) => {
 
     // Email 1 — confirmation
     const { error: err1 } = await resend.emails.send({
-      from: "Kobciye Foundation <onboarding@resend.dev>",
-      to: process.env.ADMIN_EMAIL,
+      from: "Kobciye Foundation <info@kobciyefoundation.org>",
+      to: email,
       subject: `Message Received: ${subject}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border:1px solid #e5e7eb; border-radius:10px; overflow:hidden;">
@@ -42,7 +42,7 @@ exports.submitContact = async (req, res) => {
 
     // Email 2 — admin notification
     const { error: err2 } = await resend.emails.send({
-      from: "Kobciye Foundation <onboarding@resend.dev>",
+      from: "Kobciye Foundation <info@kobciyefoundation.org>",
       to: process.env.ADMIN_EMAIL,
       subject: `New Contact Form Submission from ${name}: ${subject}`,
       html: `

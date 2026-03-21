@@ -131,8 +131,8 @@ exports.sendOTP = async (req, res) => {
     await user.save({ validateBeforeSave: false });
 
     const { error } = await resend.emails.send({
-      from: "Kobciye Foundation <onboarding@resend.dev>",
-      to: process.env.ADMIN_EMAIL, 
+      from: "Kobciye Foundation <info@kobciyefoundation.org>",
+      to: email, 
       subject: "Your Password Reset Code",
       html: `
         <div style="font-family:sans-serif;max-width:480px;margin:auto;padding:30px;border-radius:12px;border:1px solid #e5e7eb;">
