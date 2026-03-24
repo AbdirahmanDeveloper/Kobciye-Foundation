@@ -169,7 +169,7 @@ header.active {
 }
 
 .donate-btn {
-  width: 200px;
+  width: 150px;
   padding: 0.5rem 0;
   background: var(--gold);
   color: var(--white);
