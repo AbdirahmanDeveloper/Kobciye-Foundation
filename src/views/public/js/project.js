@@ -72,3 +72,13 @@ document.addEventListener("DOMContentLoaded", () => {
   // Expose globally
   window.updateProjectCard = updateProjectCard;
 });
+
+/* ── Read More Toggle ── */
+document.querySelectorAll('.read-more-btn').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const wrapper = btn.previousElementSibling;
+    const isExpanded = wrapper.classList.toggle('expanded');
+    btn.classList.toggle('expanded');
+    btn.querySelector('span').textContent = isExpanded ? 'Read Less' : 'Read More';
+  });
+});

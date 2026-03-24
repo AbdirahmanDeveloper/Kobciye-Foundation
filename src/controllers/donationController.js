@@ -251,7 +251,7 @@ exports.getMyDonations = async (req, res) => {
 exports.getAllDonations = async (req, res) => {
   try {
     const donations = await Donation.find()
-      .populate("donor", "name email")
+      .populate("donor", "name email phone donationType")
       .populate("project", "title")
       .sort({ createdAt: -1 });
     res

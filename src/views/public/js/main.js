@@ -145,6 +145,9 @@ async function loadUserProfile() {
       const editEmailInput = document.getElementById("editEmail");
       if (editEmailInput) editEmailInput.value = userData.email;
 
+      const editPhoneInput = document.getElementById("editPhone");
+      if (editPhoneInput) editPhoneInput.value = userData.phone || "";
+
       loadDonationStatistics();
     } else {
       if (response.status === 401) {
@@ -344,73 +347,6 @@ logoutButton?.addEventListener("click", (e) => {
     window.location.href = "/login";
   }
 });
-
-/* ============================================================
-   NEWSLETTER SUBSCRIPTION (FOOTER)
-============================================================ */
-
-const newsletterForm = document.querySelector(".newsletter-form");
-
-newsletterForm?.addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  const emailInput = newsletterForm.querySelector('input[type="email"]');
-  const emailValue = emailInput.value.trim();
-
-  if (!emailValue) {
-    alert("Please enter your email address");
-    return;
-  }
-
-  try {
-    const response = await fetch("/api/contact/newsletter/subscribe", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: emailValue }),
-    });
-
-    const data = await response.json();
-
-    if (response.ok) {
-      showMessage("success", "Successfully subscribed to newsletter!");
-      emailInput.value = "";
-    } else {
-      showMessage("error", data.message || "Subscription failed");
-    }
-  } catch (error) {
-    showMessage("error", "An error occurred. Please try again.");
-  }
-});
-
-function showMessage(type, message) {
-  const modal = document.querySelector(".message-modal");
-  const content = modal?.querySelector(".message-content");
-
-  if (!modal || !content) return;
-
-  content.className = `message-content ${type}`;
-  content.querySelector("h2").textContent =
-    type === "success" ? "Success!" : "Error";
-  content.querySelector("p").textContent = message;
-
-  modal.style.display = "flex";
-  content.style.display = "flex";
-
-  setTimeout(() => {
-    modal.style.display = "none";
-    content.style.display = "none";
-  }, 3000);
-}
-
-document
-  .querySelector(".message-modal .ok-btn")
-  ?.addEventListener("click", () => {
-    const modal = document.querySelector(".message-modal");
-    const content = modal?.querySelector(".message-content");
-    if (modal) modal.style.display = "none";
-    if (content) content.style.display = "none";
-  });
-
 /* ============================================================
    SHARED VARIABLES
 ============================================================ */
@@ -463,6 +399,7 @@ document
 async function handleAccountUpdate() {
   const name = document.getElementById("editName")?.value?.trim();
   const email = document.getElementById("editEmail")?.value?.trim();
+  const phone = document.getElementById("editPhone")?.value?.trim();
 
   if (!name || !email) return showToast("Name and email are required", "error");
 
@@ -473,7 +410,7 @@ async function handleAccountUpdate() {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ name, email }),
+      body: JSON.stringify({ name, email, phone }),
     });
 
     const data = await res.json();

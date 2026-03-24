@@ -33,7 +33,11 @@ body
                 .card-badge.active Active
               .card-content
                 h2.project-title= project.title
-                p.project-desc= project.description
+                .project-desc-wrapper
+                  p.project-desc= project.description
+                button.read-more-btn(type="button")
+                  span Read More
+                  i.fa-solid.fa-chevron-down
                 .progress-wrapper
                   .progress-bar-container
                     .progress-bar(style=`width: ${project.progressPercentage}%`)
@@ -41,7 +45,11 @@ body
                     p.goal-amount 🎯 KSh #{project.goalAmount.toLocaleString()}
                     p.raised-amount 💰 KSh #{project.raisedAmount.toLocaleString()}
                   p.progress-percentage= `${project.progressPercentage}% Funded`
-                a.donate-btn(href="/payment" data-project-id=`${project._id}`) Donate Now →
+                .card-actions
+                  a.view-btn(href=`/projects/${project._id}/view`)
+                    i.fa-solid.fa-eye
+                    |  View Project
+                  a.donate-btn(href=`/payment?project=${project._id}`) Donate Now →
         else
           .empty-state(data-aos="fade-up")
             i.fa-solid.fa-folder-open
@@ -66,7 +74,8 @@ body
                 .card-badge.done ✓ Funded
               .card-content
                 h2.project-title= project.title
-                p.project-desc= project.description
+                .project-desc-wrapper
+                  p.project-desc= project.description
                 .progress-wrapper
                   .progress-bar-container
                     .progress-bar(style=`width: ${project.progressPercentage}%`)
@@ -74,7 +83,11 @@ body
                     p.goal-amount 🎯 KSh #{project.goalAmount.toLocaleString()}
                     p.raised-amount 💰 KSh #{project.raisedAmount.toLocaleString()}
                   p.progress-percentage= `${project.progressPercentage}% Funded`
-                button.donate-btn.completed-btn(disabled) ✓ Goal Reached
+                .card-actions
+                  a.view-btn(href=`/projects/${project._id}`)
+                    i.fa-solid.fa-eye
+                    |  View Project
+                  button.donate-btn.completed-btn(disabled) ✓ Goal Reached
         else
           .empty-state(data-aos="fade-up")
             i.fa-solid.fa-circle-check

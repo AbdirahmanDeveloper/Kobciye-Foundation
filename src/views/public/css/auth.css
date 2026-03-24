@@ -226,8 +226,21 @@ body::before,
   align-items: center;
   gap: 10px;
 }
+.otp-boxes input {
+  width: 60px;
+  height: 60px;
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: 400;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  background: #fafafa;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  padding: 0;
+}
 
-.otp-box:focus {
+.otp-boxses input:focus {
   border-color: #2575fc;
   background: #f0f5ff;
   box-shadow: 0 0 0 3px rgba(37, 117, 252, 0.12);
@@ -513,7 +526,44 @@ p.switch a:hover {
 /* ============================================================
    RESPONSIVE
 ============================================================ */
+@media (max-width: 1200px) {
+  .form,
+  .otp-card {
+    max-width: 420px;
+  }
+}
 
+@media (max-width: 768px) {
+  .form,
+  .otp-card {
+    max-width: 100%;
+    padding: 2.2rem 1.8rem;
+  }
+
+  .otp-boxes {
+    gap: 8px;
+  }
+
+  .otp-boxes input {
+    width: 55px;
+    height: 55px;
+    font-size: 1.3rem;
+  }
+}
+
+
+@media (max-width: 360px) {
+  .otp-box {
+    width: 44px;
+    height: 44px;
+    font-size: 1rem;
+    border-radius: 8px;
+  }
+
+  .otp-boxes {
+    gap: 5px;
+  }
+}
 @media (max-width: 480px) {
   .form,
   .otp-card {
@@ -521,10 +571,26 @@ p.switch a:hover {
     border-radius: 16px;
   }
 
-  .otp-box {
-    width: 42px;
-    height: 50px;
+  .otp-boxes {
+    gap: 6px;
+  }
+
+  .otp-boxes input {
+    width: 52px;
+    height: 52px;
     font-size: 1.2rem;
+    border-radius: 10px;
+  }
+
+
+  .inline-row .otp-submit {
+    width: 100%;
+    padding: 0;
+  }
+
+  .otp-card-top h1,
+  .form h1 {
+    font-size: 1.6rem;
   }
 
   .inline-row {

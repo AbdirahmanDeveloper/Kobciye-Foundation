@@ -3,6 +3,7 @@ html(lang="en")
   head
     meta(charset="UTF-8")
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css")
     title Signup || Kobciye Foundation
     link(rel="stylesheet" href="/css/auth.css")
   body
@@ -12,28 +13,45 @@ html(lang="en")
 
       .input-box
         label(for="name") Full Name
-        input(type="text" id="name" name="name" required)
+        .input-with-icon
+          i.fa-solid.fa-user
+          input(type="text" id="name" name="name" placeholder="Joe Doe" required)
+
 
       .input-box
         label(for="email") Email
-        input(type="email" id="email" name="email" required)
+        .input-with-icon
+          i.fa-solid.fa-envelope
+          input(type="email" id="email" name="email" placeholder="JoeDoe@gmail.com" required)
 
       .input-box
         label(for="phone") Phone Number
-        input(type="tel" id="phone" name="phone" placeholder="e.g. +254712345678" required)
+        .input-with-icon
+          i.fa-solid.fa-phone
+          input(type="tel" id="phone" name="phone" placeholder="e.g. +254712345678" required)
 
       .input-box
         label(for="country") Country
-        select#country(name="country" required)
-          option(value="" disabled selected) Select your country
+        .input-with-icon
+          i.fa-solid.fa-globe
+          select#country(name="country" required)
+            option(value="" disabled selected) Select your country
 
       .input-box
         label(for="password") Password
-        input(type="password" id="password" name="password" required)
+        .input-with-icon
+          i.fa-solid.fa-lock
+          input(type="password" id="password" name="password" placeholder="Min. 8 characters" required)
+          i.fa-solid.fa-eye.toggle-password#togglePassword(style="left:auto; right:14px; cursor:pointer; pointer-events:all;")
+
 
       .input-box
         label(for="confirm-password") Confirm Password
-        input(type="password" id="confirm-password" required)
+        .input-with-icon
+          i.fa-solid.fa-lock
+          input(type="password" id="confirm-password" placeholder="Confirm Your Password" required)
+          i.fa-solid.fa-eye.toggle-password#toggleConfirmPassword(style="left:auto; right:14px; cursor:pointer; pointer-events:all;")
+
 
       button.auth-btn(type="submit") Sign Up
 

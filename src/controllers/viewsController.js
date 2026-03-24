@@ -52,8 +52,12 @@ exports.getAbout = async (req, res) => {
 
 exports.getProjects = async (req, res) => {
   try {
-    const ongoingProjects = await Project.find({ status: "active" }).populate("createdBy");
-    const completedProjects = await Project.find({ status: "completed" }).populate("createdBy");
+    const ongoingProjects = await Project.find({ status: "active" }).populate(
+      "createdBy"
+    );
+    const completedProjects = await Project.find({
+      status: "completed",
+    }).populate("createdBy");
 
     const formatProjects = (projects) =>
       projects.map((project) => {
@@ -73,6 +77,26 @@ exports.getProjects = async (req, res) => {
     });
   } catch (err) {
     console.error("❌ Error in getProjects:", err);
+    res.status(500).json({ message: err.message });
+  }
+};
+
+exports.getProjectModal = async (req, res) => {
+  try {
+    const project = await Project.findById(req.params.id);
+
+    if (!project) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Project not found",
+      });
+    }
+
+    res.render("pages/project-modal", {
+      title: "Project Modal",
+      project,
+    });
+  } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
@@ -98,7 +122,6 @@ exports.getBlogModal = async (req, res) => {
     }
     res.render("pages/blog-modal", {
       title: news.title,
-      activePage: "blog",
       news,
     });
   } catch (err) {
@@ -160,24 +183,14 @@ exports.getPayment = async (req, res) => {
   }
 };
 
-
 exports.getResetPassword = (req, res) => {
   res.render("pages/reset-password", {
     title: "Reset Password",
-    activePage: "",
   });
 };
 
 exports.getOTP = (req, res) => {
   res.render("pages/otp", {
     title: "Verify OTP",
-    activePage: "",
-  });
-};
-
-exports.getResetEmail = (req, res) => {
-  res.render("pages/reset-email", {
-    title: "Reset Email",
-    activePage: "",
   });
 };

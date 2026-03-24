@@ -1,0 +1,88 @@
+include ../layout/_head
+
+body
+  block content
+
+    //- PROJECT HERO
+    section.project-modal-hero
+      .hero-content
+        .modal-hero-txt(data-aos="fade-up" data-aos-duration="800")
+          span.hero-badge
+            i.fa-solid.fa-circle-dot
+            |  #{project.status === 'active' ? 'Ongoing Project' : 'Completed Project'}
+          h1= project.title
+          p= project.description
+
+    //- PROJECT BODY
+    section.project-modal-section
+
+      .project-modal-grid
+
+        //- LEFT — Main Content
+        .project-modal-main
+
+          //- Cover Image
+          if project.image
+            .project-modal-image(data-aos="fade-up" data-aos-duration="600")
+              img(src=project.image alt=project.title)
+
+          //- About
+          .project-modal-about(data-aos="fade-up" data-aos-duration="600")
+            h2 About This Project
+            .body-text-wrapper
+              p.body-text= project.content || project.description
+            button#readMoreBtn.read-more-btn(type="button")
+              span Read More
+              i.fa-solid.fa-chevron-down
+
+        //- RIGHT — Sidebar
+        .project-modal-sidebar
+
+          //- Progress Card
+          .sidebar-card(data-aos="fade-up" data-aos-duration="600")
+            .progress-stats
+              .stat-row
+                span.stat-label Raised
+                span.stat-value KES #{project.raisedAmount.toLocaleString()}
+              .stat-row
+                span.stat-label Goal
+                span.stat-value KES #{project.goalAmount.toLocaleString()}
+              .stat-row
+                span.stat-label Progress
+                span.stat-value.gold #{Math.min(Math.round((project.raisedAmount / project.goalAmount) * 100), 100)}%
+            .progress-bar
+              .progress-bar__fill(style=`width: ${Math.min(Math.round((project.raisedAmount / project.goalAmount) * 100), 100)}%`)
+
+            a.get-involved-btn(href=`/payment?project=${project._id}`)
+              i.fa-solid.fa-heart
+              |  Donate Now
+
+          //- Meta Card
+          .sidebar-card.meta-card(data-aos="fade-up" data-aos-delay="100" data-aos-duration="600")
+            if project.category
+              .meta-row
+                i.fa-solid.fa-tag
+                span= project.category
+            if project.createdBy
+              .meta-row
+                i.fa-solid.fa-user
+                span= project.createdBy.name || 'Kobciye Foundation'
+            if project.createdAt
+              .meta-row
+                i.fa-regular.fa-calendar
+                span= project.createdAt.toDateString()
+
+          //- Back Link
+          a.btn-back(href="/projects" data-aos="fade-up" data-aos-delay="200")
+            i.fa-solid.fa-arrow-left
+            |  Back to Projects
+
+    //- CALL TO ACTION
+    section.get-involved(data-aos="fade-up" data-aos-duration="700")
+      h1 Make a Difference
+      p Your support helps us deliver real change in communities that need it most.
+      a.get-involved-btn(href=`/payment?project=${project._id}`) Donate to This Project
+
+  include ../partials/_footer
+
+  script(src="/js/project.js")

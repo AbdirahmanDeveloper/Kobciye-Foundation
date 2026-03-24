@@ -172,3 +172,25 @@ if (resetForm) {
     }
   });
 }
+// PASSWORD HIDE SHOW TOGGLE
+const togglePassword = document.getElementById("togglePassword");
+const passwordInput = document.getElementById("newPassword");
+
+togglePassword.addEventListener("click", () => {
+  const isPassword = passwordInput.type === "password";
+  
+  passwordInput.type = isPassword ? "text" : "password";
+  togglePassword.classList.toggle("fa-eye");
+  togglePassword.classList.toggle("fa-eye-slash");
+});
+
+/* ── Toggle Confirm Password Visibility ── */
+const toggleConfirmPassword = document.getElementById("toggleConfirmPassword");
+const confirmPasswordInput = document.getElementById("confirmPassword");
+
+toggleConfirmPassword?.addEventListener("click", function() {
+  const isPassword = confirmPasswordInput.type === "password";
+  confirmPasswordInput.type = isPassword ? "text" : "password";
+  this.classList.toggle("fa-eye");
+  this.classList.toggle("fa-eye-slash");
+});
