@@ -11,12 +11,12 @@ signUpForm.addEventListener("submit", async (e) => {
   const confirmPassword = document.getElementById("confirm-password").value.trim();
 
   if (password !== confirmPassword) {
-    showToast("Passwords do not match", "error");
+    alert("Passwords do not match", "error");
     return;
   }
 
   if (password.length < 8) {
-    showToast("Password must be at least 8 characters", "error");
+    alert("Password must be at least 8 characters", "error");
     return;
   }
 

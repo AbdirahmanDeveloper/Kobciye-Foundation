@@ -4,6 +4,10 @@
 
 .projects-hero {
   position: relative;
+  background-image: url("/images/home-hero.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
   height: 80vh;
   display: flex;
   align-items: center;
