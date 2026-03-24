@@ -46,7 +46,7 @@ body
                     p.raised-amount 💰 KSh #{project.raisedAmount.toLocaleString()}
                   p.progress-percentage= `${project.progressPercentage}% Funded`
                 .card-actions
-                  a.view-btn(href=`/projects/${project._id}/view`)
+                  a.view-btn(href=`/projects/${project._id}`)
                     i.fa-solid.fa-eye
                     |  View Project
                   a.donate-btn(href=`/payment?project=${project._id}`) Donate Now →
