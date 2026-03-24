@@ -13,6 +13,14 @@ const userSchema = new mongoose.Schema(
       lowercase: true,
       unique: true,
     },
+    country: {
+      type: String,
+      required: true,
+    },
+    phone: {
+      type: String,
+      required: true,
+    },
     password: {
       type: String,
       required: true,
@@ -26,8 +34,8 @@ const userSchema = new mongoose.Schema(
     },
     passwordResetOTP: { type: String, select: false },
     passwordResetOTPExpires: { type: Date, select: false },
-    passwordResetToken:      { type: String, select: false }, 
-    passwordResetExpires:    { type: Date,   select: false },
+    passwordResetToken: { type: String, select: false },
+    passwordResetExpires: { type: Date, select: false },
   },
 
   { timestamps: true }

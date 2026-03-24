@@ -19,6 +19,15 @@ html(lang="en")
         input(type="email" id="email" name="email" required)
 
       .input-box
+        label(for="phone") Phone Number
+        input(type="tel" id="phone" name="phone" placeholder="e.g. +254712345678" required)
+
+      .input-box
+        label(for="country") Country
+        select#country(name="country" required)
+          option(value="" disabled selected) Select your country
+
+      .input-box
         label(for="password") Password
         input(type="password" id="password" name="password" required)
 
@@ -32,6 +41,6 @@ html(lang="en")
         | Already have an account? 
         a(href="/login") Login
 
-script(src="/js/signup.js")
+  script(src="/js/signup.js")
 
     

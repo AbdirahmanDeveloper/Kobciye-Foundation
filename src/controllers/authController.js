@@ -12,7 +12,7 @@ const signToken = (id) => {
 // Signup
 exports.signup = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, phone, country, password } = req.body;
     // Check if the user already exist
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -26,6 +26,8 @@ exports.signup = async (req, res) => {
     const user = await User.create({
       name,
       email,
+      phone,
+      country,
       password: hashedPassword,
     });
     // Sign the Token
@@ -39,6 +41,8 @@ exports.signup = async (req, res) => {
           id: user._id,
           name: user.name,
           email: user.email,
+          phone: user.phone,
+          country: user.country,
         },
       },
     });

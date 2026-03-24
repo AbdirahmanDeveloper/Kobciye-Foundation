@@ -55,6 +55,7 @@ const statusBox = document.getElementById("paymentStatus");
 
 payBtn.addEventListener("click", async () => {
   const project = document.getElementById("project-category").value;
+  const donationType = document.getElementById("donationType").value;
   const amount = document.getElementById("amount").value;
   const phone = document.getElementById("phone").value.trim();
   const paymentMethod = document.querySelector(
@@ -99,7 +100,13 @@ payBtn.addEventListener("click", async () => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ project, amount, phone, paymentMethod }),
+      body: JSON.stringify({
+        project,
+        donationType,
+        amount,
+        phone,
+        paymentMethod,
+      }),
     });
 
     const data = await response.json();

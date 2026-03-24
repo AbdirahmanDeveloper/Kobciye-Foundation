@@ -124,40 +124,13 @@ head
     //- DONATIONS
     //- ==================
     section.content-section#donations
-      .add
-        button.add-btn#addDonor Add Donor
-
-      .create-section.add-donor
-        .form
-          .form-title
-            h2 Add Donor
-          form#addDonorForm
-            input(type="text" name="donor" placeholder="Donor Name" required)
-            input(type="text" name="amount" placeholder="Amount" required)
-            select(name="paymentMethod" required)
-              option(value="mpesa") Mpesa
-              option(value="card") Card
-              option(value="cash") Cash
-            select(name="project" required)
-              option(value="" disabled selected) Select Project
-              each project in projects
-                option(value=project._id)= project.title
-            button(type="submit") Add Donor
-
-        .success-message#donorSuccessMessage
-          i.fa-solid.fa-circle-check
-          h2 Donor Added Successfully
-          button.ok-btn OK
-
-        .error-message#donorErrorMessage
-          i.fa-solid.fa-circle-xmark
-          h2 Donor Addition Failed
-          button.ok-error-btn OK
-
       .donations-list.lists
         table.donations-table#donations-table
           tr
             th Donor Name
+            th Donor Phone
+            th Donor Country
+            th Donation Type
             th Amount (Ksh)
             th Payment Method
             th Status
@@ -165,12 +138,15 @@ head
             each item in donations
               tr
                 td= item.donor ? item.donor.name : 'Deleted User'
+                td= item.donor.phone
+                td= item.donor.country
+                td= item.donor.donationType
                 td= item.amount
                 td= item.paymentMethod
                 td= item.status
           else
             tr
-              td(colspan="4")
+              td(colspan="7")
                 p.text-muted No donations found
 
     //- ==================

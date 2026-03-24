@@ -19,8 +19,18 @@ html(lang="en")
         label(for="project-category") Choose Project *
         select#project-category(name="project" required)
           option(value="" disabled selected) Select a project
+          option(value="monthly") monthly donation
+          option(value="custom") custom donation
           each project in projects
             option(value=project._id)= project.title
+
+        //- DONATION TYPE SELECTION
+        label(for="donation-type") Choose Donation Type *
+        select#donationType(name="donationType" required)
+          option(value="" disabled selected) Select a Donation Type
+          option(value="project") Project
+          option(value="monthly") monthly donation
+          option(value="custom") custom donation
 
         //- Payment Method
         label Payment Method *

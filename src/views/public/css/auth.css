@@ -168,7 +168,8 @@ body::before,
 }
 
 .input-with-icon input,
-.input-box input {
+.input-box input,
+.input-box select {
   width: 100%;
   padding: 0.78rem 1rem 0.78rem 2.6rem;
   border: 2px solid #e5e7eb;

@@ -78,6 +78,7 @@ app.use(
           "'self'",
           "https://api.paystack.co",
           "https://cdn.jsdelivr.net",
+          "https://restcountries.com",
         ],
 
         frameSrc: ["'none'"],

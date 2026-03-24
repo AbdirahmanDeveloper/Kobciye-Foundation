@@ -17,7 +17,12 @@ const donationSchema = new mongoose.Schema(
     project: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Project",
-      required: true,
+      required: false,
+    },
+    donationType: {
+      type: String,
+      enum: ["monthly", "custom", "project"],
+      required: false,
     },
 
     paymentMethod: {
@@ -31,8 +36,13 @@ const donationSchema = new mongoose.Schema(
       enum: ["pending", "success", "failed"],
       default: "pending",
     },
+    reference: {
+      type: String,
+      unique: true,
+      sparse: true,
+    },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 module.exports = mongoose.model("Donation", donationSchema);

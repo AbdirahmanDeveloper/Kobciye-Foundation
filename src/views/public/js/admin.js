@@ -1,13 +1,17 @@
 /* ============================================================
-   AUTHENTICATION CHECK
+   AUTHENTICATION CHECK — Hide everything if no token
 ============================================================ */
 
 const token = localStorage.getItem("token");
 
 if (!token) {
+  document.documentElement.style.display = "none";
   window.location.href = "/login";
   throw new Error("Unauthorized");
 }
+
+// Show page only if token exists
+document.documentElement.style.display = "";
 
 /* ============================================================
    HELPER
@@ -200,7 +204,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       },
     });
   } catch {
-    /* silent fail */
+   
   }
 });
 

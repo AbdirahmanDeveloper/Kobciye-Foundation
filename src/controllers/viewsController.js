@@ -8,7 +8,7 @@ exports.getHomePage = async (req, res) => {
   try {
     const ongoingProjects = await Project.find({ status: "active" }).limit(6);
     const members = await Members.find().sort({ createdAt: -1 });
-    const latestNews = await News.find().sort({ createdAt: -1 }).limit(1); 
+    const latestNews = await News.find().sort({ createdAt: -1 }).limit(1);
     res.render("pages/index", {
       title: "Home page",
       activePage: "home",
@@ -23,25 +23,17 @@ exports.getHomePage = async (req, res) => {
 
 exports.getLogin = async (req, res) => {
   try {
-    res.render("pages/login", {
-      title: "login page",
-    });
+    res.render("pages/login", { title: "login page" });
   } catch (err) {
-    res.status(500).json({
-      message: err.message,
-    });
+    res.status(500).json({ message: err.message });
   }
 };
 
 exports.getSignup = async (req, res) => {
   try {
-    res.render("pages/signup", {
-      title: "signup page",
-    });
+    res.render("pages/signup", { title: "signup page" });
   } catch (err) {
-    res.status(500).json({
-      message: err.message,
-    });
+    res.status(500).json({ message: err.message });
   }
 };
 
@@ -54,20 +46,14 @@ exports.getAbout = async (req, res) => {
       members,
     });
   } catch (err) {
-    res.status(500).json({
-      message: err.message,
-    });
+    res.status(500).json({ message: err.message });
   }
 };
 
 exports.getProjects = async (req, res) => {
   try {
-    const ongoingProjects = await Project.find({ status: "active" }).populate(
-      "createdBy"
-    );
-    const completedProjects = await Project.find({
-      status: "completed",
-    }).populate("createdBy");
+    const ongoingProjects = await Project.find({ status: "active" }).populate("createdBy");
+    const completedProjects = await Project.find({ status: "completed" }).populate("createdBy");
 
     const formatProjects = (projects) =>
       projects.map((project) => {
@@ -100,20 +86,16 @@ exports.getBlog = async (req, res) => {
       news,
     });
   } catch (err) {
-    res.status(500).json({
-      message: err.message,
-    });
+    res.status(500).json({ message: err.message });
   }
 };
 
 exports.getBlogModal = async (req, res) => {
   try {
     const news = await News.findById(req.params.id);
-
     if (!news) {
       return res.status(404).json({ message: "News not found" });
     }
-
     res.render("pages/blog-modal", {
       title: news.title,
       activePage: "blog",
@@ -131,9 +113,7 @@ exports.getContacts = async (req, res) => {
       activePage: "contact",
     });
   } catch (err) {
-    res.status(500).json({
-      message: err.message,
-    });
+    res.status(500).json({ message: err.message });
   }
 };
 
@@ -142,14 +122,19 @@ exports.getAdmin = async (req, res) => {
     const news = await News.find();
     const projects = await Project.find().populate("createdBy");
     const users = await Users.find();
-    const donations = await Donations.find().populate("donor", "name email");
+    const donations = await Donations.find()
+      .populate("donor", "name email phone country donationType")
+      .populate("project", "title")
+      .sort({ createdAt: -1 });
     const members = await Members.find().sort({ createdAt: -1 });
     const dashDonations = await Donations.find()
       .sort({ createdAt: -1 })
       .limit(6)
-      .populate("donor", "name email");
+      .populate("donor", "name email phone country donationType")
+      .populate("project", "title");
+
     res.render("pages/admin", {
-      title: "Home page",
+      title: "admin page",
       news,
       projects,
       users,
@@ -158,9 +143,7 @@ exports.getAdmin = async (req, res) => {
       dashDonations,
     });
   } catch (err) {
-    res.status(500).json({
-      message: err.message,
-    });
+    res.status(500).json({ message: err.message });
   }
 };
 
@@ -173,29 +156,10 @@ exports.getPayment = async (req, res) => {
     });
   } catch (err) {
     console.error(err);
-
-    res.status(500).json({
-      message: err.message,
-    });
+    res.status(500).json({ message: err.message });
   }
 };
 
-exports.getPaymentSuccess = async (req, res) => {
-  try {
-    const reference = req.query.reference;
-
-    res.render("pages/payment-success", {
-      title: "Payment Successful",
-      reference: reference,
-    });
-  } catch (err) {
-    console.error("Error loading payment success page:", err);
-
-    res.status(500).json({
-      message: err.message,
-    });
-  }
-};
 
 exports.getResetPassword = (req, res) => {
   res.render("pages/reset-password", {

@@ -62,7 +62,7 @@ body
               data-aos-duration="600"
             )
               .project-img
-                img(src=project.image ? `/uploads/projects/${project.image}` : "")
+                img(src=project.image)
                 .card-badge.done ✓ Funded
               .card-content
                 h2.project-title= project.title

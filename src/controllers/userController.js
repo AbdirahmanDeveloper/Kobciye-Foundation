@@ -23,10 +23,10 @@ exports.getMe = async (req, res) => {
   res.status(200).json({ status: "success", data: req.user });
 };
 
-// Update user name/email
+// Update user name/email/phone/country
 exports.updateMe = async (req, res) => {
   try {
-    const allowedFields = ["name", "email"];
+    const allowedFields = ["name", "email", "phone", "country"];
     const updates = {};
     Object.keys(req.body).forEach((field) => {
       if (allowedFields.includes(field)) updates[field] = req.body[field];
@@ -132,7 +132,7 @@ exports.sendOTP = async (req, res) => {
 
     const { error } = await resend.emails.send({
       from: "Kobciye Foundation <info@kobciyefoundation.org>",
-      to: email, 
+      to: email,
       subject: "Your Password Reset Code",
       html: `
         <div style="font-family:sans-serif;max-width:480px;margin:auto;padding:30px;border-radius:12px;border:1px solid #e5e7eb;">
