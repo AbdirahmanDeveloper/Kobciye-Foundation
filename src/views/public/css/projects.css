@@ -15,20 +15,11 @@
 }
 
 /* Decorative grain overlay */
-.projects-hero::after {
+.projects-hero::before {
   content: "";
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(
-      ellipse 80% 60% at 20% 50%,
-      rgba(192, 135, 63, 0.15) 0%,
-      transparent 60%
-    ),
-    radial-gradient(
-      ellipse 60% 80% at 80% 50%,
-      rgba(26, 107, 60, 0.2) 0%,
-      transparent 60%
-    );
+  background: rgba(0, 0, 0, 0.55);
   z-index: 1;
 }
 
