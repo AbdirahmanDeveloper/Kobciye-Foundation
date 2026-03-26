@@ -6,7 +6,8 @@ const bcrypt = require("bcryptjs");
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-// Get All users (only Admin)
+// ─── USERS ────────────────────────────────────────────────────
+
 exports.getAllUsers = async (req, res) => {
   try {
     const users = await User.find();
@@ -18,12 +19,10 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
-// Get me
 exports.getMe = async (req, res) => {
   res.status(200).json({ status: "success", data: req.user });
 };
 
-// Update user name/email/phone/country
 exports.updateMe = async (req, res) => {
   try {
     const allowedFields = ["name", "email", "phone", "country"];
@@ -43,7 +42,6 @@ exports.updateMe = async (req, res) => {
   }
 };
 
-// Update password (logged-in user)
 exports.updatePassword = async (req, res) => {
   try {
     const { currentPassword, newPassword, confirmPassword } = req.body;
@@ -77,7 +75,6 @@ exports.updatePassword = async (req, res) => {
   }
 };
 
-// Delete user (admin only)
 exports.deleteUser = async (req, res) => {
   try {
     const user = await User.findByIdAndDelete(req.params.id);
@@ -88,7 +85,6 @@ exports.deleteUser = async (req, res) => {
   }
 };
 
-// Get total users
 exports.totalUsers = async (req, res) => {
   try {
     const totalUsers = await User.countDocuments();
@@ -98,7 +94,6 @@ exports.totalUsers = async (req, res) => {
   }
 };
 
-// Get total members
 exports.getAllMembers = async (req, res) => {
   try {
     const totalMembers = await Member.countDocuments();
@@ -108,7 +103,8 @@ exports.getAllMembers = async (req, res) => {
   }
 };
 
-// Send OTP
+// ─── PASSWORD RESET ───────────────────────────────────────────
+
 exports.sendOTP = async (req, res) => {
   try {
     const { email } = req.body;
@@ -159,7 +155,6 @@ exports.sendOTP = async (req, res) => {
   }
 };
 
-// Verify OTP
 exports.verifyOTP = async (req, res) => {
   try {
     const { email, otp } = req.body;
@@ -197,7 +192,6 @@ exports.verifyOTP = async (req, res) => {
   }
 };
 
-// Reset password using token
 exports.resetPassword = async (req, res) => {
   try {
     const { token } = req.params;

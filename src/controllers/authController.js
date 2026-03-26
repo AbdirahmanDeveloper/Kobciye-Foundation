@@ -2,25 +2,23 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 
-// Helper: Sign Token
-const signToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
+// ─── HELPERS ──────────────────────────────────────────────────
+
+const signToken = (id) =>
+  jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
-};
 
-// Signup
+// ─── AUTH ─────────────────────────────────────────────────────
+
 exports.signup = async (req, res) => {
   try {
     const { name, email, phone, country, password } = req.body;
-    // Check if the user already exist
+
     const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({
-        message: "Email already in use",
-      });
-    }
-    // Hash the password
+    if (existingUser)
+      return res.status(400).json({ message: "Email already in use" });
+
     const hashedPassword = await bcrypt.hash(password, 12);
 
     const user = await User.create({
@@ -30,7 +28,6 @@ exports.signup = async (req, res) => {
       country,
       password: hashedPassword,
     });
-    // Sign the Token
     const token = signToken(user._id);
 
     res.status(200).json({
@@ -47,42 +44,27 @@ exports.signup = async (req, res) => {
       },
     });
   } catch (err) {
-    res.status(500).json({
-      message: err.message,
-    });
+    res.status(500).json({ message: err.message });
   }
 };
 
-// Login
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    if (!email || !password) {
+    if (!email || !password)
       return res.status(400).json({ message: "Provide email and password!" });
-    }
 
     const user = await User.findOne({ email }).select("+password");
-
-    if (!user) {
-      return res.status(401).json({ message: "Invalid credentials" });
-    }
+    if (!user) return res.status(401).json({ message: "Invalid credentials" });
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
+    if (!isMatch)
       return res.status(401).json({ message: "Invalid credentials" });
-    }
 
     const token = signToken(user._id);
-
-    res.status(200).json({
-      status: "success",
-      token,
-      data: user,
-    });
+    res.status(200).json({ status: "success", token, data: user });
   } catch (err) {
-    res.status(500).json({
-      message: err.message,
-    });
+    res.status(500).json({ message: err.message });
   }
 };

@@ -15,6 +15,8 @@ router
     newsController.createNews
   );
 
+router.post("/subscribe", newsController.saveSubscribers);
+
 router
   .route("/:id")
   .get(newsController.getSingleNews)

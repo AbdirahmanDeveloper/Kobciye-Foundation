@@ -4,8 +4,8 @@ const upload = require("../middleware/memberUpload");
 const membersController = require("../controllers/membersController");
 const { protect, restrictTo } = require("../middleware/authMiddlewares");
 
-// Get all members (public or protected - your choice)
-router.get("/", membersController.getAllMembers);
+// Get all members
+router.get("/", protect, restrictTo("admin"), membersController.getAllMembers);
 
 // Add member (admin only)
 router.post(

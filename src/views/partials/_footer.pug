@@ -1,4 +1,18 @@
+include ../layout/_head
 footer
+  .footer-newsletter
+    .footer-newsletter-inner
+      .footer-newsletter-txt
+        h3 Stay in the loop
+        p Get updates on our projects, impact stories, and ways to get involved.
+      .newsletter-input-box
+        form#newsletterForm
+          input#newsletterEmail(type="email" placeholder="JoeDoe@email.com" name="email" required)
+          button(type="submit") Subscribe →
+
+  .checked-subscriber
+    h3 Subscribed Successfully
+    i.fa-solid.fa-circle-check
   .footer-top
     .footer-brand
       a.footer-logo(href="/")
@@ -8,16 +22,23 @@ footer
           span.logo-brand-sub Foundation
       p.footer-desc A nonprofit organization dedicated to transforming lives through education, healthcare, and community development across Kenya.
       .social-links
-        a(href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram")
+        a(href="https://instagram.com" target="_blank" rel="noopener")
           i.fa-brands.fa-instagram
-        a(href="https://facebook.com" target="_blank" rel="noopener" aria-label="Facebook")
+        a(href="https://facebook.com" target="_blank" rel="noopener")
           i.fa-brands.fa-facebook
-        a(href="https://twitter.com" target="_blank" rel="noopener" aria-label="Twitter")
+        a(href="https://twitter.com" target="_blank" rel="noopener")
           i.fa-brands.fa-x-twitter
-        a(href="https://wa.me/254700000000" target="_blank" rel="noopener" aria-label="WhatsApp")
+        a(href="https://wa.me/254700000000" target="_blank" rel="noopener")
           i.fa-brands.fa-whatsapp
-        a(href="https://youtube.com" target="_blank" rel="noopener" aria-label="YouTube")
+        a(href="https://youtube.com" target="_blank" rel="noopener")
           i.fa-brands.fa-youtube
+      .footer-contact
+        p
+          i.fa-solid.fa-envelope
+          | info@kobciye.org
+        p
+          i.fa-solid.fa-phone
+          | +254 700 000 000
 
     .footer-col
       h3 Navigate
@@ -46,13 +67,8 @@ footer
       a.footer-cta-btn(href="/payment")
         i.fa-solid.fa-heart
         | Donate Now
-      .footer-contact
-        p
-          i.fa-solid.fa-envelope
-          | info@kobciye.org
-        p
-          i.fa-solid.fa-phone
-          | +254 700 000 000
+
+  .footer-divider
 
   .footer-bottom
     p &copy; #{new Date().getFullYear()} Kobciye Foundation. All rights reserved.
