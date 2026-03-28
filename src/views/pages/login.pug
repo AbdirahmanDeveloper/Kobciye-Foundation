@@ -11,6 +11,7 @@ html(lang="en")
     form.form#login-form
       h1 Welcome Back
       p Please login to your account
+      .login-error-message(style="color:red; font-weight:bold; display:none;")
 
       .input-box
         label(for="email") Email
@@ -20,6 +21,7 @@ html(lang="en")
 
       .input-box
         label(for="password") Password
+        .pass-error-message(style="color:red; font-weight:bold; display:none;")
         .input-with-icon
           i.fa-solid.fa-lock
           input(type="password" id="password" placeholder="Enter your password")

@@ -1,55 +1,63 @@
-// ── OTP page (forget-password.html) ──────────────────────────────────────
-const emailInput  = document.getElementById("email");
-const sendOtpBtn  = document.getElementById("sendOtpBtn");
+// ─── OTP ──────────────────────────────────────────────────────
+
+const emailInput = document.getElementById("email");
+const sendOtpBtn = document.getElementById("sendOtpBtn");
 const verifyOtpBtn = document.getElementById("verifyOtpBtn");
-const resendBtn   = document.getElementById("resendBtn");
-const emailError  = document.getElementById("emailError");
-const otpError    = document.getElementById("otpError");
+const resendBtn = document.getElementById("resendBtn");
+const emailError = document.getElementById("emailError");
+const otpError = document.getElementById("otpError");
 const resendTimer = document.getElementById("resendTimer");
-const otpBoxes    = document.querySelectorAll(".otp-box");
+const otpBoxes = document.querySelectorAll(".otp-box");
 
 let storedEmail = "";
 let countdown;
 
-// SEND OTP
 if (sendOtpBtn) {
   sendOtpBtn.addEventListener("click", async () => {
     emailError.textContent = "";
+
     const email = emailInput.value.trim();
-    if (!email) { emailError.textContent = "Please enter your email."; return; }
+    if (!email) {
+      emailError.textContent = "Please enter your email.";
+      return;
+    }
 
     try {
       sendOtpBtn.disabled = true;
-      sendOtpBtn.innerHTML = "Sending...";
+      sendOtpBtn.textContent = "Sending...";
 
-      const res  = await fetch("/api/users/send-otp", {
+      const res = await fetch("/api/users/send-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.message);
+
+      if (!res.ok) {
+        emailError.textContent = data.message || "Failed to send OTP.";
+        return;
+      }
 
       storedEmail = email;
       enableOTPSection();
       startResendTimer();
     } catch (err) {
-      emailError.textContent = err.message;
+      emailError.textContent = "Network error. Please try again.";
     } finally {
       sendOtpBtn.disabled = false;
-      sendOtpBtn.innerHTML = "Send OTP";
+      sendOtpBtn.textContent = "Send OTP";
     }
   });
 }
 
 function enableOTPSection() {
   verifyOtpBtn.disabled = false;
-  resendBtn.disabled    = false;
+  resendBtn.disabled = false;
   otpBoxes.forEach((box) => (box.disabled = false));
   otpBoxes[0].focus();
 }
 
-// AUTO-ADVANCE OTP boxes
+// Auto-advance OTP boxes
 otpBoxes.forEach((box, index) => {
   box.addEventListener("input", () => {
     if (box.value.length === 1 && index < otpBoxes.length - 1)
@@ -61,39 +69,48 @@ otpBoxes.forEach((box, index) => {
   });
 });
 
-// VERIFY OTP
 if (verifyOtpBtn) {
   verifyOtpBtn.addEventListener("click", async () => {
     otpError.textContent = "";
-    const otp = Array.from(otpBoxes).map((b) => b.value).join("");
-    if (otp.length !== 4) { otpError.textContent = "Enter the full 4-digit code."; return; }
+
+    const otp = Array.from(otpBoxes)
+      .map((b) => b.value)
+      .join("");
+    if (otp.length !== 4) {
+      otpError.textContent = "Enter the full 4-digit code.";
+      return;
+    }
 
     try {
       verifyOtpBtn.disabled = true;
-      verifyOtpBtn.innerHTML = "Verifying...";
+      verifyOtpBtn.textContent = "Verifying...";
 
-      const res  = await fetch("/api/users/verify-otp", {
+      const res = await fetch("/api/users/verify-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: storedEmail, otp }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.message);
 
-      // ← Store in sessionStorage and redirect
+      if (!res.ok) {
+        otpError.textContent = data.message || "Invalid or expired OTP.";
+        return;
+      }
+
       sessionStorage.setItem("resetToken", data.token);
       sessionStorage.setItem("resetEmail", storedEmail);
       window.location.href = "/reset-password";
     } catch (err) {
-      otpError.textContent = err.message;
+      otpError.textContent = "Network error. Please try again.";
     } finally {
       verifyOtpBtn.disabled = false;
-      verifyOtpBtn.innerHTML = "Verify";
+      verifyOtpBtn.textContent = "Verify";
     }
   });
 }
 
-// RESEND TIMER
+// ─── RESEND TIMER ─────────────────────────────────────────────
+
 function startResendTimer() {
   let timeLeft = 60;
   resendBtn.disabled = true;
@@ -110,85 +127,116 @@ function startResendTimer() {
   }, 1000);
 }
 
-// RESEND OTP
 if (resendBtn) {
   resendBtn.addEventListener("click", async () => {
     if (!storedEmail) return;
     try {
       resendBtn.disabled = true;
-      await fetch("/api/users/send-otp", {
+
+      const res = await fetch("/api/users/send-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: storedEmail }),
       });
+      const data = await res.json();
+
+      if (!res.ok) {
+        otpError.textContent = data.message || "Failed to resend OTP.";
+        return;
+      }
+
       startResendTimer();
     } catch {
-      otpError.textContent = "Failed to resend OTP.";
+      otpError.textContent = "Network error. Please try again.";
     }
   });
 }
 
-// ── Reset-password page ───────────────────────────────────────────────────
+// ─── RESET PASSWORD ───────────────────────────────────────────
+
 const resetForm = document.getElementById("reset-form");
 
 if (resetForm) {
   resetForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const errorBox       = document.getElementById("resetError");
-    const password       = document.getElementById("newPassword").value;    
+
+    const errorBox = document.getElementById("resetError");
+    const passError = document.querySelector(".pass-error-message");
+    const passConfirmError = document.querySelector(
+      ".pass-confirm-error-message"
+    );
+    const submitBtn = resetForm.querySelector("button[type='submit']");
+    const password = document.getElementById("newPassword").value;
     const confirmPassword = document.getElementById("confirmPassword").value;
 
+    // Reset all errors
     errorBox.textContent = "";
+    passError.style.display = "none";
+    passConfirmError.style.display = "none";
 
-    if (password !== confirmPassword) {                                
-      errorBox.textContent = "Passwords do not match.";
+    if (password !== confirmPassword) {
+      passConfirmError.style.display = "block";
+      passConfirmError.textContent = "Passwords do not match.";
       return;
     }
+
     if (password.length < 8) {
-      errorBox.textContent = "Password must be at least 8 characters.";
+      passError.style.display = "block";
+      passError.textContent = "Password must be at least 8 characters.";
       return;
     }
 
-    const token = sessionStorage.getItem("resetToken");                  
+    const token = sessionStorage.getItem("resetToken");
     if (!token) {
       errorBox.textContent = "Session expired. Please request a new OTP.";
       return;
     }
 
     try {
-      const res = await fetch(`/api/users/reset-password/${token}`, {       
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Resetting...";
+
+      const res = await fetch(`/api/users/reset-password/${token}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password, confirmPassword }),                 
+        body: JSON.stringify({ password, confirmPassword }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.message);
+
+      if (!res.ok) {
+        errorBox.textContent =
+          data.message || "Reset failed. Please try again.";
+        return;
+      }
 
       sessionStorage.removeItem("resetToken");
       sessionStorage.removeItem("resetEmail");
-      window.location.href = "/login";                                       
+      window.location.href = "/login";
     } catch (err) {
-      errorBox.textContent = err.message;
+      errorBox.textContent = "Network error. Please try again.";
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Update Password";
     }
   });
 }
-// PASSWORD HIDE SHOW TOGGLE
+
+// ─── TOGGLE PASSWORD VISIBILITY ───────────────────────────────
+
 const togglePassword = document.getElementById("togglePassword");
 const passwordInput = document.getElementById("newPassword");
 
-togglePassword.addEventListener("click", () => {
+togglePassword?.addEventListener("click", () => {
   const isPassword = passwordInput.type === "password";
-  
   passwordInput.type = isPassword ? "text" : "password";
   togglePassword.classList.toggle("fa-eye");
   togglePassword.classList.toggle("fa-eye-slash");
 });
 
-/* ── Toggle Confirm Password Visibility ── */
 const toggleConfirmPassword = document.getElementById("toggleConfirmPassword");
 const confirmPasswordInput = document.getElementById("confirmPassword");
 
-toggleConfirmPassword?.addEventListener("click", function() {
+toggleConfirmPassword?.addEventListener("click", function () {
   const isPassword = confirmPasswordInput.type === "password";
   confirmPasswordInput.type = isPassword ? "text" : "password";
   this.classList.toggle("fa-eye");

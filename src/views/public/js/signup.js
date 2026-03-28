@@ -1,5 +1,5 @@
-// SIGNUP SUBMITION
 const signUpForm = document.getElementById("signup-form");
+
 signUpForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -8,19 +8,41 @@ signUpForm.addEventListener("submit", async (e) => {
   const password = document.getElementById("password").value.trim();
   const phone = document.getElementById("phone").value.trim();
   const country = document.getElementById("country").value;
-  const confirmPassword = document.getElementById("confirm-password").value.trim();
+  const confirmPassword = document
+    .getElementById("confirm-password")
+    .value.trim();
+
+  const passError = document.querySelector(".pass-error-message");
+  const passConfirmError = document.querySelector(
+    ".pass-confirm-error-message"
+  );
+  const signupError = document.querySelector(".signup-error-message");
+  const submitBtn = document.querySelector(".auth-btn");
+
+
+  // Client-side validation
+  if (!name || !email || !phone || !country) {
+    signupError.style.display = "block";
+    signupError.textContent = "Please fill in all fields";
+    return;
+  }
 
   if (password !== confirmPassword) {
-    alert("Passwords do not match", "error");
+    passConfirmError.style.display = "block";
+    passConfirmError.textContent = "Passwords do not match";
     return;
   }
 
   if (password.length < 8) {
-    alert("Password must be at least 8 characters", "error");
+    passError.style.display = "block";
+    passError.textContent = "Password must be at least 8 characters";
     return;
   }
 
   try {
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Creating account...";
+
     const res = await fetch("/api/users/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -30,7 +52,9 @@ signUpForm.addEventListener("submit", async (e) => {
     const data = await res.json();
 
     if (!res.ok) {
-      showToast(data.message || "Signup failed", "error");
+      signupError.style.display = "block";
+      signupError.textContent =
+        data.message || "Signup failed. Please try again.";
       return;
     }
 
@@ -38,10 +62,15 @@ signUpForm.addEventListener("submit", async (e) => {
     window.location.href = "/";
   } catch (err) {
     console.error("Fetch error:", err);
-    showToast("Something went wrong. Please try again.", "error");
+    signupError.style.display = "block";
+    signupError.textContent = "Network error. Please try again.";
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Sign Up";
   }
 });
 
+// Load countries
 fetch("https://restcountries.com/v3.1/all?fields=name,cca2,flag")
   .then((res) => res.json())
   .then((countries) => {
@@ -55,27 +84,23 @@ fetch("https://restcountries.com/v3.1/all?fields=name,cca2,flag")
         select.appendChild(option);
       });
   })
-  .catch(() => {
-    console.error("Failed to load countries");
-  });
+  .catch(() => console.error("Failed to load countries"));
 
-  // PASSWORD HIDE SHOW TOGGLE
+// Toggle password visibility
 const togglePassword = document.getElementById("togglePassword");
 const passwordInput = document.getElementById("password");
 
 togglePassword.addEventListener("click", () => {
   const isPassword = passwordInput.type === "password";
-  
   passwordInput.type = isPassword ? "text" : "password";
   togglePassword.classList.toggle("fa-eye");
   togglePassword.classList.toggle("fa-eye-slash");
 });
 
-/* ── Toggle Confirm Password Visibility ── */
 const toggleConfirmPassword = document.getElementById("toggleConfirmPassword");
 const confirmPasswordInput = document.getElementById("confirm-password");
 
-toggleConfirmPassword?.addEventListener("click", function() {
+toggleConfirmPassword?.addEventListener("click", function () {
   const isPassword = confirmPasswordInput.type === "password";
   confirmPasswordInput.type = isPassword ? "text" : "password";
   this.classList.toggle("fa-eye");

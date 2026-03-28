@@ -10,6 +10,7 @@ html(lang="en")
     form.form#signup-form
       h1 Create Account
       p Join Kobciye Foundation today
+      .signup-error-message(style="color:red; font-weight:bold; display:none;")
 
       .input-box
         label(for="name") Full Name
@@ -38,7 +39,9 @@ html(lang="en")
             option(value="" disabled selected) Select your country
 
       .input-box
+        p
         label(for="password") Password
+        .pass-error-message(style="color:red; font-weight:bold; display:none;")
         .input-with-icon
           i.fa-solid.fa-lock
           input(type="password" id="password" name="password" placeholder="Min. 8 characters" required)
@@ -46,7 +49,8 @@ html(lang="en")
 
 
       .input-box
-        label(for="confirm-password") Confirm Password
+        label(for="confirm-password") Confirm Passwordp
+        .pass-confirm-error-message(style="color:red; font-weight:bold; display:none;")
         .input-with-icon
           i.fa-solid.fa-lock
           input(type="password" id="confirm-password" placeholder="Confirm Your Password" required)
