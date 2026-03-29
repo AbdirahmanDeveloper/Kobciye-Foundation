@@ -725,9 +725,9 @@ const loadImpacts = async () => {
     const { data } = await res.json();
     if (!data) return;
 
-    document.getElementById("communities").value = data.communities || 0;
+    document.getElementById("impactCommunities").value = data.communities || 0;
     document.getElementById("impactProjects").value = data.projects || 0;
-    document.getElementById("volunteers").value = data.volunteers || 0;
+    document.getElementById("impactVolunteers").value = data.volunteers || 0;
   } catch (err) {
     console.error("Failed to load impacts:", err);
   }
@@ -753,9 +753,9 @@ impactsForm?.addEventListener("submit", async (e) => {
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
-        communities: document.getElementById("communities").value,
+        communities: document.getElementById("impactCommunities").value,
         projects: document.getElementById("impactProjects").value,
-        volunteers: document.getElementById("volunteers").value,
+        volunteers: document.getElementById("impactVolunteers").value,
       }),
     });
     if (res.ok) impactsSuccess.style.display = "flex";
