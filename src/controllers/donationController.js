@@ -34,23 +34,19 @@ exports.initializePayment = async (req, res) => {
         .json({ status: "fail", message: "Minimum donation is KES 10" });
 
     if (paymentMethod === "mpesa" && !phone)
-      return res
-        .status(400)
-        .json({
-          status: "fail",
-          message: "Please provide phone number for M-Pesa",
-        });
+      return res.status(400).json({
+        status: "fail",
+        message: "Please provide phone number for M-Pesa",
+      });
 
     let projectDoc = null;
     if (project && project !== "custom" && project !== "monthly") {
       projectDoc = await Project.findById(project);
       if (!projectDoc || projectDoc.status !== "active")
-        return res
-          .status(404)
-          .json({
-            status: "fail",
-            message: "Project not available for donation",
-          });
+        return res.status(404).json({
+          status: "fail",
+          message: "Project not available for donation",
+        });
     }
 
     const reference = `KOB_${req.user.id}_${Date.now()}`;
@@ -70,7 +66,7 @@ exports.initializePayment = async (req, res) => {
       amount: Number(amount) * 100,
       currency: "KES",
       reference,
-      callback_url: `${process.env.MPESA_CALLBACK_URL}/payment/success`,
+      callback_url: `${process.env.FRONTEND_URL}/projects`,
       metadata: {
         project_id: project || "custom",
         project_title: projectDoc ? projectDoc.title : "Custom Donation",
@@ -99,20 +95,16 @@ exports.initializePayment = async (req, res) => {
     );
 
     const { authorization_url } = response.data.data;
-    res
-      .status(200)
-      .json({
-        status: "success",
-        data: { redirectUrl: authorization_url, reference },
-      });
+    res.status(200).json({
+      status: "success",
+      data: { redirectUrl: authorization_url, reference },
+    });
   } catch (err) {
     console.error("Paystack error:", err.response?.data || err.message);
-    res
-      .status(500)
-      .json({
-        status: "error",
-        message: err.response?.data?.message || err.message,
-      });
+    res.status(500).json({
+      status: "error",
+      message: err.response?.data?.message || err.message,
+    });
   }
 };
 
@@ -220,12 +212,10 @@ exports.monthlyDonations = async (req, res) => {
     const { donor, amount, paymentMethod, project } = req.body;
 
     if (!donor || !amount || !paymentMethod)
-      return res
-        .status(400)
-        .json({
-          status: "fail",
-          message: "Please provide donor, amount and payment method",
-        });
+      return res.status(400).json({
+        status: "fail",
+        message: "Please provide donor, amount and payment method",
+      });
 
     let projectDoc = null;
     if (project && project !== "custom" && project !== "") {
@@ -271,12 +261,10 @@ exports.donateToProject = async (req, res) => {
         .json({ status: "fail", message: "Project not found" });
 
     if (project.status === "completed")
-      return res
-        .status(400)
-        .json({
-          status: "fail",
-          message: "This project has already reached its goal",
-        });
+      return res.status(400).json({
+        status: "fail",
+        message: "This project has already reached its goal",
+      });
 
     project.raisedAmount += Number(amount);
     const completed = project.raisedAmount >= project.goalAmount;
@@ -367,15 +355,38 @@ exports.getMonthlyStats = async (req, res) => {
       "Nov",
       "Dec",
     ];
-    res
-      .status(200)
-      .json(
-        stats.map((i) => ({
-          month: months[i._id - 1],
-          totalAmount: i.totalAmount,
-        }))
-      );
+    res.status(200).json(
+      stats.map((i) => ({
+        month: months[i._id - 1],
+        totalAmount: i.totalAmount,
+      }))
+    );
   } catch (err) {
     res.status(500).json({ message: "Server error" });
+  }
+};
+exports.getRecentDonations = async (req, res) => {
+  try {
+    const since = req.query.since
+      ? new Date(req.query.since)
+      : new Date(Date.now() - 60000);
+
+    const donations = await Donation.find({
+      createdAt: { $gt: since },
+    })
+      .populate("donor", "name")
+      .sort({ createdAt: -1 })
+      .limit(10)
+      .lean();
+
+    res.status(200).json({
+      status: "success",
+      data: donations,
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "error",
+      message: err.message,
+    });
   }
 };

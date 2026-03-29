@@ -114,7 +114,7 @@ payBtn.addEventListener("click", async () => {
     if (response.ok && data.status === "success") {
       showStatus("Redirecting to payment page...", "info");
       setTimeout(() => {
-        window.location.href = "/projects";
+        window.location.href = data.data.redirectUrl;
       }, 800);
     } else {
       showStatus(data.message || "Payment failed. Try again.", "error");

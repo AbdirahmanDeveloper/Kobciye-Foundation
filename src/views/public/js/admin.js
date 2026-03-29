@@ -1,5 +1,5 @@
 /* ============================================================
-   AUTHENTICATION CHECK — Hide everything if no token
+   AUTH CHECK
 ============================================================ */
 
 const token = localStorage.getItem("token");
@@ -10,20 +10,15 @@ if (!token) {
   throw new Error("Unauthorized");
 }
 
-// Show page only if token exists
 document.documentElement.style.display = "";
 
 /* ============================================================
-   HELPER
+   HELPERS
 ============================================================ */
 
 function closeAndReload() {
   window.location.reload();
 }
-
-/* ============================================================
-   AUTHENTICATION NAVIGATION
-============================================================ */
 
 const goToLoginBtn = document.getElementById("goToLoginBtn");
 const adminLogoutBtn = document.getElementById("adminLogoutBtn");
@@ -53,7 +48,120 @@ adminLogoutBtn?.addEventListener("click", (e) => {
 });
 
 /* ============================================================
-   LOGIN / LOGOUT VISIBILITY BASED ON TOKEN
+   NOTIFICATIONS
+============================================================ */
+
+let notificationCount = 0;
+let lastChecked = new Date(Date.now() - 60000).toISOString();
+const notificationList = document.getElementById("notificationList");
+const notificationCounter = document.querySelector(".notification-counter");
+const notificationLink = document.querySelector(".notification-link");
+const notificationSection = document.querySelector(".notification-section");
+
+const timeAgo = (d) => {
+  const s = Math.floor((Date.now() - new Date(d)) / 1000);
+  return s < 60
+    ? `${s}s ago`
+    : s < 3600
+    ? `${Math.floor(s / 60)}m ago`
+    : s < 86400
+    ? `${Math.floor(s / 3600)}h ago`
+    : new Date(d).toLocaleDateString();
+};
+
+function addNotification(type, message, time) {
+  notificationList.querySelector(".notification-empty")?.remove();
+
+  const item = document.createElement("div");
+  item.className = "notification-item unread";
+  item.innerHTML = `
+    <div class="notification-icon ${type}">
+      <i class="fa-solid ${
+        type === "donation" ? "fa-hand-holding-dollar" : "fa-envelope"
+      }"></i>
+    </div>
+    <div class="notification-text">
+      <p>${message}</p>
+      <span>${timeAgo(time)}</span>
+    </div>
+  `;
+  notificationList.prepend(item);
+
+  notificationCount++;
+  notificationCounter.textContent =
+    notificationCount > 99 ? "99+" : notificationCount;
+  notificationCounter.style.display = "flex";
+}
+
+async function pollNotifications() {
+  try {
+    const [donRes, conRes] = await Promise.all([
+      fetch(`/api/donations/recent?since=${lastChecked}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      }),
+      fetch(`/api/contact/recent?since=${lastChecked}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      }),
+    ]);
+
+    const donData = await donRes.json();
+    const conData = await conRes.json();
+
+    if (donRes.ok && donData.data.length)
+      donData.data.forEach((d) =>
+        addNotification(
+          "donation",
+          `💰 ${
+            d.donor?.name || "Anonymous"
+          } donated KES ${d.amount.toLocaleString()}`,
+          d.createdAt
+        )
+      );
+
+    if (conRes.ok && conData.data.length)
+      conData.data.forEach((c) =>
+        addNotification(
+          "contact",
+          `✉️ New message from ${c.name}: "${c.subject}"`,
+          c.createdAt
+        )
+      );
+
+    lastChecked = new Date().toISOString();
+  } catch {
+    /* silent fail */
+  }
+}
+
+pollNotifications();
+setInterval(pollNotifications, 30000);
+
+document.getElementById("clearNotifications")?.addEventListener("click", () => {
+  notificationCount = 0;
+  notificationCounter.textContent = "0";
+  notificationCounter.style.display = "none";
+  notificationList.innerHTML = `<div class="notification-empty"><i class="fa-regular fa-bell"></i> No new notifications</div>`;
+});
+
+notificationLink?.addEventListener("click", (e) => {
+  e.preventDefault();
+  notificationSection.classList.toggle("active");
+  document
+    .querySelectorAll(".notification-item.unread")
+    .forEach((i) => i.classList.remove("unread"));
+});
+
+document.addEventListener("click", (e) => {
+  if (
+    notificationSection?.classList.contains("active") &&
+    !notificationSection.contains(e.target) &&
+    !notificationLink.contains(e.target)
+  )
+    notificationSection.classList.remove("active");
+});
+
+/* ============================================================
+   SIDEBAR & NAVIGATION
 ============================================================ */
 
 const loginBtn = document.querySelector(".login-btn");
@@ -70,12 +178,10 @@ if (token) {
   if (userProfileSection) userProfileSection.style.display = "none";
 }
 
-/* ============================================================
-   NAVIGATION & SIDEBAR
-============================================================ */
-
 const navigationLinks = document.querySelectorAll(".nav-links a");
 const contentSections = document.querySelectorAll(".content-section");
+const sidebarNav = document.querySelector("nav");
+const navigationToggleBtn = document.querySelector(".navigation-btn");
 
 navigationLinks.forEach((link) => {
   link.addEventListener("click", (e) => {
@@ -83,17 +189,13 @@ navigationLinks.forEach((link) => {
     navigationLinks.forEach((l) => l.classList.remove("active"));
     contentSections.forEach((s) => s.classList.remove("active"));
     link.classList.add("active");
-    const target = document.getElementById(
-      link.getAttribute("href").substring(1)
-    );
-    if (target) target.classList.add("active");
+    document
+      .getElementById(link.getAttribute("href").substring(1))
+      ?.classList.add("active");
   });
 });
 
 document.getElementById("dashboard")?.classList.add("active");
-
-const sidebarNav = document.querySelector("nav");
-const navigationToggleBtn = document.querySelector(".navigation-btn");
 
 navigationToggleBtn?.addEventListener("click", (e) => {
   e.stopPropagation();
@@ -101,7 +203,7 @@ navigationToggleBtn?.addEventListener("click", (e) => {
 });
 
 /* ============================================================
-   DASHBOARD STATISTICS
+   DASHBOARD STATS
 ============================================================ */
 
 async function fetchTotalDonationAmount() {
@@ -203,13 +305,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         scales: { y: { beginAtZero: true } },
       },
     });
-  } catch {
-   
-  }
+  } catch {}
 });
 
 /* ============================================================
-   PROJECTS — CREATE
+   PROJECTS
 ============================================================ */
 
 const createProjectBtn = document.getElementById("addProject");
@@ -217,6 +317,13 @@ const createProjectModal = document.querySelector(".create-project");
 const createProjectForm = document.getElementById("createProjectForm");
 const projectSuccessModal = document.getElementById("projectSuccessMessage");
 const projectErrorModal = document.getElementById("projectErrorMessage");
+const editProjectModal = document.querySelector(".edit-project");
+const editProjectForm = document.getElementById("editProjectForm");
+const editProjectFormWrapper = document.querySelector(".edit-project .form");
+const projectUpdateSuccessModal = document.getElementById(
+  "projectUpdateSuccess"
+);
+const projectUpdateErrorModal = document.getElementById("projectUpdateError");
 const allFormElements = document.querySelectorAll(".form");
 
 createProjectBtn?.addEventListener("click", (e) => {
@@ -232,85 +339,56 @@ createProjectModal?.addEventListener("click", (e) => {
 createProjectForm?.addEventListener("submit", async (e) => {
   e.preventDefault();
   allFormElements.forEach((f) => (f.style.display = "none"));
-
   try {
     const response = await fetch("/api/projects/createProject", {
       method: "POST",
       headers: { Authorization: `Bearer ${token}` },
       body: new FormData(createProjectForm),
     });
-
     if (response.ok) {
       if (projectSuccessModal) projectSuccessModal.style.display = "flex";
       createProjectForm.reset();
-    } else {
-      if (projectErrorModal) projectErrorModal.style.display = "flex";
-    }
+    } else if (projectErrorModal) projectErrorModal.style.display = "flex";
   } catch {
     if (projectErrorModal) projectErrorModal.style.display = "flex";
   }
 });
-/* ============================================================
-   PROJECTS — DELETE
-============================================================ */
 
 document.querySelectorAll(".delete-project-btn").forEach((btn) => {
   btn.addEventListener("click", async (e) => {
     e.preventDefault();
-    const projectId = btn.getAttribute("data-id");
     if (!confirm("Are you sure you want to delete this project?")) return;
-
     try {
-      const response = await fetch(`/api/projects/${projectId}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      if (response.ok || response.status === 204) {
-        btn.closest("tr")?.remove();
-        alert("Project deleted successfully!");
-      } else {
-        const data = await response.json();
-        alert(data.message || "Failed to delete project");
-      }
+      const response = await fetch(
+        `/api/projects/${btn.getAttribute("data-id")}`,
+        {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      if (response.ok || response.status === 204) btn.closest("tr")?.remove();
+      else alert((await response.json()).message || "Failed to delete project");
     } catch {
       alert("An error occurred while deleting project");
     }
   });
 });
-/* ============================================================
-   PROJECTS — EDIT
-============================================================ */
-
-const editProjectModal = document.querySelector(".edit-project");
-const editProjectForm = document.getElementById("editProjectForm");
-const editProjectFormWrapper = document.querySelector(".edit-project .form");
-const projectUpdateSuccessModal = document.getElementById(
-  "projectUpdateSuccess"
-);
-const projectUpdateErrorModal = document.getElementById("projectUpdateError");
 
 document.querySelectorAll(".edit-project-btn").forEach((btn) => {
   btn.addEventListener("click", async () => {
-    const projectId = btn.getAttribute("data-id");
     try {
-      const response = await fetch(`/api/projects/${projectId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await fetch(
+        `/api/projects/${btn.getAttribute("data-id")}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
       const data = await response.json();
       if (response.ok) {
-        const editProjectId = document.getElementById("editProjectId");
-        const editTitle = document.getElementById("editTitle");
-        const editDescription = document.getElementById("editDescription");
-        const editGoalAmount = document.getElementById("editGoalAmount");
-        const editStatus = document.getElementById("editStatus");
-
-        if (editProjectId) editProjectId.value = data.data._id;
-        if (editTitle) editTitle.value = data.data.title;
-        if (editDescription) editDescription.value = data.data.description;
-        if (editGoalAmount) editGoalAmount.value = data.data.goalAmount;
-        if (editStatus) editStatus.value = data.data.status;
-
+        document.getElementById("editProjectId").value = data.data._id;
+        document.getElementById("editTitle").value = data.data.title;
+        document.getElementById("editDescription").value =
+          data.data.description;
+        document.getElementById("editGoalAmount").value = data.data.goalAmount;
+        document.getElementById("editStatus").value = data.data.status;
         editProjectModal.classList.add("active");
       }
     } catch {
@@ -323,7 +401,6 @@ editProjectForm?.addEventListener("submit", async (e) => {
   e.preventDefault();
   const projectId = document.getElementById("editProjectId")?.value;
   if (!projectId) return;
-
   try {
     const response = await fetch(`/api/projects/${projectId}`, {
       method: "PATCH",
@@ -338,7 +415,6 @@ editProjectForm?.addEventListener("submit", async (e) => {
         status: document.getElementById("editStatus")?.value,
       }),
     });
-
     if (response.ok) {
       if (editProjectFormWrapper) editProjectFormWrapper.style.display = "none";
       if (projectUpdateErrorModal)
@@ -382,7 +458,7 @@ document
   });
 
 /* ============================================================
-   NEWS — CREATE
+   NEWS
 ============================================================ */
 
 const createNewsBtn = document.getElementById("addNews");
@@ -390,6 +466,11 @@ const createNewsModal = document.querySelector(".create-news");
 const createNewsForm = document.getElementById("createNewsForm");
 const newsSuccessModal = document.getElementById("newsSuccessMessage");
 const newsErrorModal = document.getElementById("newsErrorMessage");
+const editNewsSection = document.querySelector(".edit-news");
+const editNewsForm = document.getElementById("editNewsForm");
+const editNewsFormWrapper = document.querySelector(".edit-news .form");
+const newsUpdateSuccess = document.getElementById("newsUpdateSuccess");
+const newsUpdateError = document.getElementById("newsUpdateError");
 
 createNewsBtn?.addEventListener("click", (e) => {
   e.preventDefault();
@@ -403,87 +484,53 @@ createNewsModal?.addEventListener("click", (e) => {
 createNewsForm?.addEventListener("submit", async (e) => {
   e.preventDefault();
   allFormElements.forEach((f) => (f.style.display = "none"));
-
   try {
     const response = await fetch("/api/news", {
       method: "POST",
       headers: { Authorization: `Bearer ${token}` },
       body: new FormData(createNewsForm),
     });
-
     if (response.ok) {
       if (newsSuccessModal) newsSuccessModal.style.display = "flex";
       createNewsForm.reset();
-    } else {
-      if (newsErrorModal) newsErrorModal.style.display = "flex";
-    }
+    } else if (newsErrorModal) newsErrorModal.style.display = "flex";
   } catch {
     if (newsErrorModal) newsErrorModal.style.display = "flex";
   }
 });
 
-/* ============================================================
-   NEWS — DELETE
-============================================================ */
-
 document.querySelectorAll(".delete-btn").forEach((btn) => {
   btn.addEventListener("click", async (e) => {
     e.preventDefault();
-    const newsId = btn.getAttribute("data-id");
     if (!confirm("Are you sure you want to delete this news?")) return;
-
     try {
-      const response = await fetch(`/api/news/${newsId}`, {
+      const response = await fetch(`/api/news/${btn.getAttribute("data-id")}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
-
-      if (response.ok || response.status === 204) {
-        btn.closest("tr")?.remove();
-        alert("News deleted successfully!");
-      } else {
-        const data = await response.json();
-        alert(data.message || "Failed to delete news");
-      }
+      if (response.ok || response.status === 204) btn.closest("tr")?.remove();
+      else alert((await response.json()).message || "Failed to delete news");
     } catch {
       alert("An error occurred while deleting news");
     }
   });
 });
 
-/* ============================================================
-   NEWS — EDIT
-============================================================ */
-
-const editNewsSection = document.querySelector(".edit-news");
-const editNewsForm = document.getElementById("editNewsForm");
-const editNewsFormWrapper = document.querySelector(".edit-news .form");
-const newsUpdateSuccess = document.getElementById("newsUpdateSuccess");
-const newsUpdateError = document.getElementById("newsUpdateError");
-
 document.querySelectorAll(".edit-btn").forEach((btn) => {
   btn.addEventListener("click", async () => {
-    const newsId = btn.getAttribute("data-id");
-
     try {
-      const res = await fetch(`/api/news/${newsId}`, {
+      const res = await fetch(`/api/news/${btn.getAttribute("data-id")}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
       if (!res.ok) return;
-
-      const editNewsId = document.getElementById("editNewsId");
-      const editNewsTitle = document.getElementById("editNewsTitle");
-      const editNewsContent = document.getElementById("editNewsContent");
-      const editNewsPreview = document.getElementById("editNewsPreview");
-
-      if (editNewsId) editNewsId.value = data.data._id;
-      if (editNewsTitle) editNewsTitle.value = data.data.title;
-      if (editNewsContent) editNewsContent.value = data.data.content;
-      if (editNewsPreview)
-        editNewsPreview.src = `/uploads/news/${data.data.image}`;
-
-      if (editNewsSection) editNewsSection.classList.add("active");
+      document.getElementById("editNewsId").value = data.data._id;
+      document.getElementById("editNewsTitle").value = data.data.title;
+      document.getElementById("editNewsContent").value = data.data.content;
+      document.getElementById(
+        "editNewsPreview"
+      ).src = `/uploads/news/${data.data.image}`;
+      editNewsSection.classList.add("active");
     } catch {
       /* silent fail */
     }
@@ -502,14 +549,12 @@ editNewsForm?.addEventListener("submit", async (e) => {
   e.preventDefault();
   const newsId = document.getElementById("editNewsId")?.value;
   if (!newsId) return;
-
   try {
     const response = await fetch(`/api/news/${newsId}`, {
       method: "PATCH",
       headers: { Authorization: `Bearer ${token}` },
       body: new FormData(editNewsForm),
     });
-
     if (response.ok) {
       if (editNewsFormWrapper) editNewsFormWrapper.style.display = "none";
       if (newsUpdateError) newsUpdateError.style.display = "none";
@@ -536,7 +581,7 @@ document.getElementById("newsUpdateErrorBtn")?.addEventListener("click", () => {
 });
 
 /* ============================================================
-   MEMBERS — CREATE
+   MEMBERS
 ============================================================ */
 
 const addMemberBtn = document.getElementById("addMember");
@@ -558,14 +603,12 @@ addMemberForm?.addEventListener("submit", async (e) => {
   e.preventDefault();
   const memberFormWrapper = addMemberModal?.querySelector(".form");
   if (memberFormWrapper) memberFormWrapper.style.display = "none";
-
   try {
     const response = await fetch("/api/members/add", {
       method: "POST",
       body: new FormData(addMemberForm),
       headers: { Authorization: `Bearer ${token}` },
     });
-
     if (response.ok) {
       if (memberErrorModal) memberErrorModal.style.display = "none";
       if (memberSuccessModal) memberSuccessModal.style.display = "flex";
@@ -580,29 +623,20 @@ addMemberForm?.addEventListener("submit", async (e) => {
   }
 });
 
-/* ============================================================
-   MEMBERS — DELETE
-============================================================ */
-
 document.querySelectorAll(".delete-member-btn").forEach((btn) => {
   btn.addEventListener("click", async (e) => {
     e.preventDefault();
-    const memberId = btn.getAttribute("data-id");
     if (!confirm("Are you sure you want to delete this member?")) return;
-
     try {
-      const response = await fetch(`/api/members/${memberId}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      if (response.ok || response.status === 204) {
-        btn.closest("tr")?.remove();
-        alert("Member deleted successfully!");
-      } else {
-        const data = await response.json();
-        alert(data.message || "Failed to delete member");
-      }
+      const response = await fetch(
+        `/api/members/${btn.getAttribute("data-id")}`,
+        {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      if (response.ok || response.status === 204) btn.closest("tr")?.remove();
+      else alert((await response.json()).message || "Failed to delete member");
     } catch {
       alert("An error occurred while deleting member");
     }
@@ -610,7 +644,7 @@ document.querySelectorAll(".delete-member-btn").forEach((btn) => {
 });
 
 /* ============================================================
-   DONATIONS — CREATE (MANUAL ENTRY)
+   MANUAL DONATION ENTRY
 ============================================================ */
 
 const addDonorBtn = document.getElementById("addDonor");
@@ -631,7 +665,6 @@ addDonorModal?.addEventListener("click", (e) => {
 addDonorForm?.addEventListener("submit", async (e) => {
   e.preventDefault();
   const fd = new FormData(addDonorForm);
-
   try {
     const response = await fetch("/api/donations/monthlyDonation", {
       method: "POST",
@@ -646,7 +679,6 @@ addDonorForm?.addEventListener("submit", async (e) => {
         project: fd.get("project"),
       }),
     });
-
     if (response.ok) {
       if (donorErrorModal) donorErrorModal.style.display = "none";
       if (donorSuccessModal) donorSuccessModal.style.display = "flex";
@@ -662,7 +694,7 @@ addDonorForm?.addEventListener("submit", async (e) => {
 });
 
 /* ============================================================
-   GLOBAL OK BUTTONS — RELOAD ON CLICK
+   GLOBAL OK BUTTONS
 ============================================================ */
 
 document.querySelectorAll(".ok-btn, .ok-error-btn").forEach((btn) => {

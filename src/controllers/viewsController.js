@@ -3,6 +3,7 @@ const News = require("../models/News");
 const Users = require("../models/User");
 const Donations = require("../models/Donation");
 const Members = require("../models/members");
+const Contacts = require("../models/Contact");
 
 // ─── HELPERS ──────────────────────────────────────────────────
 
@@ -111,7 +112,7 @@ exports.getContacts = (req, res) =>
 
 exports.getAdmin = async (req, res) => {
   try {
-    const [news, projects, users, donations, members, dashDonations] =
+    const [news, projects, users, donations, members, dashDonations, contacts] =
       await Promise.all([
         News.find(),
         Project.find().populate("createdBy"),
@@ -126,6 +127,8 @@ exports.getAdmin = async (req, res) => {
           .limit(6)
           .populate("donor", "name email phone country donationType")
           .populate("project", "title"),
+
+        Contacts.find(),
       ]);
 
     res.render("pages/admin", {
@@ -136,6 +139,7 @@ exports.getAdmin = async (req, res) => {
       donations,
       members,
       dashDonations,
+      contacts,
     });
   } catch (err) {
     res.status(500).json({ message: err.message });

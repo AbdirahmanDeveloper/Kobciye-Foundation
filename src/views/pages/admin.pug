@@ -16,6 +16,10 @@ head
         h1.logo-text KF
       .navigation-btn
         i.fa-solid.fa-bars
+      .notification-bell
+        a.notification-link
+          i.fa-solid.fa-bell
+          h2.notification-counter 0
       nav.side-bar
         ul.nav-links
           li
@@ -30,6 +34,10 @@ head
             a(href="#news")
               i.fa-solid.fa-newspaper
               |  News
+          li 
+            a(href="#contacts")
+              i.fa-solid.fa-address-book
+              | Contacts
           li
             a(href="#users")
               i.fa-solid.fa-users
@@ -143,7 +151,7 @@ head
                 td= item.donationType
                 td= item.amount
                 td= item.paymentMethod
-                td= item.status
+                td(class=`status-${item.status}`)= item.status
           else
             tr
               td(colspan="7")
@@ -225,7 +233,23 @@ head
         i.fa-solid.fa-circle-xmark
         h2 News Update Failed
         button.ok-error-btn#newsUpdateErrorBtn OK
+    //- ==================
+    //- CONTACTS
+    //- ==================
+    section.content-section#contacts
+      .lists.contacts-lists
+        table.contacts-table
+          tr
+            th name
+            th Email
+            th subject
 
+          if contacts && contacts.length
+            each item in contacts
+              tr
+                td= item.name
+                td= item.email
+                td= item.subject
     //- ==================
     //- USERS
     //- ==================
@@ -241,7 +265,7 @@ head
               tr
                 td= item.name
                 td= item.email
-                td= item.role
+                td.role(class=`role-${item.role}`)= item.role
           else
             tr
               td(colspan="3")
@@ -373,5 +397,15 @@ head
           i.fa-solid.fa-circle-xmark
           h2 Member Addition Failed
           button.ok-error-btn OK
+
+    section.notification-section
+      .notification-header
+        span
+          i.fa-solid.fa-bell(style="margin-right: 8px;")
+          | Notifications
+        button.notification-clear-btn#clearNotifications Clear all
+
+      .notification-list#notificationList
+
 
     script(src="/js/admin.js")

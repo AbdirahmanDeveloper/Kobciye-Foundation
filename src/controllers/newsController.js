@@ -206,13 +206,11 @@ exports.createNews = async (req, res) => {
 
     sendNewsletterToSubscribers(news);
 
-    res
-      .status(201)
-      .json({
-        status: "success",
-        message: "News created successfully",
-        data: news,
-      });
+    res.status(201).json({
+      status: "success",
+      message: "News created successfully",
+      data: news,
+    });
   } catch (err) {
     res.status(400).json({ status: "fail", message: err.message });
   }

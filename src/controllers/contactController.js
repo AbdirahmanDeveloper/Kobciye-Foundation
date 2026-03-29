@@ -77,3 +77,20 @@ exports.getAllContacts = async (req, res) => {
     res.status(500).json({ status: "error", message: error.message });
   }
 };
+
+exports.getRecentContacts = async (req, res) => {
+  try {
+    const since = req.query.since
+      ? new Date(req.query.since)
+      : new Date(Date.now() - 60000);
+
+    const contacts = await Contact.find({ createdAt: { $gt: since } })
+      .sort({ createdAt: -1 })
+      .limit(10);
+
+    res.status(200).json({ status: "success", data: contacts });
+  } catch (err) {
+    console.error("getRecentContacts error:", err.message);
+    res.status(500).json({ status: "error", message: err.message });
+  }
+};

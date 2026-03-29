@@ -10,13 +10,14 @@
 body {
   font-family: "Segoe UI", sans-serif;
 }
+
 /* ============================================================
    CSS VARIABLES
 ============================================================ */
-
 :root {
   --gold: #c0873f;
 }
+
 /* ============================================================
    2. HEADER
 ============================================================ */
@@ -26,14 +27,16 @@ header {
   height: 80px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   position: fixed;
   top: 0;
   left: 0;
   z-index: 100;
   padding: 1rem;
 }
-* /*============================================================
-   LOGO 
+
+/* ============================================================
+   LOGO
 ============================================================ */
 .logo {
   width: 300px;
@@ -60,7 +63,6 @@ header {
   z-index: 1;
 }
 
-
 /* ============================================================
    3. NAVIGATION BUTTON (hamburger)
 ============================================================ */
@@ -73,12 +75,42 @@ header {
   background: transparent;
   border: none;
   cursor: pointer;
-  display: none; /* Hidden on large screens */
+  display: none;
 }
 
 .navigation-btn i {
   font-size: 2rem;
   color: white;
+}
+
+/* ============================================================
+   NOTIFICATION BELL
+============================================================ */
+.notification-bell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  margin-right: 20px;
+}
+
+.notification-bell i {
+  color: white;
+  font-size: xx-large;
+}
+
+.notification-link {
+  position: relative;
+}
+
+.notification-counter {
+  position: absolute;
+  top: -10px;
+  left: 0;
+  color: red;
+  font-size: large;
+  font-weight: bolder;
 }
 
 /* ============================================================
@@ -172,7 +204,6 @@ header {
   flex: 1;
 }
 
-/* Login button */
 .login-btn {
   color: #2563eb;
   background: #eff6ff;
@@ -185,11 +216,6 @@ header {
   box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
 }
 
-.login-btn:active {
-  transform: translateX(3px);
-}
-
-/* Logout button */
 .logout-btn {
   color: #dc2626;
   background: #fef2f2;
@@ -200,10 +226,6 @@ header {
   color: #991b1b;
   transform: translateX(5px);
   box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2);
-}
-
-.logout-btn:active {
-  transform: translateX(3px);
 }
 
 .auth-btn:focus {
@@ -239,7 +261,7 @@ header {
 .content-section {
   display: none;
   margin-left: 280px;
-  margin-top: 80px; /* offset for fixed header */
+  margin-top: 80px;
   padding: 2rem;
   min-height: calc(100vh - 80px);
   background: #f9fafb;
@@ -258,7 +280,6 @@ header {
   min-height: 100vh;
 }
 
-/* Stats Grid (5 cards) */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -299,19 +320,15 @@ header {
 .stat-icon.donations {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
-
 .stat-icon.users {
   background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
 }
-
 .stat-icon.members {
   background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
 }
-
 .stat-icon.active {
   background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
 }
-
 .stat-icon.completed {
   background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
 }
@@ -330,7 +347,6 @@ header {
   font-weight: 500;
 }
 
-/* Dashboard Grid (2 large cards) */
 .dashboard-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -379,7 +395,6 @@ header {
   width: 33%;
 }
 
-/* Chart Card */
 .chart-card .card-body {
   min-height: 400px;
   display: flex;
@@ -392,15 +407,10 @@ header {
   max-height: 350px !important;
 }
 
-/* Latest Donations Card */
 .donations-card .card-body {
   padding: 0;
   max-height: 400px;
   overflow-y: auto;
-}
-
-.donations-list {
-  padding: 20px;
 }
 
 .donor-details h4 {
@@ -431,7 +441,58 @@ header {
   background: #ffffff;
 }
 
-/* Empty state message */
+/* ============================================================
+   STATUS BADGES
+============================================================ */
+.status-success,
+.status-pending,
+.status-failed {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+  text-align: center;
+  min-width: 70px;
+}
+
+.status-success {
+  background-color: #dcfce7;
+  color: #16a34a;
+}
+.status-pending {
+  background-color: #fef9c3;
+  color: #ca8a04;
+}
+.status-failed {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+/* ============================================================
+   ROLE BADGES
+============================================================ */
+.role {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+  text-align: center;
+  min-width: 60px;
+}
+
+.role-admin {
+  background-color: #ede9fe;
+  color: #7c3aed;
+}
+.role-user {
+  background-color: #e0f2fe;
+  color: #0369a1;
+}
+
 .text-muted {
   color: #9ca3af;
   padding: 2rem;
@@ -446,10 +507,14 @@ header {
   padding: 2rem;
   background: #f5f7fa;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 table {
-  width: 100%;
+  width: 80%;
+  min-width: 600px; 
   border-collapse: collapse;
   background: #ffffff;
   border-radius: 12px;
@@ -466,7 +531,8 @@ tr:first-child {
 td,
 th {
   padding: 1rem 1.2rem;
-  text-align: left;
+  text-align: start;
+  vertical-align: middle;
   font-size: 1rem;
 }
 
@@ -478,60 +544,11 @@ tr:not(:first-child):hover {
   background: #f1f5f9;
 }
 
-td:nth-child(2) {
-  font-weight: 700;
-  color: #16a34a;
-}
-
-td:nth-child(3) {
-  color: #6b7280;
-  font-size: 0.85rem;
-}
-
 tr:nth-child(even):not(:first-child) {
   background: #f9fafb;
 }
-
 tr:nth-child(odd):not(:first-child) {
   background: #ffffff;
-}
-
-/* Donations table status column */
-.donations-table td:nth-child(4) {
-  font-weight: 600;
-}
-
-/* News table image */
-.news-img img {
-  width: 70px;
-  border-radius: 10px;
-}
-
-/* Users table – role column */
-.users-table td:nth-child(3) {
-  text-transform: capitalize;
-  font-weight: 600;
-  color: #374151;
-}
-
-/* Members table */
-.members-table td:nth-child(2) {
-  color: #374151;
-  font-size: 0.9rem;
-}
-
-/* Projects table – status column */
-.projects-table td:nth-child(4) {
-  text-transform: capitalize;
-  font-weight: 600;
-}
-
-.projects-table td:nth-child(4)[data-status="active"] {
-  color: #16a34a;
-}
-
-.projects-table td:nth-child(4)[data-status="completed"] {
-  color: #2563eb;
 }
 
 /* ============================================================
@@ -541,11 +558,6 @@ tr:nth-child(odd):not(:first-child) {
   display: flex;
   gap: 0.6rem;
   flex-wrap: wrap;
-}
-
-.action-btns {
-  display: flex;
-  gap: 10px;
   justify-content: center;
 }
 
@@ -729,7 +741,6 @@ textarea:focus {
   background: #0271d1;
 }
 
-/* Form actions row (Update + Cancel) */
 .form-actions {
   display: flex;
   gap: 15px;
@@ -756,7 +767,6 @@ textarea:focus {
   background: #e5e7eb;
 }
 
-/* Current image preview */
 .current-image {
   margin: 10px 0;
   padding: 15px;
@@ -795,7 +805,6 @@ textarea:focus {
   height: 300px;
 }
 
-/* Success */
 .success-message i {
   font-size: 4rem;
   color: #1f2937;
@@ -822,7 +831,6 @@ textarea:focus {
   background: #374151;
 }
 
-/* Error */
 .error-message i {
   font-size: 4rem;
   color: #dc2626;
@@ -855,7 +863,7 @@ textarea:focus {
 }
 
 /* ============================================================
-   14. EDIT NEWS MODAL (legacy – kept for backward compat)
+   14. EDIT NEWS MODAL
 ============================================================ */
 .edit-news {
   position: fixed;
@@ -889,24 +897,154 @@ textarea:focus {
   width: 500px;
   height: 500px;
 }
-
 /* ============================================================
-   16. RESPONSIVE — LARGE TABLETS (≤ 1400px)
+   16. NOTIFICATION SECTION
+============================================================ */
+.notification-section {
+  display: none;
+  flex-direction: column;
+  position: fixed;
+  width: 360px;
+  max-height: 500px;
+  top: 80px;
+  right: 0;
+  z-index: 101;
+  background: #ffffff;
+  border-radius: 0 0 0 12px;
+  box-shadow: -4px 4px 20px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+
+.notification-section.active {
+  display: flex;
+}
+
+.notification-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: #1f2937;
+  color: white;
+  font-weight: 700;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+
+.notification-clear-btn {
+  background: none;
+  border: none;
+  color: #9ca3af;
+  font-size: 12px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.notification-clear-btn:hover { color: white; }
+
+.notification-list {
+  overflow-y: auto;
+  flex: 1;
+}
+
+.notification-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.notification-item:hover { background: #f9fafb; }
+
+.notification-item.unread { background: #eff6ff; }
+
+.notification-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: white;
+  flex-shrink: 0;
+}
+
+.notification-icon.donation { background: linear-gradient(135deg, #667eea, #764ba2); }
+.notification-icon.contact  { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+
+.notification-text {
+  flex: 1;
+}
+.notification-text{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.notification-text p {
+  font-size: 13px;
+  color: #1f2937;
+  font-weight: 500;
+  margin: 0 0 3px;
+}
+
+.notification-text span {
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+.notification-empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: #9ca3af;
+  font-size: 14px;
+}
+
+.notification-empty i {
+  font-size: 32px;
+  display: block;
+  margin-bottom: 10px;
+  color: #d1d5db;
+}
+
+.notofication-counter {
+  position: absolute;
+  top: -8px;
+  left: -4px;
+  background: #ef4444;
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Segoe UI", sans-serif;
+}
+/* ============================================================
+   17. RESPONSIVE — LARGE TABLETS (≤ 1400px)
 ============================================================ */
 @media (max-width: 1400px) {
-  .logo{
+  header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo {
     display: none;
   }
-  /* Show hamburger */
+
   .navigation-btn {
     display: block;
   }
-  .logo img{
-    border-radius: 2px;
-    width: 100%;
-  }
 
-  /* Collapse sidebar off-screen by default */
   .side-bar {
     top: 80px;
     left: 0;
@@ -919,12 +1057,10 @@ textarea:focus {
     transition: transform 0.35s ease;
   }
 
-  /* Slide in when active */
   .side-bar.active {
     transform: translateX(0);
   }
 
-  /* Content fills full width */
   .content-section {
     margin-left: 0;
   }
@@ -935,21 +1071,15 @@ textarea:focus {
 }
 
 /* ============================================================
-   17. RESPONSIVE — TABLETS (≤ 1200px)
+   18. RESPONSIVE — TABLETS (≤ 1200px)
 ============================================================ */
 @media (max-width: 1200px) {
   .stats-grid {
     grid-template-columns: repeat(3, 1fr);
   }
-  .logo-img {
-    background: var(--white);
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.6),
-      0 4px 14px rgba(0, 0, 0, 0.2);
-  }
   .dashboard-grid {
     grid-template-columns: 1fr;
   }
-
   .add-btn {
     width: 80%;
     max-width: 400px;
@@ -957,24 +1087,21 @@ textarea:focus {
 }
 
 /* ============================================================
-   18. RESPONSIVE — SMALL TABLETS / LARGE PHONES (≤ 900px)
+   19. RESPONSIVE — SMALL TABLETS (≤ 900px)
 ============================================================ */
 @media (max-width: 900px) {
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 15px;
   }
-
   .form {
     width: 95vw;
   }
-
   td,
   th {
     padding: 0.75rem 0.8rem;
     font-size: 0.9rem;
   }
-
   .donationCard-item {
     font-size: 0.85rem;
     padding: 1rem 0.5rem;
@@ -982,13 +1109,13 @@ textarea:focus {
 }
 
 /* ============================================================
-   19. RESPONSIVE — MOBILE (≤ 768px)
+   20. RESPONSIVE — MOBILE (≤ 768px)
 ============================================================ */
 @media (max-width: 768px) {
   .dashboard-container {
     padding: 15px;
   }
-  .logo{
+  .logo {
     background: white;
   }
 
@@ -1003,17 +1130,14 @@ textarea:focus {
     padding: 16px 12px;
     gap: 12px;
   }
-
   .stat-icon {
     width: 48px;
     height: 48px;
     font-size: 20px;
   }
-
   .stat-details h3 {
     font-size: 16px;
   }
-
   .stat-details p {
     font-size: 12px;
   }
@@ -1033,20 +1157,20 @@ textarea:focus {
     padding: 16px;
   }
 
-  /* Scrollable table wrapper on mobile */
   .lists {
     padding: 1rem;
     overflow-x: auto;
+    align-items: stretch; 
   }
 
   table {
     min-width: 500px;
+    width: 100%;
   }
 
   .donations-list {
     overflow-x: auto;
   }
-
   .donation-items-container {
     min-width: 450px;
   }
@@ -1056,7 +1180,6 @@ textarea:focus {
     font-size: 1rem;
     height: 44px;
   }
-
   .add {
     height: 64px;
   }
@@ -1080,13 +1203,12 @@ textarea:focus {
 }
 
 /* ============================================================
-   20. RESPONSIVE — EXTRA SMALL PHONES (≤ 480px)
+   21. RESPONSIVE — EXTRA SMALL PHONES (≤ 480px)
 ============================================================ */
 @media (max-width: 480px) {
   .stats-grid {
     grid-template-columns: 1fr;
   }
-
   .stat-card {
     flex-direction: row;
   }
@@ -1109,16 +1231,13 @@ textarea:focus {
     min-width: 400px;
     font-size: 0.82rem;
   }
-
   td,
   th {
     padding: 0.6rem 0.5rem;
   }
-
   .card-header h2 {
     font-size: 15px;
   }
-
   .donationCard-item {
     font-size: 0.78rem;
     padding: 0.8rem 0.3rem;
