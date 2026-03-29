@@ -35,7 +35,6 @@ router.get("/", restrictTo("admin"), donationController.getAllDonations);
 
 router.get(
   "/recent",
-  protect,
   restrictTo("admin"),
   donationController.getRecentDonations
 );

@@ -20,7 +20,7 @@ const signupLimiter = rateLimit({
 
 const otpLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 5,                    // only 5 attempts per 15 min — OTP is very sensitive
+  max: 5,                    
   message: "Too many attempts. Please try again later.",
 });
 

@@ -1,8 +1,3 @@
-/* ============================================================
-   project.js
-   Handles: Progress bar animations, live data fetch, card UI
-============================================================ */
-
 document.addEventListener("DOMContentLoaded", () => {
   /* ── Animate All Progress Bars on Page Load ── */
   const progressBars = document.querySelectorAll(".progress-bar");

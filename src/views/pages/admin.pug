@@ -50,6 +50,11 @@ head
             a(href="#members")
               i.fa-solid.fa-arrows-down-to-people
               |  Members
+          
+          li
+            a(href="#impacts")
+              i.fa-solid.fa-chart-simple
+              |  Impacts
 
           li.nav-divider
 
@@ -278,7 +283,7 @@ head
       .add
         button.add-btn#addProject Add Project
 
-      .list.projects-lists
+      .lists.projects-lists
         table.projects-table
           tr
             th Project Title
@@ -358,7 +363,7 @@ head
       .add
         button.add-btn#addMember Add Member
 
-      .list.members-list
+      .lists.members-list
         table.members-table
           tr
             th Name
@@ -407,5 +412,46 @@ head
 
       .notification-list#notificationList
 
+    //- ==================
+    //- IMPACTS
+    //- ==================
+    section.content-section#impacts
+      .add
+        button.add-btn#editImpacts Update Impact Stats
 
+      .lists.impacts-list
+        table.impacts-table
+          tr
+            th Communities Served
+            th Projects Completed
+            th Volunteers Engaged
+          if impacts
+            tr
+              td= impacts.communities
+              td= impacts.projects
+              td= impacts.volunteers
+          else
+            tr
+              td(colspan="3")
+                p.text-muted No impact stats yet
+
+      .create-section.impacts-section
+        .form
+          .form-title
+            h2 Impact Stats
+          form#impactsForm
+            input#impactCommunities(type="number" name="communities" placeholder="Communities Served" required)
+            input#impactProjects(type="number" name="projects" placeholder="Projects Completed" required)
+            input#impactVolunteers(type="number" name="volunteers" placeholder="Volunteers Engaged" required)
+            button(type="submit") Save
+
+        .success-message#impactsSuccess
+          i.fa-solid.fa-circle-check
+          h2 Stats Updated Successfully
+          button.ok-btn OK
+
+        .error-message#impactsError
+          i.fa-solid.fa-circle-xmark
+          h2 Update Failed
+          button.ok-error-btn OK
     script(src="/js/admin.js")

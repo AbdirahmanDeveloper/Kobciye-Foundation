@@ -1,10 +1,3 @@
-/* ============================================================
-   contact.js
-   Handles: Contact form submission only
-   Used on: /contact page
-   Pug file: views/contact.pug
-   ============================================================ */
-
 /* ── DOM References ──────────────────────────────────────── */
 const contactForm = document.getElementById("contactForm");
 const contactMessageModal = document.getElementById("contactMessageModal");

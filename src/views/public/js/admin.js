@@ -186,7 +186,10 @@ const navigationToggleBtn = document.querySelector(".navigation-btn");
 navigationLinks.forEach((link) => {
   link.addEventListener("click", (e) => {
     e.preventDefault();
-    navigationLinks.forEach((l) => l.classList.remove("active"));
+    navigationLinks.forEach(
+      (l) => l.classList.remove("active"),
+      sidebarNav.classList.remove("active")
+    );
     contentSections.forEach((s) => s.classList.remove("active"));
     link.classList.add("active");
     document
@@ -196,7 +199,11 @@ navigationLinks.forEach((link) => {
 });
 
 document.getElementById("dashboard")?.classList.add("active");
-
+document.addEventListener("click", (e) => {
+  if (!sidebarNav.contains(e.target) && sidebarNav.classList.contains("active")) {
+    sidebarNav.classList.remove("active");
+  }
+});
 navigationToggleBtn?.addEventListener("click", (e) => {
   e.stopPropagation();
   sidebarNav.classList.toggle("active");
@@ -699,4 +706,61 @@ addDonorForm?.addEventListener("submit", async (e) => {
 
 document.querySelectorAll(".ok-btn, .ok-error-btn").forEach((btn) => {
   btn.addEventListener("click", closeAndReload);
+});
+
+/* ============================================================
+   IMPACTS
+============================================================ */
+
+const editImpactsBtn = document.getElementById("editImpacts");
+const impactsSection = document.querySelector(".impacts-section");
+const impactsForm = document.getElementById("impactsForm");
+const impactsSuccess = document.getElementById("impactsSuccess");
+const impactsError = document.getElementById("impactsError");
+const impactsWrapper = impactsSection?.querySelector(".form");
+
+const loadImpacts = async () => {
+  try {
+    const res = await fetch("/api/impacts");
+    const { data } = await res.json();
+    if (!data) return;
+
+    document.getElementById("communities").value = data.communities || 0;
+    document.getElementById("impactProjects").value = data.projects || 0;
+    document.getElementById("volunteers").value = data.volunteers || 0;
+  } catch (err) {
+    console.error("Failed to load impacts:", err);
+  }
+};
+
+editImpactsBtn?.addEventListener("click", () => {
+  loadImpacts();
+  impactsSection.classList.add("active");
+});
+
+impactsSection?.addEventListener("click", (e) => {
+  if (e.target === impactsSection) impactsSection.classList.remove("active");
+});
+
+impactsForm?.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  if (impactsWrapper) impactsWrapper.style.display = "none";
+  try {
+    const res = await fetch("/api/impacts", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        communities: document.getElementById("communities").value,
+        projects: document.getElementById("impactProjects").value,
+        volunteers: document.getElementById("volunteers").value,
+      }),
+    });
+    if (res.ok) impactsSuccess.style.display = "flex";
+    else impactsError.style.display = "flex";
+  } catch {
+    impactsError.style.display = "flex";
+  }
 });

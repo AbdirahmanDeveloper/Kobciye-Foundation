@@ -1040,6 +1040,14 @@ textarea:focus {
   .logo {
     display: none;
   }
+  .notification-bell {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    margin: 0;
+  }
+
 
   .navigation-btn {
     display: block;
@@ -1100,10 +1108,10 @@ textarea:focus {
   td,
   th {
     padding: 0.75rem 0.8rem;
-    font-size: 0.9rem;
+    font-size: 0.7rem;
   }
   .donationCard-item {
-    font-size: 0.85rem;
+    font-size: 0.7rem;
     padding: 1rem 0.5rem;
   }
 }

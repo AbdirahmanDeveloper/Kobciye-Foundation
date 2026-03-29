@@ -4,6 +4,7 @@ const Users = require("../models/User");
 const Donations = require("../models/Donation");
 const Members = require("../models/members");
 const Contacts = require("../models/Contact");
+const Impacts = require("../models/Impacts");
 
 // ─── HELPERS ──────────────────────────────────────────────────
 
@@ -24,6 +25,7 @@ exports.getHomePage = async (req, res) => {
     const ongoingProjects = await Project.find({ status: "active" }).limit(6);
     const members = await Members.find().sort({ createdAt: -1 });
     const latestNews = await News.find().sort({ createdAt: -1 }).limit(1);
+    const impacts = await Impacts.findOne();
 
     res.render("pages/index", {
       title: "Home page",
@@ -31,6 +33,7 @@ exports.getHomePage = async (req, res) => {
       ongoingProjects,
       members,
       latestNews,
+      impacts,
     });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -46,8 +49,14 @@ exports.getOTP = (req, res) => res.render("pages/otp", { title: "Verify OTP" });
 
 exports.getAbout = async (req, res) => {
   try {
+    const impacts = await Impacts.findOne();
     const members = await Members.find().sort({ createdAt: -1 });
-    res.render("pages/about", { title: "About", activePage: "about", members });
+    res.render("pages/about", {
+      title: "About",
+      activePage: "about",
+      members,
+      impacts,
+    });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -55,6 +64,7 @@ exports.getAbout = async (req, res) => {
 
 exports.getProjects = async (req, res) => {
   try {
+    const impacts = await Impacts.findOne();
     const ongoingProjects = await Project.find({ status: "active" }).populate(
       "createdBy"
     );
@@ -67,6 +77,7 @@ exports.getProjects = async (req, res) => {
       activePage: "projects",
       ongoingProjects: formatProjects(ongoingProjects),
       completedProjects: formatProjects(completedProjects),
+      impacts,
     });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -75,13 +86,14 @@ exports.getProjects = async (req, res) => {
 
 exports.getProjectModal = async (req, res) => {
   try {
+    const impacts = await Impacts.findOne();
     const project = await Project.findById(req.params.id);
     if (!project)
       return res
         .status(404)
         .json({ status: "fail", message: "Project not found" });
 
-    res.render("pages/project-modal", { title: "Project", project });
+    res.render("pages/project-modal", { title: "Project", project, impacts });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -89,8 +101,14 @@ exports.getProjectModal = async (req, res) => {
 
 exports.getBlog = async (req, res) => {
   try {
+    const impacts = await Impacts.findOne();
     const news = await News.find();
-    res.render("pages/blog", { title: "Blog", activePage: "blog", news });
+    res.render("pages/blog", {
+      title: "Blog",
+      activePage: "blog",
+      news,
+      impacts,
+    });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -98,38 +116,60 @@ exports.getBlog = async (req, res) => {
 
 exports.getBlogModal = async (req, res) => {
   try {
+    const impacts = await Impacts.findOne();
     const news = await News.findById(req.params.id);
     if (!news) return res.status(404).json({ message: "News not found" });
 
-    res.render("pages/blog-modal", { title: news.title, news });
+    res.render("pages/blog-modal", { title: news.title, news, impacts });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
 
-exports.getContacts = (req, res) =>
-  res.render("pages/contact", { title: "Contact", activePage: "contact" });
+exports.getContacts = async (req, res) => {
+  try {
+    const impacts = await Impacts.findOne().lean();
+
+    res.render("pages/contact", {
+      title: "Contact",
+      activePage: "contact",
+      impacts,
+    });
+  } catch (err) {
+    console.error("getContacts error:", err);
+    res.status(500).json({ message: err.message });
+  }
+};
 
 exports.getAdmin = async (req, res) => {
   try {
-    const [news, projects, users, donations, members, dashDonations, contacts] =
-      await Promise.all([
-        News.find(),
-        Project.find().populate("createdBy"),
-        Users.find(),
-        Donations.find()
-          .populate("donor", "name email phone country donationType")
-          .populate("project", "title")
-          .sort({ createdAt: -1 }),
-        Members.find().sort({ createdAt: -1 }),
-        Donations.find()
-          .sort({ createdAt: -1 })
-          .limit(6)
-          .populate("donor", "name email phone country donationType")
-          .populate("project", "title"),
+    const [
+      news,
+      projects,
+      users,
+      donations,
+      members,
+      dashDonations,
+      contacts,
+      impacts,
+    ] = await Promise.all([
+      News.find(),
+      Project.find().populate("createdBy"),
+      Users.find(),
+      Donations.find()
+        .populate("donor", "name email phone country donationType")
+        .populate("project", "title")
+        .sort({ createdAt: -1 }),
+      Members.find().sort({ createdAt: -1 }),
+      Donations.find()
+        .sort({ createdAt: -1 })
+        .limit(6)
+        .populate("donor", "name email phone country donationType")
+        .populate("project", "title"),
 
-        Contacts.find(),
-      ]);
+      Contacts.find(),
+      Impacts.findOne(),
+    ]);
 
     res.render("pages/admin", {
       title: "Admin",
@@ -140,6 +180,7 @@ exports.getAdmin = async (req, res) => {
       members,
       dashDonations,
       contacts,
+      impacts,
     });
   } catch (err) {
     res.status(500).json({ message: err.message });

@@ -4,7 +4,6 @@ const { protect, restrictTo } = require("../middleware/authMiddlewares");
 
 const router = express.Router();
 
-// Public routes
 router.post("/submit", contactController.submitContact);
 
 router.get(

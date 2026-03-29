@@ -14,6 +14,7 @@ const donationRoutes = require("./routes/donationRoutes");
 const viewsRoutes = require("./routes/viewsRoutes");
 const contactRoutes = require("./routes/contactRoutes");
 const membersRoutes = require("./routes/membersRoutes");
+const impactsRoutes = require("./routes/impactsRoutes");
 
 // ============================================================
 // APP INIT
@@ -158,6 +159,7 @@ app.use("/api/donations", donationRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/members", membersRoutes);
 app.use("/", viewsRoutes);
+app.use("/api/impacts", impactsRoutes);
 
 // ============================================================
 // GLOBAL ERROR HANDLER

@@ -31,7 +31,6 @@ exports.protect = async (req, res, next) => {
   }
 };
 
-// Restict some actions to admin only
 exports.restrictTo = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {

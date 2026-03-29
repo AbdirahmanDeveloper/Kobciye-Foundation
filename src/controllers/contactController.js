@@ -8,8 +8,6 @@ exports.submitContact = async (req, res) => {
     const { name, email, subject, message } = req.body;
 
     await Contact.create({ name, email, subject, message });
-
-    // Email 1 — confirmation
     const { error: err1 } = await resend.emails.send({
       from: "Kobciye Foundation <info@kobciyefoundation.org>",
       to: email,
@@ -39,8 +37,6 @@ exports.submitContact = async (req, res) => {
     });
 
     if (err1) console.error("Resend confirmation error:", err1);
-
-    // Email 2 — admin notification
     const { error: err2 } = await resend.emails.send({
       from: "Kobciye Foundation <info@kobciyefoundation.org>",
       to: process.env.ADMIN_EMAIL,

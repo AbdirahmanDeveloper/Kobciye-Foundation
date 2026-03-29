@@ -22,17 +22,19 @@ section.impact-stats
   .stat(data-aos="fade-up" data-aos-delay="0" data-aos-duration="600")
     .stat-icon
       i.fa-solid.fa-people-group
-    h2 200+
+    h2= impacts ? impacts.communities + '+' : '200+'
     p Communities Served
+
   .stat(data-aos="fade-up" data-aos-delay="150" data-aos-duration="600")
     .stat-icon
       i.fa-solid.fa-circle-check
-    h2 50+
+    h2= impacts ? impacts.projects + '+' : '50+'
     p Projects Completed
+
   .stat(data-aos="fade-up" data-aos-delay="300" data-aos-duration="600")
     .stat-icon
       i.fa-solid.fa-hands-holding-child
-    h2 500+
+    h2= impacts ? impacts.volunteers + '+' : '500+'
     p Volunteers Engaged
 
 //- CALL TO ACTION
