@@ -93,7 +93,7 @@ header {
   height: 80px;
   width: 100%;
   padding: 0 2rem;
-  background: transparent;
+  background: var(--white);
   box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
     rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
   align-items: center;
@@ -104,9 +104,6 @@ header {
   position: fixed;
 }
 
-header.active {
-  background: var(--white);
-}
 
 /* ============================================================
    LOGO
@@ -906,7 +903,7 @@ header.active {
   padding: 1px;
   border-radius: 50px;
   border: none;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(45, 43, 43, 0.08);
   cursor: pointer;
   transition: var(--transition);
   backdrop-filter: blur(4px);
@@ -919,8 +916,7 @@ header.active {
 }
 
 .profile-btn:hover {
-  border-color: rgba(255, 255, 255, 0.5);
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(37, 36, 36, 0.15);
 }
 
 .avator {
@@ -928,7 +924,7 @@ header.active {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--white);
+  color: black;
   background: transparent;
 }
 
@@ -1610,17 +1606,6 @@ input[type="file"] {
 ============================================================ */
 
 @media (min-width: 1200px) {
-  header.active .profile-btn {
-    border-color: rgba(0, 0, 0, 0.15);
-    background: rgba(0, 0, 0, 0.04);
-  }
-  header.active .profile-btn:hover {
-    border-color: rgba(0, 0, 0, 0.3);
-    background: rgba(0, 0, 0, 0.08);
-  }
-  header.active .avator i {
-    color: var(--ink);
-  }
   .nav-links a:hover,
   .nav-links a.active {
     border-bottom: 8px solid var(--gold);
@@ -1640,10 +1625,6 @@ input[type="file"] {
 @media (max-width: 1200px) {
   header {
     justify-content: space-between;
-  }
-  header.active {
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    background: #1a1a2e;
   }
 
   nav {
@@ -1699,13 +1680,18 @@ input[type="file"] {
   }
 
   .navigation-btn {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
     cursor: pointer;
     width: 50px;
+    background: #007bff;
+    padding: 1rem 2rem;
   }
   .navigation-btn i {
     font-size: 2rem;
-    color: white;
+    color: var(--white);
   }
   .close-btn {
     position: absolute;
