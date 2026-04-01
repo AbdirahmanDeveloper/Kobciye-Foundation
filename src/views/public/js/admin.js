@@ -17,6 +17,13 @@ document.documentElement.style.display = "";
 ============================================================ */
 
 function closeAndReload() {
+  const activeLink = document.querySelector(".nav-links a.active");
+  if (activeLink) {
+    localStorage.setItem(
+      "activeSectionId",
+      activeLink.getAttribute("href").substring(1)
+    );
+  }
   window.location.reload();
 }
 
@@ -128,9 +135,7 @@ async function pollNotifications() {
       );
 
     lastChecked = new Date().toISOString();
-  } catch {
-    /* silent fail */
-  }
+  } catch {}
 }
 
 pollNotifications();
@@ -198,7 +203,20 @@ navigationLinks.forEach((link) => {
   });
 });
 
-document.getElementById("dashboard")?.classList.add("active");
+const savedSection = localStorage.getItem("activeSectionId") || "dashboard";
+localStorage.removeItem("activeSectionId");
+
+const savedLink = document.querySelector(
+  `.nav-links a[href="#${savedSection}"]`
+);
+if (savedLink) {
+  savedLink.classList.add("active");
+  document.getElementById(savedSection)?.classList.add("active");
+} else {
+  document.querySelector(".nav-links a")?.classList.add("active");
+  document.getElementById("dashboard")?.classList.add("active");
+}
+
 document.addEventListener("click", (e) => {
   if (
     !sidebarNav.contains(e.target) &&
@@ -207,6 +225,7 @@ document.addEventListener("click", (e) => {
     sidebarNav.classList.remove("active");
   }
 });
+
 navigationToggleBtn?.addEventListener("click", (e) => {
   e.stopPropagation();
   sidebarNav.classList.toggle("active");
@@ -227,9 +246,7 @@ async function fetchTotalDonationAmount() {
       el.textContent = response.ok
         ? `KES ${(data.data.totalAmount || 0).toLocaleString()}`
         : "KES 0";
-  } catch {
-    /* silent fail */
-  }
+  } catch {}
 }
 
 async function fetchTotalUsersCount() {
@@ -240,9 +257,7 @@ async function fetchTotalUsersCount() {
     const data = await response.json();
     const el = document.getElementById("totalUsers");
     if (el) el.textContent = response.ok ? data.data.totalUsers : "0";
-  } catch {
-    /* silent fail */
-  }
+  } catch {}
 }
 
 async function fetchTotalMembersCount() {
@@ -253,9 +268,7 @@ async function fetchTotalMembersCount() {
     const data = await response.json();
     const el = document.getElementById("totalMembers");
     if (el) el.textContent = response.ok ? data.data.totalMembers : "0";
-  } catch {
-    /* silent fail */
-  }
+  } catch {}
 }
 
 async function fetchProjectCounts() {
@@ -270,9 +283,7 @@ async function fetchProjectCounts() {
       if (activeEl) activeEl.textContent = data.data.countActive;
       if (completedEl) completedEl.textContent = data.data.countCompleted;
     }
-  } catch {
-    /* silent fail */
-  }
+  } catch {}
 }
 
 fetchTotalDonationAmount();
@@ -401,9 +412,7 @@ document.querySelectorAll(".edit-project-btn").forEach((btn) => {
         document.getElementById("editStatus").value = data.data.status;
         editProjectModal.classList.add("active");
       }
-    } catch {
-      /* silent fail */
-    }
+    } catch {}
   });
 });
 
@@ -541,9 +550,7 @@ document.querySelectorAll(".edit-btn").forEach((btn) => {
         "editNewsPreview"
       ).src = `/uploads/news/${data.data.image}`;
       editNewsSection.classList.add("active");
-    } catch {
-      /* silent fail */
-    }
+    } catch {}
   });
 });
 
@@ -677,7 +684,6 @@ const loadImpacts = async () => {
     const res = await fetch("/api/impacts");
     const { data } = await res.json();
     if (!data) return;
-
     document.getElementById("impactCommunities").value = data.communities || 0;
     document.getElementById("impactProjects").value = data.projects || 0;
     document.getElementById("impactVolunteers").value = data.volunteers || 0;
@@ -732,8 +738,10 @@ async function updateVolunteerStatus(id, status) {
       },
       body: JSON.stringify({ status }),
     });
-    if (res.ok) location.reload();
-    else alert("Failed to update volunteer status");
+    if (res.ok) {
+      localStorage.setItem("activeSectionId", "volunteers");
+      location.reload();
+    } else alert("Failed to update volunteer status");
   } catch {
     alert("An error occurred");
   }

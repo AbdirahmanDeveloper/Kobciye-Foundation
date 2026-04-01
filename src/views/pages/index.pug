@@ -134,7 +134,7 @@ body
           p Join our community of changemakers and help us create lasting impact.
         form#volonteerForm.contact-form
           .input-box
-            label(for="name")
+            label(for="volName")
               | Your Full Name
               span.req *
             input(
@@ -145,7 +145,7 @@ body
               required
             )
           .input-box
-            label(for="phone") 
+            label(for="volPhone")
               | Your Phone Number
               span.req *
             input(
@@ -155,7 +155,7 @@ body
               placeholder="+254 700 000 000"
             )
           .input-box
-            label(for="email")
+            label(for="volEmail")
               | Your Email
               span.req *
             input(
@@ -166,10 +166,10 @@ body
               required
             )
           .input-box
-            label.file-upload-label(for="volImage")
+            label(for="volImage")
               | Your Image
               span.req *
-            label.file-upload-label(for="image")
+            label.file-upload-label(for="volImage")
               .upload-icon
                 svg(viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg")
                   path(d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4")
@@ -185,32 +185,32 @@ body
               accept="image/*"
             )
           .input-box
-            label(for="availibility") 
-              | Your availibility
+            label(for="availibility")
+              | Your Availability
               span.req *
             input(id="availibility" name="availibility" placeholder="e.g: 7 Days a Week")
-
           .input-box
-            label(for="nationalId") 
+            label(for="nationalId")
               | Your National ID
               span.req *
             input(id="nationalId" name="nationalId" placeholder="e.g: 000 000 000 0")
           .form-divider
           button.vol-submit(type="submit") Submit Application
           p.privacy-note We respect your privacy. Your information will only be used to contact you about volunteering opportunities.
+
     .message-modal#volMessageModal
       .message-content.success#contactSuccessMessage
         i.fa-solid.fa-circle-check
-        h2 Message Sent!
-        p We've received your message and will get back to you soon.
+        h2 Application Submitted!
+        p We've received your application and will get back to you soon.
         button.ok-btn OK
       .message-content.error#volErrorMessage
         i.fa-solid.fa-circle-xmark
-        h2 Message Failed
+        h2 Submission Failed
         p Something went wrong. Please try again.
         button.ok-btn OK
-  include ../partials/testimonials
-  include ../partials/_footer
+    include ../partials/testimonials
+    include ../partials/_footer
 
   script(src="/js/main.js")
   script(src="/js/about.js")

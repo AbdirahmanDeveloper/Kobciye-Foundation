@@ -1,5 +1,7 @@
 const Volenteers = require("../models/Volunteers");
 const upload = require("../middleware/volIpload");
+const { Resend } = require("resend");
+
 
 exports.uploadImage = upload.single("volImage");
 
@@ -24,14 +26,13 @@ exports.createVolunteer = async (req, res) => {
   }
 };
 
-const { Resend } = require("resend");
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 async function sendVolunteerEmail(volunteer, status) {
   const isAccepted = status === "accepted";
 
   await resend.emails.send({
-    from: "Kobciye Foundation <onboarding@resend.dev>",
+    from: "Kobciye Foundation <info@kobciyefoundaion.org>",
     to: volunteer.email,
     subject: isAccepted
       ? "🎉 Your Volunteer Application Has Been Accepted"

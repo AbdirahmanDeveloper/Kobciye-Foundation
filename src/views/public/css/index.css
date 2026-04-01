@@ -1830,6 +1830,10 @@ input[type="file"] {
   .profile-modal {
     width: 100%;
   }
+
+  .logo{
+    width: 180px;
+  }
 }
 
 @media (max-width: 640px) {
