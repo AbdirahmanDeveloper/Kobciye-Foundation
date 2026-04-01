@@ -670,6 +670,7 @@ tr:nth-child(odd):not(:first-child) {
 }
 
 .delete-btn,
+.delete-volunteer-btn,
 .delete-member-btn {
   background: #ef4444;
   color: white;
