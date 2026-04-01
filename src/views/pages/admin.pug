@@ -461,6 +461,7 @@ head
             th Phone
             th Email
             th Availability
+            th national id
             th Status
             th Action
           if volunteers && volunteers.length
@@ -471,7 +472,8 @@ head
                 td= item.name
                 td= item.phone
                 td= item.email
-                td= item.availability
+                td= item.availibility
+                td= item.nationalId
                 td
                   span.status-badge(class=`status-${item.status}`)= item.status
                 td.action-row

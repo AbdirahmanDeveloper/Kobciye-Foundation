@@ -25,11 +25,15 @@ const volunteersSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  nationalId: {
+    type: String,
+  },
   status: {
     type: String,
     enum: ["pending", "accepted", "rejected"],
     default: "pending",
   },
+
 });
 
 module.exports = mongoose.model("Volenteer", volunteersSchema);

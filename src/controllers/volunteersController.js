@@ -11,6 +11,7 @@ exports.createVolunteer = async (req, res) => {
       email: req.body.volEmail,
       image: req.file ? req.file.path : null,
       availibility: req.body.availibility,
+      nationalId: req.body.nationalId,
     });
 
     res.status(200).json({
@@ -22,6 +23,39 @@ exports.createVolunteer = async (req, res) => {
     res.status(500).json({ status: "failed" });
   }
 };
+
+const { Resend } = require("resend");
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+async function sendVolunteerEmail(volunteer, status) {
+  const isAccepted = status === "accepted";
+
+  await resend.emails.send({
+    from: "Kobciye Foundation <onboarding@resend.dev>",
+    to: volunteer.email,
+    subject: isAccepted
+      ? "🎉 Your Volunteer Application Has Been Accepted"
+      : "Your Volunteer Application Update",
+    html: isAccepted
+      ? `
+        <h2>Welcome to the Team, ${volunteer.name}!</h2>
+        <p>We are thrilled to let you know that your volunteer application to <strong>Kobciye Foundation</strong> has been <strong style="color: green;">accepted</strong>.</p>
+        <p>We will be in touch soon with next steps. Thank you for your willingness to make a difference!</p>
+        <br/>
+        <p>Warm regards,</p>
+        <p><strong>Kobciye Foundation Team</strong></p>
+      `
+      : `
+        <h2>Application Update, ${volunteer.name}</h2>
+        <p>Thank you for applying to volunteer with <strong>Kobciye Foundation</strong>.</p>
+        <p>After careful consideration, we regret to inform you that your application has been <strong style="color: red;">rejected</strong> at this time.</p>
+        <p>We encourage you to apply again in the future. Thank you for your interest in supporting our mission.</p>
+        <br/>
+        <p>Warm regards,</p>
+        <p><strong>Kobciye Foundation Team</strong></p>
+      `,
+  });
+}
 
 exports.updateVolunteer = async (req, res) => {
   try {
@@ -48,6 +82,10 @@ exports.updateVolunteer = async (req, res) => {
       });
     }
 
+    if (status === "accepted" || status === "rejected") {
+      await sendVolunteerEmail(volunteer, status);
+    }
+
     res.status(200).json({
       status: "success",
       data: volunteer,
@@ -57,7 +95,6 @@ exports.updateVolunteer = async (req, res) => {
     res.status(500).json({ status: "failed" });
   }
 };
-
 exports.deleteVolunteer = async (req, res) => {
   try {
     const { id } = req.params;
