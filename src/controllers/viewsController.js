@@ -5,6 +5,7 @@ const Donations = require("../models/Donation");
 const Members = require("../models/members");
 const Contacts = require("../models/Contact");
 const Impacts = require("../models/Impacts");
+const Volunteers = require("../models/Volunteers");
 
 // ─── HELPERS ──────────────────────────────────────────────────
 
@@ -152,6 +153,7 @@ exports.getAdmin = async (req, res) => {
       dashDonations,
       contacts,
       impacts,
+      volunteers,
     ] = await Promise.all([
       News.find(),
       Project.find().populate("createdBy"),
@@ -169,6 +171,7 @@ exports.getAdmin = async (req, res) => {
 
       Contacts.find(),
       Impacts.findOne(),
+      Volunteers.find(),
     ]);
 
     res.render("pages/admin", {
@@ -181,6 +184,7 @@ exports.getAdmin = async (req, res) => {
       dashDonations,
       contacts,
       impacts,
+      volunteers,
     });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -191,6 +195,14 @@ exports.getPayment = async (req, res) => {
   try {
     const projects = await Project.find({ status: "active" });
     res.render("pages/payment", { title: "Payment Gateway", projects });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+exports.getVolonteerPage = async (req, res) => {
+  try {
+    res.render("pages/volonteer", { title: "Volonteer Page" });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

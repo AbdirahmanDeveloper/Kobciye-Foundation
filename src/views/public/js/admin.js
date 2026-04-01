@@ -200,7 +200,10 @@ navigationLinks.forEach((link) => {
 
 document.getElementById("dashboard")?.classList.add("active");
 document.addEventListener("click", (e) => {
-  if (!sidebarNav.contains(e.target) && sidebarNav.classList.contains("active")) {
+  if (
+    !sidebarNav.contains(e.target) &&
+    sidebarNav.classList.contains("active")
+  ) {
     sidebarNav.classList.remove("active");
   }
 });
@@ -651,56 +654,6 @@ document.querySelectorAll(".delete-member-btn").forEach((btn) => {
 });
 
 /* ============================================================
-   MANUAL DONATION ENTRY
-============================================================ */
-
-const addDonorBtn = document.getElementById("addDonor");
-const addDonorModal = document.querySelector(".add-donor");
-const donorSuccessModal = document.getElementById("donorSuccessMessage");
-const donorErrorModal = document.getElementById("donorErrorMessage");
-const addDonorForm = document.getElementById("addDonorForm");
-
-addDonorBtn?.addEventListener("click", (e) => {
-  e.preventDefault();
-  addDonorModal?.classList.add("active");
-});
-
-addDonorModal?.addEventListener("click", (e) => {
-  if (e.target === addDonorModal) addDonorModal.classList.remove("active");
-});
-
-addDonorForm?.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const fd = new FormData(addDonorForm);
-  try {
-    const response = await fetch("/api/donations/monthlyDonation", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        donor: fd.get("donor"),
-        amount: fd.get("amount"),
-        paymentMethod: fd.get("paymentMethod"),
-        project: fd.get("project"),
-      }),
-    });
-    if (response.ok) {
-      if (donorErrorModal) donorErrorModal.style.display = "none";
-      if (donorSuccessModal) donorSuccessModal.style.display = "flex";
-      addDonorForm.reset();
-    } else {
-      if (donorSuccessModal) donorSuccessModal.style.display = "none";
-      if (donorErrorModal) donorErrorModal.style.display = "flex";
-    }
-  } catch {
-    if (donorSuccessModal) donorSuccessModal.style.display = "none";
-    if (donorErrorModal) donorErrorModal.style.display = "flex";
-  }
-});
-
-/* ============================================================
    GLOBAL OK BUTTONS
 ============================================================ */
 
@@ -763,4 +716,56 @@ impactsForm?.addEventListener("submit", async (e) => {
   } catch {
     impactsError.style.display = "flex";
   }
+});
+
+/* ============================================================
+   VOLUNTEERS
+============================================================ */
+
+async function updateVolunteerStatus(id, status) {
+  try {
+    const res = await fetch(`/api/volunteers/updateVolunteer/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ status }),
+    });
+    if (res.ok) location.reload();
+    else alert("Failed to update volunteer status");
+  } catch {
+    alert("An error occurred");
+  }
+}
+
+document.querySelectorAll(".accept-volunteer-btn").forEach((btn) => {
+  btn.addEventListener("click", () =>
+    updateVolunteerStatus(btn.dataset.id, "accepted")
+  );
+});
+
+document.querySelectorAll(".reject-volunteer-btn").forEach((btn) => {
+  btn.addEventListener("click", () =>
+    updateVolunteerStatus(btn.dataset.id, "rejected")
+  );
+});
+
+document.querySelectorAll(".delete-volunteer-btn").forEach((btn) => {
+  btn.addEventListener("click", async () => {
+    if (!confirm("Are you sure you want to delete this volunteer?")) return;
+    try {
+      const res = await fetch(
+        `/api/volunteers/deleteVolunteer/${btn.dataset.id}`,
+        {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      if (res.ok || res.status === 204) btn.closest("tr")?.remove();
+      else alert("Failed to delete volunteer");
+    } catch {
+      alert("An error occurred");
+    }
+  });
 });

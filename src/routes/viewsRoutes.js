@@ -1,5 +1,5 @@
 const express = require("express");
-const viewsController = require("../controllers/viewsController")
+const viewsController = require("../controllers/viewsController");
 const router = express.Router();
 
 router.route("/").get(viewsController.getHomePage);
@@ -15,6 +15,6 @@ router.route("/admin").get(viewsController.getAdmin);
 router.route("/payment").get(viewsController.getPayment);
 router.get("/reset-password", viewsController.getResetPassword);
 router.get("/otp", viewsController.getOTP);
+router.get("/volonteerPage", viewsController.getVolonteerPage);
 
-
-module.exports = router
+module.exports = router;

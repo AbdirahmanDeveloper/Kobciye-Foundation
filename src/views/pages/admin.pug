@@ -34,7 +34,7 @@ head
             a(href="#news")
               i.fa-solid.fa-newspaper
               |  News
-          li 
+          li
             a(href="#contacts")
               i.fa-solid.fa-address-book
               | Contacts
@@ -50,12 +50,14 @@ head
             a(href="#members")
               i.fa-solid.fa-arrows-down-to-people
               |  Members
-          
           li
             a(href="#impacts")
               i.fa-solid.fa-chart-simple
               |  Impacts
-
+          li
+            a(href="#volunteers")
+              i.fa-solid.fa-hand-holding-hand
+              |  Volunteers
           li.nav-divider
 
           li.auth-item
@@ -212,7 +214,7 @@ head
         h2 News Creation Failed
         button.ok-error-btn OK
 
-    //- EDIT NEWS SECTION
+    //- EDIT NEWS
     .create-section.edit-news
       .form
         .form-title
@@ -238,6 +240,7 @@ head
         i.fa-solid.fa-circle-xmark
         h2 News Update Failed
         button.ok-error-btn#newsUpdateErrorBtn OK
+
     //- ==================
     //- CONTACTS
     //- ==================
@@ -245,16 +248,16 @@ head
       .lists.contacts-lists
         table.contacts-table
           tr
-            th name
+            th Name
             th Email
-            th subject
-
+            th Subject
           if contacts && contacts.length
             each item in contacts
               tr
                 td= item.name
                 td= item.email
                 td= item.subject
+
     //- ==================
     //- USERS
     //- ==================
@@ -331,7 +334,7 @@ head
           h2 Project Creation Failed
           button.ok-error-btn OK
 
-      //- EDIT PROJECT SECTION
+      //- EDIT PROJECT
       .edit-project.create-section
         .form
           .form-title
@@ -403,15 +406,6 @@ head
           h2 Member Addition Failed
           button.ok-error-btn OK
 
-    section.notification-section
-      .notification-header
-        span
-          i.fa-solid.fa-bell(style="margin-right: 8px;")
-          | Notifications
-        button.notification-clear-btn#clearNotifications Clear all
-
-      .notification-list#notificationList
-
     //- ==================
     //- IMPACTS
     //- ==================
@@ -454,4 +448,57 @@ head
           i.fa-solid.fa-circle-xmark
           h2 Update Failed
           button.ok-error-btn OK
+
+    //- ==================
+    //- VOLUNTEERS
+    //- ==================
+    section.content-section#volunteers
+      .lists.volunteers-list
+        table.volunteers-table
+          tr
+            th Image
+            th Name
+            th Phone
+            th Email
+            th Availability
+            th Status
+            th Action
+          if volunteers && volunteers.length
+            each item in volunteers
+              tr
+                td
+                  img.volunteer-img(src=item.image alt=item.name)
+                td= item.name
+                td= item.phone
+                td= item.email
+                td= item.availability
+                td
+                  span.status-badge(class=`status-${item.status}`)= item.status
+                td.action-row
+                  button.accept-volunteer-btn(data-id=item._id)
+                    i.fa-solid.fa-check
+                    |  Accept
+                  button.reject-volunteer-btn(data-id=item._id)
+                    i.fa-solid.fa-xmark
+                    |  Reject
+                  button.delete-volunteer-btn(data-id=item._id)
+                    i.fa-solid.fa-trash
+                    |  Delete
+          else
+            tr
+              td(colspan="7")
+                p.text-muted No volunteers found
+
+    //- ==================
+    //- NOTIFICATIONS
+    //- ==================
+    section.notification-section
+      .notification-header
+        span
+          i.fa-solid.fa-bell(style="margin-right: 8px;")
+          | Notifications
+        button.notification-clear-btn#clearNotifications Clear all
+
+      .notification-list#notificationList
+
     script(src="/js/admin.js")

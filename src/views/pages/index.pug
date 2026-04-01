@@ -125,6 +125,84 @@ body
           i.fa-solid.fa-newspaper
           span View All News
 
+    //- VOLUNTEER SECTION
+    section.volonteer-section
+      .volonteer-form
+        .section-title
+          span.eyebrow Kobciye Foundation
+          h1 Become a Volunteer
+          p Join our community of changemakers and help us create lasting impact.
+        form#volonteerForm.contact-form
+          .input-box
+            label(for="name")
+              | Your Full Name
+              span.req *
+            input(
+              type="text"
+              name="volName"
+              id="volName"
+              placeholder="Joe Doe"
+              required
+            )
+          .input-box
+            label(for="phone") 
+              | Your Phone Number
+              span.req *
+            input(
+              type="tel"
+              name="volPhone"
+              id="volPhone"
+              placeholder="+254 700 000 000"
+            )
+          .input-box
+            label(for="email")
+              | Your Email
+              span.req *
+            input(
+              type="email"
+              name="volEmail"
+              id="volEmail"
+              placeholder="joeDoe@gmail.com"
+              required
+            )
+          .input-box
+            label.file-upload-label(for="volImage")
+              | Your Image
+              span.req *
+            label.file-upload-label(for="image")
+              .upload-icon
+                svg(viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg")
+                  path(d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4")
+                  polyline(points="17 8 12 3 7 8")
+                  line(x1="12" y1="3" x2="12" y2="15")
+              span.upload-main Click to upload a photo
+              span.upload-sub PNG, JPG or WEBP — max 5MB
+              span.upload-filename#filename
+            input(
+              type="file"
+              name="volImage"
+              id="volImage"
+              accept="image/*"
+            )
+          .input-box
+            label(for="availibility") 
+              | Your availibility
+              span.req *
+            input(id="availibility" name="availibility" placeholder="e.g: 7 Days a Week")
+          .form-divider
+          button.vol-submit(type="submit") Submit Application
+          p.privacy-note We respect your privacy. Your information will only be used to contact you about volunteering opportunities.
+    .message-modal#volMessageModal
+      .message-content.success#contactSuccessMessage
+        i.fa-solid.fa-circle-check
+        h2 Message Sent!
+        p We've received your message and will get back to you soon.
+        button.ok-btn OK
+      .message-content.error#volErrorMessage
+        i.fa-solid.fa-circle-xmark
+        h2 Message Failed
+        p Something went wrong. Please try again.
+        button.ok-btn OK
   include ../partials/testimonials
   include ../partials/_footer
 

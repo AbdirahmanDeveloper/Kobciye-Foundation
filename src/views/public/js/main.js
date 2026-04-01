@@ -437,13 +437,13 @@ document
     const confirmPassword = document.getElementById("confirmPassword")?.value;
 
     if (!currentPassword || !newPassword || !confirmPassword)
-      return showToast("All password fields are required", "error");
+      return alert("All password fields are required", "error");
 
     if (newPassword !== confirmPassword)
-      return showToast("New passwords do not match", "error");
+      return alert("New passwords do not match", "error");
 
     if (newPassword.length < 8)
-      return showToast("Password must be at least 8 characters", "error");
+      return alert("Password must be at least 8 characters", "error");
 
     try {
       const res = await fetch(`/api/users/me/password`, {
@@ -461,10 +461,8 @@ document
       document.getElementById("currentPassword").value = "";
       document.getElementById("newPassword").value = "";
       document.getElementById("confirmPassword").value = "";
-
-      showToast("Password updated successfully!", "success");
     } catch (err) {
-      showToast(err.message || "Password update failed", "error");
+      alert(err.message || "Password update failed", "error");
     }
   });
 
@@ -489,4 +487,62 @@ scrollProjectRight?.addEventListener("click", () => {
     left: projectScrollAmount,
     behavior: "smooth",
   });
+});
+
+/* ============================================================
+   VOLUNTEER
+============================================================ */
+const fileInput = document.getElementById("volImage");
+const filenameEl = document.getElementById("filename");
+const uploadSub = document.querySelector(".upload-sub");
+const uploadMain = document.querySelector(".upload-main");
+
+fileInput.addEventListener("change", () => {
+  const file = fileInput.files[0];
+  if (file) {
+    filenameEl.textContent = file.name;
+    filenameEl.style.display = "block";
+    uploadSub.style.display = "none";
+    uploadMain.textContent = "Image selected";
+  }
+});
+
+const volonteerForm = document.getElementById("volonteerForm");
+const volModal = document.getElementById("volMessageModal");
+const volSuccess = document.getElementById("contactSuccessMessage");
+const volError = document.getElementById("volErrorMessage");
+
+// OK buttons close the modal
+document.querySelectorAll("#volMessageModal .ok-btn").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    volModal.style.display = "none";
+  });
+});
+
+volonteerForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  try {
+    const res = await fetch("/api/volunteers/createVolunteer", {
+      method: "POST",
+      body: new FormData(volonteerForm),
+    });
+
+    if (res.ok) {
+      // hide the form section, show success modal
+      volSuccess.style.display = "flex";
+      volError.style.display = "none";
+      volModal.style.display = "flex";
+    } else {
+      // show error modal
+      volSuccess.style.display = "none";
+      volError.style.display = "flex";
+      volModal.style.display = "flex";
+    }
+  } catch (err) {
+    console.error(err.message);
+    volSuccess.style.display = "none";
+    volError.style.display = "flex";
+    volModal.style.display = "flex";
+  }
 });
