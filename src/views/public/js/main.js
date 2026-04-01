@@ -529,16 +529,15 @@ volonteerForm.addEventListener("submit", async (e) => {
     });
 
     if (res.ok) {
-      // hide the form section, show success modal
       volSuccess.style.display = "flex";
       volError.style.display = "none";
       volModal.style.display = "flex";
     } else {
-      // show error modal
       volSuccess.style.display = "none";
       volError.style.display = "flex";
       volModal.style.display = "flex";
     }
+    volonteerForm.reset();
   } catch (err) {
     console.error(err.message);
     volSuccess.style.display = "none";

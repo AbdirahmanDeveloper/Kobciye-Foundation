@@ -114,8 +114,7 @@ header.active {
 
 .logo {
   text-decoration: none;
-  width: 70px;
-  height: 70px;
+  width: 250px;
   flex-shrink: 0;
   display: flex;
   align-items: center;
