@@ -32,7 +32,7 @@ async function sendVolunteerEmail(volunteer, status) {
   const isAccepted = status === "accepted";
 
   await resend.emails.send({
-    from: "Kobciye Foundation <info@kobciyefoundaion.org>",
+    from: "Kobciye Foundation <info@kobciyefoundation.org>",
     to: volunteer.email,
     subject: isAccepted
       ? "🎉 Your Volunteer Application Has Been Accepted"
