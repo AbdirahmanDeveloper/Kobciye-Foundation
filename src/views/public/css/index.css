@@ -25,7 +25,6 @@ body {
 /* ============================================================
    CSS VARIABLES
 ============================================================ */
-
 :root {
   --gold: #c0873f;
   --gold-light: #e8d5a3;
@@ -1680,18 +1679,13 @@ input[type="file"] {
   }
 
   .navigation-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 10px;
+    display: block;
     cursor: pointer;
     width: 50px;
-    background: #007bff;
-    padding: 1rem 2rem;
   }
   .navigation-btn i {
     font-size: 2rem;
-    color: var(--white);
+    color: #007bff;
   }
   .close-btn {
     position: absolute;
