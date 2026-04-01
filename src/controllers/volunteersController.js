@@ -2,6 +2,7 @@ const Volenteers = require("../models/Volunteers");
 const upload = require("../middleware/volIpload");
 const { Resend } = require("resend");
 
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 exports.uploadImage = upload.single("volImage");
 
@@ -15,7 +16,40 @@ exports.createVolunteer = async (req, res) => {
       availibility: req.body.availibility,
       nationalId: req.body.nationalId,
     });
-
+    await resend.emails.send({
+      from:"Kobciye Foundation <info@kobciyefoundation.org>",
+      to: process.env.ADMIN_EMAIL,
+      subject: "📩 New Volunteer Application Received",
+      html: `
+        <h2>New Volunteer Request</h2>
+    
+        <p>A new volunteer has submitted an application to <strong>Kobciye Foundation</strong>.</p>
+    
+        <hr/>
+    
+        <h3>Volunteer Details:</h3>
+        <ul>
+          <li><strong>Name:</strong> ${volonteer.name}</li>
+          <li><strong>Email:</strong> ${volonteer.email}</li>
+          <li><strong>Phone:</strong> ${volonteer.phone}</li>
+          <li><strong>Availability:</strong> ${volonteer.availibility}</li>
+          <li><strong>National ID:</strong> ${volonteer.nationalId}</li>
+        </ul>
+    
+        ${
+          volonteer.image
+            ? `<p><strong>Image:</strong><br/><img src="${volonteer.image}" width="200"/></p>`
+            : ""
+        }
+    
+        <hr/>
+    
+        <p>Please log in to the admin dashboard to review and take action.</p>
+    
+        <br/>
+        <p><strong>Kobciye Foundation System</strong></p>
+      `,
+    });
     res.status(200).json({
       status: "success",
       data: volonteer,
@@ -25,8 +59,6 @@ exports.createVolunteer = async (req, res) => {
     res.status(500).json({ status: "failed" });
   }
 };
-
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 async function sendVolunteerEmail(volunteer, status) {
   const isAccepted = status === "accepted";
