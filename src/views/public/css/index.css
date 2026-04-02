@@ -279,6 +279,18 @@ header {
   font-weight: bold;
 }
 
+.nav-btns {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-btns hr {
+  height: 50px;
+  border-color: rgba(0, 0, 0, 0.15);
+}
+
 /* ============================================================
    HERO
 ============================================================ */
@@ -1358,7 +1370,8 @@ header {
 ============================================================ */
 
 .logout-btn {
-  width: 100%;
+  margin: 10px auto;
+  width: 250px;
   padding: 12px;
   background: #fee2e2;
   color: #dc2626;
@@ -1893,8 +1906,26 @@ input[type="file"] {
     width: 100%;
   }
 
+  .profile-btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .profile-btn .avator {
+    font-size: 1rem;
+  }
+
+  .theme-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+
   .logo {
-    width: 180px;
+    width: 60px;
   }
 }
 
@@ -2061,7 +2092,6 @@ body.darke-theme .home-project-card {
   border: 1px solid var(--gold);
 }
 
-
 body.darke-theme .home-project-img img {
   filter: brightness(0.75) saturate(0.85);
 }
@@ -2128,7 +2158,12 @@ body.darke-theme .team-card-img img {
 
 /* SECTION DIVIDER */
 body.darke-theme .divider-line {
-  background: linear-gradient(to right, transparent, var(--gold-border), transparent);
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--gold-border),
+    transparent
+  );
 }
 
 body.darke-theme .divider-label {
@@ -2168,7 +2203,6 @@ body.darke-theme .home-news-title {
 body.darke-theme .home-news-excerpt {
   color: var(--text-secondary);
 }
-
 
 body.darke-theme .home-news-readmore:hover {
   color: #e8bc6a;
@@ -2342,7 +2376,9 @@ body.darke-theme .user-details h3 {
 body.darke-theme .user-details p {
   color: var(--text-secondary);
 }
-
+body.darke-theme .nav-btns hr {
+  border-color: rgba(255, 255, 255, 0.15);
+}
 body.darke-theme .role {
   background: var(--gold-glow);
   color: var(--gold);
@@ -2456,7 +2492,14 @@ body.darke-theme .volonteer-form {
 }
 
 body.darke-theme .volonteer-form::before {
-  background: linear-gradient(90deg, transparent, var(--gold-dim), var(--gold), var(--gold-dim), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--gold-dim),
+    var(--gold),
+    var(--gold-dim),
+    transparent
+  );
   height: 2px;
 }
 
