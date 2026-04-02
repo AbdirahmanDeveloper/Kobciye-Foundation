@@ -14,6 +14,25 @@ window.addEventListener("scroll", () => {
 });
 
 /* ============================================================
+   THEME BTN
+============================================================ */
+const themeBtn = document.querySelector(".theme-btn");
+const themeIcon = themeBtn?.querySelector("i");
+
+themeBtn?.addEventListener("click", () => {
+  document.body.classList.toggle("darke-theme");
+
+  const isDark = document.body.classList.contains("darke-theme");
+  themeIcon.className = isDark ? "fa-solid fa-sun" : "fa-solid fa-moon";
+  localStorage.setItem("theme", isDark ? "dark" : "light");
+});
+
+// Persist across page loads
+if (localStorage.getItem("theme") === "dark") {
+  document.body.classList.add("darke-theme");
+  if (themeIcon) themeIcon.className = "fa-solid fa-sun";
+}
+/* ============================================================
    MOBILE NAVIGATION TOGGLE
 ============================================================ */
 const mobileNav = document.querySelector("nav");

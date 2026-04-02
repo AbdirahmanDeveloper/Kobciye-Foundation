@@ -826,3 +826,155 @@
     padding: 20px;
   }
 }
+
+
+/* ============================================================
+   DARK THEME — PROJECTS PAGE
+============================================================ */
+
+body.darke-theme .projects-section {
+  background: var(--surface-base);
+}
+
+body.darke-theme .section-eyebrow {
+  color: var(--gold);
+}
+
+body.darke-theme .section-title {
+  color: var(--text-primary);
+}
+
+body.darke-theme .project-card {
+  background: var(--surface-2);
+  border: 1px solid var(--gold);
+  box-shadow: none;
+}
+
+body.darke-theme .project-card:hover {
+  border-color: var(--gold-border-hi);
+  box-shadow: var(--shadow-gold), var(--shadow-md);
+}
+
+body.darke-theme .project-title {
+  color: var(--text-primary);
+}
+
+body.darke-theme .project-desc {
+  color: var(--text-secondary);
+}
+
+body.darke-theme .project-desc-wrapper:not(.expanded)::after {
+  background: linear-gradient(to bottom, transparent, var(--surface-2));
+}
+
+body.darke-theme .read-more-btn {
+  color: var(--gold);
+}
+
+body.darke-theme .read-more-btn:hover {
+  color: #e8bc6a;
+}
+
+body.darke-theme .progress-bar-container {
+  background: var(--surface-3);
+}
+
+body.darke-theme .progress-bar {
+  background: linear-gradient(to right, var(--gold-dim), var(--gold));
+}
+
+body.darke-theme .goal-amount,
+body.darke-theme .raised-amount {
+  color: var(--text-secondary);
+}
+
+body.darke-theme .progress-percentage {
+  color: var(--gold);
+}
+
+body.darke-theme .view-btn {
+  border-color: var(--gold-border-hi);
+  color: var(--gold);
+}
+
+body.darke-theme .view-btn:hover {
+  background: var(--gold);
+  color: #1a0e00;
+}
+
+body.darke-theme .projects-container .empty-state {
+  background: var(--surface-2);
+  border: 1px solid var(--gold);
+}
+
+body.darke-theme .projects-container .empty-state i {
+  color: var(--text-muted);
+}
+
+body.darke-theme .projects-container .empty-state p {
+  color: var(--text-secondary);
+}
+
+/* PROJECT MODAL */
+body.darke-theme .project-modal-section {
+  background: var(--surface-base);
+}
+
+body.darke-theme .project-modal-about {
+  background: var(--surface-2);
+  border: 1px solid var(--gold);
+  box-shadow: none;
+}
+
+body.darke-theme .project-modal-about h2 {
+  color: var(--text-primary);
+}
+
+body.darke-theme .body-text {
+  color: var(--text-secondary);
+}
+
+body.darke-theme .body-text-wrapper:not(.expanded)::after {
+  background: linear-gradient(to bottom, transparent, var(--surface-2));
+}
+
+body.darke-theme .sidebar-card {
+  background: var(--surface-2);
+  border: 1px solid var(--gold);
+  box-shadow: none;
+}
+
+body.darke-theme .stat-label {
+  color: var(--text-muted);
+}
+
+body.darke-theme .stat-value {
+  color: var(--gold);
+}
+
+body.darke-theme .progress-bar__track {
+  background: var(--surface-3);
+}
+
+body.darke-theme .progress-bar__fill {
+  background: linear-gradient(90deg, var(--gold-dim), var(--gold));
+}
+
+body.darke-theme .meta-row {
+  color: var(--text-secondary);
+}
+
+body.darke-theme .meta-row i {
+  color: var(--gold);
+}
+
+body.darke-theme .btn-back {
+  border-color: var(--border-hi);
+  color: var(--text-secondary);
+}
+
+body.darke-theme .btn-back:hover {
+  background: var(--gold-glow);
+  color: var(--gold);
+  border-color: var(--gold-border);
+}
