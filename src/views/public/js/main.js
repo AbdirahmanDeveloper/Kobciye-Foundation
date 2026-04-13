@@ -37,7 +37,6 @@ if (localStorage.getItem("theme") === "dark") {
 ============================================================ */
 const mobileNav = document.querySelector("nav");
 const navToggleBtn = document.querySelector(".navigation-btn");
-const navCloseBtn = document.querySelector(".close-btn");
 
 function openNav() {
   mobileNav.classList.add("active");
@@ -51,9 +50,16 @@ function closeNav() {
   document.documentElement.style.overflow = "";
 }
 
-navToggleBtn.addEventListener("click", openNav);
+navToggleBtn?.addEventListener("click", (e) => {
+  e.stopPropagation();
+  mobileNav.classList.contains("active") ? closeNav() : openNav();
+});
 
-navCloseBtn.addEventListener("click", closeNav);
+document.addEventListener("click", (e) => {
+  if (mobileNav.classList.contains("active") && !mobileNav.contains(e.target)) {
+    closeNav();
+  }
+});
 
 document.querySelectorAll(".nav-links a").forEach((link) => {
   link.addEventListener("click", closeNav);
@@ -508,59 +514,3 @@ scrollProjectRight?.addEventListener("click", () => {
   });
 });
 
-/* ============================================================
-   VOLUNTEER
-============================================================ */
-const fileInput = document.getElementById("volImage");
-const filenameEl = document.getElementById("filename");
-const uploadSub = document.querySelector(".upload-sub");
-const uploadMain = document.querySelector(".upload-main");
-
-fileInput.addEventListener("change", () => {
-  const file = fileInput.files[0];
-  if (file) {
-    filenameEl.textContent = file.name;
-    filenameEl.style.display = "block";
-    uploadSub.style.display = "none";
-    uploadMain.textContent = "Image selected";
-  }
-});
-
-const volonteerForm = document.getElementById("volonteerForm");
-const volModal = document.getElementById("volMessageModal");
-const volSuccess = document.getElementById("contactSuccessMessage");
-const volError = document.getElementById("volErrorMessage");
-
-// OK buttons close the modal
-document.querySelectorAll("#volMessageModal .ok-btn").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    volModal.style.display = "none";
-  });
-});
-
-volonteerForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  try {
-    const res = await fetch("/api/volunteers/createVolunteer", {
-      method: "POST",
-      body: new FormData(volonteerForm),
-    });
-
-    if (res.ok) {
-      volSuccess.style.display = "flex";
-      volError.style.display = "none";
-      volModal.style.display = "flex";
-    } else {
-      volSuccess.style.display = "none";
-      volError.style.display = "flex";
-      volModal.style.display = "flex";
-    }
-    volonteerForm.reset();
-  } catch (err) {
-    console.error(err.message);
-    volSuccess.style.display = "none";
-    volError.style.display = "flex";
-    volModal.style.display = "flex";
-  }
-});

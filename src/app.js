@@ -16,6 +16,8 @@ const contactRoutes = require("./routes/contactRoutes");
 const membersRoutes = require("./routes/membersRoutes");
 const impactsRoutes = require("./routes/impactsRoutes");
 const volonteerRoutes = require("./routes/volunteerroutes");
+const missionsRoutes = require("./routes/missionsRoutes");
+const supportRoutes = require("./routes/supportRoute");
 
 // ============================================================
 // APP INIT
@@ -97,10 +99,10 @@ app.use(
   })
 );
 
-// 3. Body parser — limit 10kb prevents payload DoS attacks
-app.use(express.json({ limit: "10kb" }));
+// 3. Body parser 
+app.use(express.json({ limit: "10mb" }));
 
-// 4. NoSQL injection protection — Express 5 compatible
+// 4. NoSQL injection protection
 app.use((req, res, next) => {
   const sanitize = (obj) => {
     if (obj && typeof obj === "object") {
@@ -118,7 +120,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// 5. XSS protection — Express 5 compatible
+// 5. XSS protection 
 app.use((req, res, next) => {
   const sanitize = (obj) => {
     if (obj && typeof obj === "object") {
@@ -136,10 +138,10 @@ app.use((req, res, next) => {
   next();
 });
 
-// 6. HPP — blocks HTTP parameter pollution
+// 6. HPP
 app.use(hpp());
 
-// 7. Speed limiter — applies to all /api routes
+// 7. Speed limiter 
 const speedLimiter = slowDown({
   windowMs: 15 * 60 * 1000,
   delayAfter: 30,
@@ -162,6 +164,8 @@ app.use("/api/members", membersRoutes);
 app.use("/", viewsRoutes);
 app.use("/api/impacts", impactsRoutes);
 app.use("/api/volunteers", volonteerRoutes);
+app.use("/api/missions", missionsRoutes);
+app.use("/api/support", supportRoutes);
 
 // ============================================================
 // GLOBAL ERROR HANDLER

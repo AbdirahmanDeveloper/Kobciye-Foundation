@@ -1,0 +1,47 @@
+include ../layout/_head
+
+body
+  include ../partials/_navbar
+
+  block content
+    //- HERO SECTION
+    section.hero.missions-hero
+      .hero-content.missions-hero-content
+        .hero-txt(data-aos="fade-up" data-aos-duration="800")
+          h1 Missions
+          p Learn how Kobciye Foundation is transforming communities and creating hope, one project at a time.
+
+    //- MISSIONS SECTION
+    section.missions
+      .section-divider(data-aos="fade-up")
+        .divider-label Explore Our Missions
+
+      if missions && missions.length
+        .missions-container
+          each mission, index in missions
+            .mission-card(
+              data-aos="fade-up"
+              data-aos-delay=`${index * 100}`
+              data-aos-duration="600"
+            )
+              .mission-img
+                img(src=mission.image alt=mission.title)
+              .mission-body
+                span.mission-status(class=`status-${mission.status}`)= mission.status === 'active' ? 'Ongoing' : 'Completed'
+                h3.mission-title= mission.title
+                p.mission-desc= mission.description
+                a.mission-btn(href=`/missions/${mission._id}`)
+                  i.fa-solid.fa-eye
+                  |  View Mission
+      else
+        .empty-state(data-aos="fade-up")
+          i.fa-solid.fa-bullseye
+          h3 No Missions Yet
+          p Check back soon for upcoming missions from Kobciye Foundation.
+
+  include ../partials/testimonials
+
+  include ../partials/_footer
+
+  script(src="/js/missions.js")
+  script(src="/js/main.js")

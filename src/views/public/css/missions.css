@@ -1,0 +1,207 @@
+/* =========================
+   MISSIONS HERO
+========================= */
+.missions-hero {
+  position: relative;
+  background-image: url("/images/home-hero.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Decorative grain overlay */
+.missions-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 1;
+}
+
+.missions-hero * {
+  position: relative;
+  z-index: 2;
+}
+.missions-container {
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  justify-content: center;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.mission-card {
+  background: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.mission-img {
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+}
+.mission-img img {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px 10px 0 0;
+}
+.mission-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  letter-spacing: 2;
+  padding: 1rem;
+}
+
+.mission-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: 1.5px solid #c0873f;
+  color: #c0873f;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.mission-btn:hover {
+  background: #c0873f;
+  color: #fff;
+}
+
+.mission-desc {
+  height: 60px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mission-status {
+  font-weight: 500;
+  padding: 0.3rem 0.8rem;
+  width: fit-content;
+  border-radius: 20px;
+  font-size: 12px;
+  text-transform: capitalize;
+}
+
+.status-active {
+  background: #eafaf1;
+  color: #27ae60;
+}
+
+.status-completed {
+  background: #eaf0fb;
+  color: #2980b9;
+}
+.btn-completed {
+  background: #e5e7eb;
+  color: #9ca3af;
+  border: 1px solid #d1d5db;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.btn-completed:hover {
+  transform: none;
+  box-shadow: none;
+  background: #e5e7eb;
+}
+
+
+/* ============================================================
+   MISSIONS — DARK THEME
+============================================================ */
+
+body.darke-theme .missions-hero::before {
+  background: linear-gradient(
+    180deg,
+    rgba(10, 10, 15, 0.45) 0%,
+    rgba(10, 10, 15, 0.7) 60%,
+    rgba(10, 10, 15, 0.92) 100%
+  );
+}
+
+body.darke-theme .missions-container {
+  background: var(--surface-base);
+}
+
+body.darke-theme .mission-card {
+  background: var(--surface-2);
+  border: 1px solid var(--gold-border);
+  box-shadow: none;
+}
+
+body.darke-theme .mission-card:hover {
+  border-color: var(--gold-border-hi);
+  box-shadow: var(--shadow-gold);
+}
+
+body.darke-theme .mission-img img {
+  filter: brightness(0.8) saturate(0.8);
+}
+
+body.darke-theme .mission-body {
+  border-top: 1px solid var(--border);
+}
+
+body.darke-theme .mission-body h2,
+body.darke-theme .mission-body h3 {
+  color: var(--text-primary);
+}
+
+body.darke-theme .mission-body p {
+  color: var(--text-secondary);
+}
+
+body.darke-theme .mission-desc {
+  color: var(--text-secondary);
+}
+
+body.darke-theme .mission-btn {
+  border-color: var(--gold-border-hi);
+  color: var(--gold);
+  background: transparent;
+}
+
+body.darke-theme .mission-btn:hover {
+  background: var(--gold);
+  color: #1a0e00;
+  border-color: var(--gold);
+  box-shadow: 0 4px 16px rgba(212, 168, 83, 0.25);
+}
+
+body.darke-theme .status-active {
+  background: rgba(62, 207, 142, 0.12);
+  color: var(--green);
+  border: 1px solid rgba(62, 207, 142, 0.25);
+}
+
+body.darke-theme .status-completed {
+  background: rgba(91, 140, 247, 0.12);
+  color: var(--blue);
+  border: 1px solid rgba(91, 140, 247, 0.25);
+}
+body.darke-theme .btn-completed {
+  background: var(--surface-3);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+
+body.darke-theme .btn-completed:hover {
+  background: var(--surface-3);
+  box-shadow: none;
+  transform: none;
+}

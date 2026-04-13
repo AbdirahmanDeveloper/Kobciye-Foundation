@@ -7,7 +7,7 @@ const volunteersSchema = mongoose.Schema({
   },
 
   phone: {
-    type: Number,
+    type: String,
     required: true,
   },
 
@@ -28,12 +28,22 @@ const volunteersSchema = mongoose.Schema({
   nationalId: {
     type: String,
   },
+  type: {
+    type: String,
+    enum: ["permanent", "mission", "project"],
+    default: "permanent",
+    required: true,
+  },
+  mission: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Missions",
+    default: null,
+  },
   status: {
     type: String,
     enum: ["pending", "accepted", "rejected"],
     default: "pending",
   },
-
 });
 
-module.exports = mongoose.model("Volenteer", volunteersSchema);
+module.exports = mongoose.model("Volunteer", volunteersSchema);

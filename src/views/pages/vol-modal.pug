@@ -1,0 +1,80 @@
+include ../layout/_head
+
+body
+
+  block content
+
+    //- VOLUNTEER HERO
+    section.project-modal-hero
+      .hero-content
+        .modal-hero-txt(data-aos="fade-up" data-aos-duration="800")
+          span.hero-badge
+            i.fa-solid.fa-circle-dot
+            |  #{volunteer.status === 'accepted' ? 'Accepted Volunteer' : volunteer.status === 'rejected' ? 'Rejected' : 'Pending Review'}
+          h1= volunteer.name
+
+    //- VOLUNTEER BODY
+    section.project-modal-section
+
+      .project-modal-grid
+
+        //- LEFT — Main Content
+        .project-modal-main
+
+          if volunteer.image
+            .project-modal-image(data-aos="fade-up" data-aos-duration="600")
+              img(src=volunteer.image alt=volunteer.name)
+
+          .project-modal-about(data-aos="fade-up" data-aos-duration="600")
+            h2 About This Volunteer
+            .body-text-wrapper
+              p.body-text= volunteer.bio || 'No bio provided.'
+            button#readMoreBtn.read-more-btn(type="button")
+              span Read More
+              i.fa-solid.fa-chevron-down
+
+        //- RIGHT — Sidebar
+        .project-modal-sidebar
+
+          .sidebar-card(data-aos="fade-up" data-aos-duration="600")
+            .progress-stats
+              .stat-row
+                span.stat-label Status
+                span.stat-value= volunteer.status
+              .stat-row
+                span.stat-label Type
+                span.stat-value= volunteer.type
+              .stat-row
+                span.stat-label Availability
+                span.stat-value= volunteer.availibility
+
+          .sidebar-card.meta-card(data-aos="fade-up" data-aos-delay="100" data-aos-duration="600")
+            .meta-row
+              i.fa-solid.fa-phone
+              span= volunteer.phone
+            .meta-row
+              i.fa-solid.fa-envelope
+              span= volunteer.email
+            if volunteer.nationalId
+              .meta-row
+                i.fa-solid.fa-id-card
+                span= volunteer.nationalId
+            if volunteer.createdAt
+              .meta-row
+                i.fa-regular.fa-calendar
+                span= volunteer.createdAt.toDateString()
+
+          a.btn-back(href="/admin#volunteers" data-aos="fade-up" data-aos-delay="200")
+            i.fa-solid.fa-arrow-left
+            |  Back to Volunteers
+
+    //- CALL TO ACTION
+    section.get-involved(data-aos="fade-up" data-aos-duration="700")
+      h1 Volunteers Drive Change
+      p Our volunteers are the backbone of every mission we undertake.
+      a.get-involved-btn(href="/volunteer") Become a Volunteer
+
+  include ../partials/testimonials
+  include ../partials/_footer
+
+  script(src="/js/admin.js")

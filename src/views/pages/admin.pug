@@ -7,140 +7,143 @@ head
   link(rel="stylesheet" href="/css/admin.css")
   script(src="https://cdn.jsdelivr.net/npm/chart.js")
   link(rel="icon" type="image/x-icon" href="/images/favicon.ico")
-  link(rel="icon" type="image/x-icon" href="/favicon.ico")
 
-  body
-    //- SIDEBAR
-    header
-      .logo(href="/")
-        image.logo-img(src="/images/logo.png")
-      .navigation-btn
-        i.fa-solid.fa-bars
-      .notification-bell
-        a.notification-link
-          i.fa-solid.fa-bell
-          h2.notification-counter 0
-      nav.side-bar
-        ul.nav-links
-          li
-            a(href="#dashboard")
-              i.fa-solid.fa-gauge
-              |  Dashboard
-          li
-            a(href="#donations")
-              i.fa-solid.fa-hand-holding-heart
-              |  Donations
-          li
-            a(href="#news")
-              i.fa-solid.fa-newspaper
-              |  News
-          li
-            a(href="#contacts")
-              i.fa-solid.fa-address-book
-              | Contacts
-          li
-            a(href="#users")
-              i.fa-solid.fa-users
-              |  Users
-          li
-            a(href="#projects")
-              i.fa-solid.fa-folder-open
-              |  Projects
-          li
-            a(href="#members")
-              i.fa-solid.fa-arrows-down-to-people
-              |  Members
-          li
-            a(href="#impacts")
-              i.fa-solid.fa-chart-simple
-              |  Impacts
-          li
-            a(href="#volunteers")
-              i.fa-solid.fa-hand-holding-hand
-              |  Volunteers
-          li.nav-divider
+body
+  //- ==================
+  //- HEADER
+  //- ==================
+  header
+    .logo
+      image.logo-img(src="/images/logo.png")
+    .navigation-btn
+      i.fa-solid.fa-bars
+    .notification-bell
+      a.notification-link
+        i.fa-solid.fa-bell
+        h2.notification-counter 0
+    nav.side-bar
+      ul.nav-links
+        li
+          a(href="#dashboard")
+            i.fa-solid.fa-gauge
+            |  Dashboard
+        li
+          a(href="#donations")
+            i.fa-solid.fa-hand-holding-heart
+            |  Donations
+        li
+          a(href="#news")
+            i.fa-solid.fa-newspaper
+            |  News
+        li
+          a(href="#contacts")
+            i.fa-solid.fa-address-book
+            |  Contacts
+        li
+          a(href="#users")
+            i.fa-solid.fa-users
+            |  Users
+        li
+          a(href="#projects")
+            i.fa-solid.fa-folder-open
+            |  Projects
+        li
+          a(href="#members")
+            i.fa-solid.fa-arrows-down-to-people
+            |  Members
+        li
+          a(href="#impacts")
+            i.fa-solid.fa-chart-simple
+            |  Impacts
+        li
+          a(href="#volunteers")
+            i.fa-solid.fa-hand-holding-hand
+            |  Volunteers
+        li
+          a(href="#missions")
+            i.fa-solid.fa-bullseye
+            |  Missions
+        li
+          a(href="#support")
+            i.fa-solid.fa-headset
+            |  Support
+        li.nav-divider
+        li.auth-item
+          button.auth-btn.login-btn#goToLoginBtn
+            i.fa-solid.fa-right-to-bracket
+            span Login
+        li.auth-item
+          button.auth-btn.logout-btn#adminLogoutBtn
+            i.fa-solid.fa-right-from-bracket
+            span Logout
 
-          li.auth-item
-            button.auth-btn.login-btn#goToLoginBtn
-              i.fa-solid.fa-right-to-bracket
-              span Login
+  //- ==================
+  //- DASHBOARD
+  //- ==================
+  section.content-section.active#dashboard
+    .dashboard-container
+      .stats-grid
+        .stat-card
+          .stat-icon.donations
+            i.fa-solid.fa-hand-holding-dollar
+          .stat-details
+            h3#totalDonatedAmount KES 0
+            p Total Donated
+        .stat-card
+          .stat-icon.users
+            i.fa-solid.fa-users
+          .stat-details
+            h3#totalUsers 0
+            p Total Users
+        .stat-card
+          .stat-icon.members
+            i.fa-solid.fa-user-group
+          .stat-details
+            h3#totalMembers 0
+            p Total Members
+        .stat-card
+          .stat-icon.active
+            i.fa-solid.fa-rocket
+          .stat-details
+            h3#activeProjects 0
+            p Active Projects
+        .stat-card
+          .stat-icon.completed
+            i.fa-solid.fa-circle-check
+          .stat-details
+            h3#completedProjects 0
+            p Completed Projects
 
-          li.auth-item
-            button.auth-btn.logout-btn#adminLogoutBtn
-              i.fa-solid.fa-right-from-bracket
-              span Logout
+      .dashboard-grid
+        .dashboard-card.chart-card
+          .card-header
+            h2
+              i.fa-solid.fa-chart-line
+              |  Donations Overview
+          .card-body
+            canvas#donationsChart
+        .dashboard-card.donations-card
+          .card-header
+            h2
+              i.fa-solid.fa-clock-rotate-left
+              |  Latest Donations
+          .card-body
+            if dashDonations && dashDonations.length
+              each donation in dashDonations
+                .donation-items-container
+                  span.donationCard-item= donation.donor ? donation.donor.name : 'Deleted User'
+                  span.donationCard-item= donation.amount
+                  span.donationCard-item= donation.paymentMethod
+            else
+              p.text-muted No recent donations
 
-    //- ==================
-    //- DASHBOARD
-    //- ==================
-    section.content-section.active#dashboard
-      .dashboard-container
-        .stats-grid
-          .stat-card
-            .stat-icon.donations
-              i.fa-solid.fa-hand-holding-dollar
-            .stat-details
-              h3#totalDonatedAmount KES 0
-              p Total Donated
-
-          .stat-card
-            .stat-icon.users
-              i.fa-solid.fa-users
-            .stat-details
-              h3#totalUsers 0
-              p Total Users
-
-          .stat-card
-            .stat-icon.members
-              i.fa-solid.fa-user-group
-            .stat-details
-              h3#totalMembers 0
-              p Total Members
-
-          .stat-card
-            .stat-icon.active
-              i.fa-solid.fa-rocket
-            .stat-details
-              h3#activeProjects 0
-              p Active Projects
-
-          .stat-card
-            .stat-icon.completed
-              i.fa-solid.fa-circle-check
-            .stat-details
-              h3#completedProjects 0
-              p Completed Projects
-
-        .dashboard-grid
-          .dashboard-card.chart-card
-            .card-header
-              h2
-                i.fa-solid.fa-chart-line
-                |  Donations Overview
-            .card-body
-              canvas#donationsChart
-
-          .dashboard-card.donations-card
-            .card-header
-              h2
-                i.fa-solid.fa-clock-rotate-left
-                |  Latest Donations
-            .card-body
-              if dashDonations && dashDonations.length
-                each donation in dashDonations
-                  .donation-items-container
-                    span.donationCard-item= donation.donor ? donation.donor.name : 'Deleted User'
-                    span.donationCard-item= donation.amount
-                    span.donationCard-item= donation.paymentMethod
-              else
-                p.text-muted No recent donations
-
-    //- ==================
-    //- DONATIONS
-    //- ==================
-    section.content-section#donations
-      .donations-list.lists
-        table.donations-table#donations-table
+  //- ==================
+  //- DONATIONS
+  //- ==================
+  section.content-section#donations
+    .lists.donations-list
+      table.donations-table#donations-table
+        thead
           tr
             th Donor Name
             th Donor Phone
@@ -149,6 +152,7 @@ head
             th Amount (Ksh)
             th Payment Method
             th Status
+        tbody
           if donations && donations.length
             each item in donations
               tr
@@ -158,142 +162,157 @@ head
                 td= item.donationType
                 td= item.amount
                 td= item.paymentMethod
-                td(class=`status-${item.status}`)= item.status
+                td
+                  span(class=`status-badge status-${item.status}`)= item.status
           else
             tr
               td(colspan="7")
                 p.text-muted No donations found
 
-    //- ==================
-    //- NEWS
-    //- ==================
-    section.content-section#news
-      .add
-        button.add-btn#addNews Add News
+  //- ==================
+  //- NEWS
+  //- ==================
+  section.content-section#news
+    .add
+      button.add-btn#addNews Add News
 
-      .news-list.lists
-        table.news-table
+    .lists.news-list
+      table.news-table
+        thead
           tr
             th News Title
             th Date
             th Action
+        tbody
           if news && news.length
             each item in news
               tr
                 td= item.title
                 td= item.createdAt ? item.createdAt.toDateString() : 'No Date'
-                td.action-row
-                  button.delete-btn(data-id=item._id)
-                    i.fa-solid.fa-trash
-                    |  Delete
-                  button.edit-btn(data-id=item._id)
-                    i.fa-solid.fa-pen
-                    |  Edit
+                td
+                  .action-wrapper
+                    button.action-btn
+                      i.fa-solid.fa-ellipsis-vertical
+                    .see-more-btns
+                      button.edit-btn.edit-news-btn(data-id=item._id)
+                        i.fa-solid.fa-pen
+                        |  Edit
+                      button.delete-btn.delete-news-btn(data-id=item._id)
+                        i.fa-solid.fa-trash
+                        |  Delete
           else
             tr
               td(colspan="3")
                 p.text-muted No news found
 
-    .create-section.create-news
-      .form
-        .form-title
-          h2 Create News
-        form#createNewsForm
-          input(type="text" name="title" placeholder="News Title" required)
-          textarea(name="content" placeholder="News Content" required)
-          input(type="file" name="image" accept="image/*" required)
-          button(type="submit") Create News
+  //- CREATE NEWS
+  .create-section.create-news
+    .form
+      .form-title
+        h2 Create News
+      form#createNewsForm
+        input(type="text" name="title" placeholder="News Title" required)
+        textarea(name="content" placeholder="News Content" required)
+        input(type="file" name="image" accept="image/*" required)
+        button(type="submit") Create News
+    .success-message#newsSuccessMessage
+      i.fa-solid.fa-circle-check
+      h2 News Created Successfully
+      button.ok-btn OK
+    .error-message#newsErrorMessage
+      i.fa-solid.fa-circle-xmark
+      h2 News Creation Failed
+      button.ok-error-btn OK
 
-      .success-message#newsSuccessMessage
-        i.fa-solid.fa-circle-check
-        h2 News Created Successfully
-        button.ok-btn OK
+  //- EDIT NEWS
+  .create-section.edit-news
+    .form
+      .form-title
+        h2 Edit News
+      form#editNewsForm(enctype="multipart/form-data")
+        input(type="hidden" id="editNewsId")
+        input#editNewsTitle(type="text" name="title" placeholder="News Title" required)
+        textarea#editNewsContent(name="content" placeholder="News Content" rows="6" required)
+        .current-image
+          p Current Image:
+          img#editNewsPreview(src="" alt="Current Image" width="150")
+        input#editNewsImage(type="file" name="image" accept="image/*")
+        .form-actions
+          button(type="submit") Update News
+          button.cancel-edit-btn#cancelEditNews(type="button") Cancel
+    .success-message#newsUpdateSuccess
+      i.fa-solid.fa-circle-check
+      h2 News Updated Successfully
+      button.ok-btn#newsUpdateOkBtn OK
+    .error-message#newsUpdateError
+      i.fa-solid.fa-circle-xmark
+      h2 News Update Failed
+      button.ok-error-btn#newsUpdateErrorBtn OK
 
-      .error-message#newsErrorMessage
-        i.fa-solid.fa-circle-xmark
-        h2 News Creation Failed
-        button.ok-error-btn OK
-
-    //- EDIT NEWS
-    .create-section.edit-news
-      .form
-        .form-title
-          h2 Edit News
-        form#editNewsForm(enctype="multipart/form-data")
-          input(type="hidden" id="editNewsId")
-          input#editNewsTitle(type="text" name="title" placeholder="News Title" required)
-          textarea#editNewsContent(name="content" placeholder="News Content" rows="6" required)
-          .current-image
-            p Current Image:
-            img#editNewsPreview(src="" alt="Current Image" width="150")
-          input#editNewsImage(type="file" name="image" accept="image/*")
-          .form-actions
-            button(type="submit") Update News
-            button(type="button").cancel-edit-btn#cancelEditNews Cancel
-
-      .success-message#newsUpdateSuccess
-        i.fa-solid.fa-circle-check
-        h2 News Updated Successfully
-        button.ok-btn#newsUpdateOkBtn OK
-
-      .error-message#newsUpdateError
-        i.fa-solid.fa-circle-xmark
-        h2 News Update Failed
-        button.ok-error-btn#newsUpdateErrorBtn OK
-
-    //- ==================
-    //- CONTACTS
-    //- ==================
-    section.content-section#contacts
-      .lists.contacts-lists
-        table.contacts-table
+  //- ==================
+  //- CONTACTS
+  //- ==================
+  section.content-section#contacts
+    .lists.contacts-list
+      table.contacts-table
+        thead
           tr
             th Name
             th Email
             th Subject
+        tbody
           if contacts && contacts.length
             each item in contacts
               tr
                 td= item.name
                 td= item.email
                 td= item.subject
+          else
+            tr
+              td(colspan="3")
+                p.text-muted No contacts found
 
-    //- ==================
-    //- USERS
-    //- ==================
-    section.content-section#users
-      .lists.users-list
-        table.users-table
+  //- ==================
+  //- USERS
+  //- ==================
+  section.content-section#users
+    .lists.users-list
+      table.users-table
+        thead
           tr
             th Name
             th Email
             th Role
+        tbody
           if users && users.length
             each item in users
               tr
                 td= item.name
                 td= item.email
-                td.role(class=`role-${item.role}`)= item.role
+                td
+                  span.role(class=`role-${item.role}`)= item.role
           else
             tr
               td(colspan="3")
                 p.text-muted No users found
 
-    //- ==================
-    //- PROJECTS
-    //- ==================
-    section.content-section#projects
-      .add
-        button.add-btn#addProject Add Project
+  //- ==================
+  //- PROJECTS
+  //- ==================
+  section.content-section#projects
+    .add
+      button.add-btn#addProject Add Project
 
-      .lists.projects-lists
-        table.projects-table
+    .lists.projects-list
+      table.projects-table
+        thead
           tr
             th Project Title
             th Goal Amount (Ksh)
             th Raised Amount (Ksh)
             th Status
             th Action
+        tbody
           if projects && projects.length
             each project in projects
               tr
@@ -301,124 +320,132 @@ head
                 td= project.goalAmount
                 td= project.raisedAmount
                 td= project.status
-                td.action-row
-                  button.edit-btn.edit-project-btn(data-id=project._id)
-                    i.fa-solid.fa-pen
-                    |  Edit
-                  button.delete-btn.delete-project-btn(data-id=project._id)
-                    i.fa-solid.fa-trash
-                    |  Delete
+                td
+                  .action-wrapper
+                    button.action-btn
+                      i.fa-solid.fa-ellipsis-vertical
+                    .see-more-btns
+                      button.edit-btn.edit-project-btn(data-id=project._id)
+                        i.fa-solid.fa-pen
+                        |  Edit
+                      button.delete-btn.delete-project-btn(data-id=project._id)
+                        i.fa-solid.fa-trash
+                        |  Delete
           else
             tr
               td(colspan="5")
                 p.text-muted No projects found
 
-      .create-project.create-section
-        .form
-          .form-title
-            h2 Create Project
-          form#createProjectForm
-            input(type="text" name="title" placeholder="Project Title" required)
-            input(type="text" name="description" placeholder="Project Description" required)
-            input(type="number" name="goalAmount" placeholder="Goal Amount" required)
-            input(type="file" name="image" accept="image/*" required)
-            button(type="submit") Create Project
+  //- CREATE PROJECT
+  .create-section.create-project
+    .form
+      .form-title
+        h2 Create Project
+      form#createProjectForm
+        input(type="text" name="title" placeholder="Project Title" required)
+        input(type="text" name="description" placeholder="Project Description" required)
+        input(type="number" name="goalAmount" placeholder="Goal Amount" required)
+        input(type="file" name="image" accept="image/*" required)
+        button(type="submit") Create Project
+    .success-message#projectSuccessMessage
+      i.fa-solid.fa-circle-check
+      h2 Project Created Successfully
+      button.ok-btn OK
+    .error-message#projectErrorMessage
+      i.fa-solid.fa-circle-xmark
+      h2 Project Creation Failed
+      button.ok-error-btn OK
 
-        .success-message#projectSuccessMessage
-          i.fa-solid.fa-circle-check
-          h2 Project Created Successfully
-          button.ok-btn OK
+  //- EDIT PROJECT
+  .create-section.edit-project
+    .form
+      .form-title
+        h2 Edit Project
+      form#editProjectForm
+        input(type="hidden" id="editProjectId")
+        input#editTitle(type="text" name="title" placeholder="Project Title" required)
+        textarea#editDescription(name="description" placeholder="Project Description" rows="4" required)
+        input#editGoalAmount(type="number" name="goalAmount" placeholder="Goal Amount" required)
+        select#editStatus(name="status" required)
+          option(value="active") Active
+          option(value="completed") Completed
+        button(type="submit") Update Project
+    .success-message#projectUpdateSuccess
+      i.fa-solid.fa-circle-check
+      h2 Project Updated Successfully
+      button.ok-btn#projectUpdateOkBtn OK
+    .error-message#projectUpdateError
+      i.fa-solid.fa-circle-xmark
+      h2 Project Update Failed
+      button.ok-error-btn#projectUpdateErrorBtn OK
 
-        .error-message#projectErrorMessage
-          i.fa-solid.fa-circle-xmark
-          h2 Project Creation Failed
-          button.ok-error-btn OK
+  //- ==================
+  //- MEMBERS
+  //- ==================
+  section.content-section#members
+    .add
+      button.add-btn#addMember Add Member
 
-      //- EDIT PROJECT
-      .edit-project.create-section
-        .form
-          .form-title
-            h2 Edit Project
-          form#editProjectForm
-            input(type="hidden" id="editProjectId")
-            input#editTitle(type="text" name="title" placeholder="Project Title" required)
-            textarea#editDescription(name="description" placeholder="Project Description" rows="4" required)
-            input#editGoalAmount(type="number" name="goalAmount" placeholder="Goal Amount" required)
-            select#editStatus(name="status" required)
-              option(value="active") Active
-              option(value="completed") Completed
-            button(type="submit") Update Project
-
-        .success-message#projectUpdateSuccess
-          i.fa-solid.fa-circle-check
-          h2 Project Updated Successfully
-          button.ok-btn#projectUpdateOkBtn OK
-
-        .error-message#projectUpdateError
-          i.fa-solid.fa-circle-xmark
-          h2 Project Update Failed
-          button.ok-error-btn#projectUpdateErrorBtn OK
-
-    //- ==================
-    //- MEMBERS
-    //- ==================
-    section.content-section#members
-      .add
-        button.add-btn#addMember Add Member
-
-      .lists.members-list
-        table.members-table
+    .lists.members-list
+      table.members-table
+        thead
           tr
             th Name
             th Role
             th Action
+        tbody
           if members && members.length
             each member in members
               tr
                 td= member.name
                 td= member.role
                 td
-                  button.delete-member-btn(data-id=member._id)
-                    i.fa-solid.fa-trash
-                    |  Delete
+                  .action-wrapper
+                    button.action-btn
+                      i.fa-solid.fa-ellipsis-vertical
+                    .see-more-btns
+                      button.delete-btn.delete-member-btn(data-id=member._id)
+                        i.fa-solid.fa-trash
+                        |  Delete
           else
             tr
               td(colspan="3")
                 p.text-muted No members found
 
-      .add-member.create-section
-        .form
-          .form-title
-            h2 Add Member
-          form#addMemberForm(enctype="multipart/form-data")
-            input(type="text" name="name" placeholder="Member Name" required)
-            input(type="text" name="role" placeholder="Member Role" required)
-            input(type="file" name="memberImage" accept="image/*" required)
-            button(type="submit") Add Member
+  //- ADD MEMBER
+  .create-section.add-member
+    .form
+      .form-title
+        h2 Add Member
+      form#addMemberForm(enctype="multipart/form-data")
+        input(type="text" name="name" placeholder="Member Name" required)
+        input(type="text" name="role" placeholder="Member Role" required)
+        input(type="file" name="memberImage" accept="image/*" required)
+        button(type="submit") Add Member
+    .success-message#memberSuccessMessage
+      i.fa-solid.fa-circle-check
+      h2 Member Added Successfully
+      button.ok-btn OK
+    .error-message#memberErrorMessage
+      i.fa-solid.fa-circle-xmark
+      h2 Member Addition Failed
+      button.ok-error-btn OK
 
-        .success-message#memberSuccessMessage
-          i.fa-solid.fa-circle-check
-          h2 Member Added Successfully
-          button.ok-btn OK
+  //- ==================
+  //- IMPACTS
+  //- ==================
+  section.content-section#impacts
+    .add
+      button.add-btn#editImpacts Update Impact Stats
 
-        .error-message#memberErrorMessage
-          i.fa-solid.fa-circle-xmark
-          h2 Member Addition Failed
-          button.ok-error-btn OK
-
-    //- ==================
-    //- IMPACTS
-    //- ==================
-    section.content-section#impacts
-      .add
-        button.add-btn#editImpacts Update Impact Stats
-
-      .lists.impacts-list
-        table.impacts-table
+    .lists.impacts-list
+      table.impacts-table
+        thead
           tr
             th Communities Served
             th Projects Completed
             th Volunteers Engaged
+        tbody
           if impacts
             tr
               td= impacts.communities
@@ -429,41 +456,42 @@ head
               td(colspan="3")
                 p.text-muted No impact stats yet
 
-      .create-section.impacts-section
-        .form
-          .form-title
-            h2 Impact Stats
-          form#impactsForm
-            input#impactCommunities(type="number" name="communities" placeholder="Communities Served" required)
-            input#impactProjects(type="number" name="projects" placeholder="Projects Completed" required)
-            input#impactVolunteers(type="number" name="volunteers" placeholder="Volunteers Engaged" required)
-            button(type="submit") Save
+  .create-section.impacts-section
+    .form
+      .form-title
+        h2 Impact Stats
+      form#impactsForm
+        input#impactCommunities(type="number" name="communities" placeholder="Communities Served" required)
+        input#impactProjects(type="number" name="projects" placeholder="Projects Completed" required)
+        input#impactVolunteers(type="number" name="volunteers" placeholder="Volunteers Engaged" required)
+        button(type="submit") Save
+    .success-message#impactsSuccess
+      i.fa-solid.fa-circle-check
+      h2 Stats Updated Successfully
+      button.ok-btn OK
+    .error-message#impactsError
+      i.fa-solid.fa-circle-xmark
+      h2 Update Failed
+      button.ok-error-btn OK
 
-        .success-message#impactsSuccess
-          i.fa-solid.fa-circle-check
-          h2 Stats Updated Successfully
-          button.ok-btn OK
-
-        .error-message#impactsError
-          i.fa-solid.fa-circle-xmark
-          h2 Update Failed
-          button.ok-error-btn OK
-
-    //- ==================
-    //- VOLUNTEERS
-    //- ==================
-    section.content-section#volunteers
-      .lists.volunteers-list
-        table.volunteers-table
+  //- ==================
+  //- VOLUNTEERS
+  //- ==================
+  section.content-section#volunteers
+    .lists.volunteers-list
+      table.volunteers-table
+        thead
           tr
             th Image
             th Name
             th Phone
             th Email
             th Availability
-            th national id
+            th National ID
+            th Type
             th Status
             th Action
+        tbody
           if volunteers && volunteers.length
             each item in volunteers
               tr
@@ -474,33 +502,191 @@ head
                 td= item.email
                 td= item.availibility
                 td= item.nationalId
+                td= item.type
                 td
                   span.status-badge(class=`status-${item.status}`)= item.status
-                td.action-row
-                  button.accept-volunteer-btn(data-id=item._id)
-                    i.fa-solid.fa-check
-                    |  Accept
-                  button.reject-volunteer-btn(data-id=item._id)
-                    i.fa-solid.fa-xmark
-                    |  Reject
-                  button.delete-volunteer-btn(data-id=item._id)
-                    i.fa-solid.fa-trash
-                    |  Delete
+                td
+                  .action-wrapper
+                    button.action-btn
+                      i.fa-solid.fa-ellipsis-vertical
+                    .see-more-btns
+                      button.accept-btn.accept-volunteer-btn(data-id=item._id)
+                        i.fa-solid.fa-check
+                        |  Accept
+                      button.reject-btn.reject-volunteer-btn(data-id=item._id)
+                        i.fa-solid.fa-xmark
+                        |  Reject
+                      a.edit-btn.review-volunteer-btn(href=`/volunteer/${item._id}` target="_blank" data-id=item._id)
+                        i.fa-solid.fa-eye
+                        |  Review
+                      button.delete-btn.delete-volunteer-btn(data-id=item._id)
+                        i.fa-solid.fa-trash
+                        |  Delete
           else
             tr
-              td(colspan="7")
+              td(colspan="9")
                 p.text-muted No volunteers found
 
-    //- ==================
-    //- NOTIFICATIONS
-    //- ==================
-    section.notification-section
-      .notification-header
-        span
-          i.fa-solid.fa-bell(style="margin-right: 8px;")
-          | Notifications
-        button.notification-clear-btn#clearNotifications Clear all
+  //- ==================
+  //- MISSIONS
+  //- ==================
+  section.content-section#missions
+    .add
+      button.add-btn#createMission
+        i.fa-solid.fa-plus
+        |  Add Mission
 
-      .notification-list#notificationList
+    .lists.missions-list
+      table.missions-table
+        thead
+          tr
+            th Title
+            th Duration
+            th Location
+            th Volunteers
+            th Joined
+            th Spots Left
+            th Status
+            th Action
+        tbody
+          if missions && missions.length
+            each item in missions
+              tr
+                td= item.title
+                td= item.duration
+                td= item.location
+                td= item.volunteers
+                td= item.volunteersJoined
+                td= item.volunteers - item.volunteersJoined
+                td
+                  span.status-badge(class=`status-${item.status}`)= item.status
+                td
+                  .action-wrapper
+                    button.action-btn
+                      i.fa-solid.fa-ellipsis-vertical
+                    .see-more-btns
+                      button.edit-btn.edit-mission-btn(data-id=item._id)
+                        i.fa-solid.fa-pen
+                        |  Edit
+                      button.delete-btn.delete-mission-btn(data-id=item._id)
+                        i.fa-solid.fa-trash
+                        |  Delete
+          else
+            tr
+              td(colspan="8")
+                p.text-muted No missions found
 
-    script(src="/js/admin.js")
+  //- CREATE MISSION
+  .create-section.missions-section
+    .form
+      .form-title
+        h2 Add Mission
+      form#missionsForm
+        input#missionTitle(type="text" name="title" placeholder="Mission Title" required)
+        textarea#missionDescription(name="description" placeholder="Mission Description" required)
+        input#missionImage(type="file" name="image" accept="image/*" required)
+        input#missionLocation(type="text" name="location" placeholder="Location" required)
+        input#missionDuration(type="text" name="duration" placeholder="Duration e.g. 3 Months" required)
+        input#missionVolunteers(type="number" name="volunteers" placeholder="Volunteer Slots" required)
+        button(type="submit") Create
+    .success-message#missionsSuccess
+      i.fa-solid.fa-circle-check
+      h2 Mission Created Successfully
+      button.ok-btn OK
+    .error-message#missionsError
+      i.fa-solid.fa-circle-xmark
+      h2 Failed to Create Mission
+      button.ok-error-btn OK
+
+  //- EDIT MISSION
+  .create-section.edit-mission
+    .form
+      .form-title
+        h2 Edit Mission
+      form#editMissionForm
+        input(type="hidden" id="editMissionId")
+        input#editMissionTitle(type="text" name="title" placeholder="Mission Title" required)
+        textarea#editMissionDescription(name="description" placeholder="Mission Description" rows="4" required)
+        input#editMissionLocation(type="text" name="location" placeholder="Location" required)
+        input#editMissionDuration(type="text" name="duration" placeholder="Duration e.g. 3 Months" required)
+        input#editMissionVolunteers(type="number" name="volunteers" placeholder="Volunteer Slots" required)
+        select#editMissionStatus(name="status" required)
+          option(value="active") Active
+          option(value="completed") Completed
+        input#editMissionImage(type="file" name="image" accept="image/*")
+        .form-actions
+          button(type="submit") Update Mission
+          button#cancelEditMission(type="button") Cancel
+    .success-message#missionUpdateSuccess
+      i.fa-solid.fa-circle-check
+      h2 Mission Updated Successfully
+      button.ok-btn#missionUpdateOkBtn OK
+    .error-message#missionUpdateError
+      i.fa-solid.fa-circle-xmark
+      h2 Mission Update Failed
+      button.ok-error-btn#missionUpdateErrorBtn OK
+
+  //- ==================
+  //- SUPPORT
+  //- ==================
+  section.content-section#support
+    .lists.support-list
+      table.support-table
+        thead
+          tr
+            th Image
+            th Name
+            th Email
+            th Phone
+            th Location
+            th National ID
+            th Subject
+            th Status
+            th Action
+        tbody
+          if supports && supports.length
+            each item in supports
+              tr
+                td
+                  img.volunteer-img(src=item.image alt=item.name)
+                td= item.name
+                td= item.email
+                td= item.phone
+                td= item.location
+                td= item.nationalId
+                td= item.subject
+                td= item.status
+                td
+                  .action-wrapper
+                    button.action-btn
+                      i.fa-solid.fa-ellipsis-vertical
+                    .see-more-btns
+                      button.accept-btn.accept-support-btn(data-id=item._id)
+                        i.fa-solid.fa-check
+                        |  Accept
+                      button.reject-btn.reject-support-btn(data-id=item._id)
+                        i.fa-solid.fa-xmark
+                        |  Reject
+                      a.edit-btn.review-support-btn(href=`/support/${item._id}` target="_blank" data-id=item._id)
+                        i.fa-solid.fa-eye
+                        |  Review
+                      button.delete-btn.delete-support-btn(data-id=item._id)
+                        i.fa-solid.fa-trash
+                        |  Delete
+          else
+            tr
+              td(colspan="8")
+                p.text-muted No support requests found
+
+  //- ==================
+  //- NOTIFICATIONS
+  //- ==================
+  .notification-section
+    .notification-header
+      span
+        i.fa-solid.fa-bell(style="margin-right: 8px;")
+        | Notifications
+      button.notification-clear-btn#clearNotifications Clear all
+    .notification-list#notificationList
+
+  script(src="/js/admin.js")

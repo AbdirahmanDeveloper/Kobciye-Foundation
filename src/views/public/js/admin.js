@@ -17,12 +17,9 @@ document.documentElement.style.display = "";
 ============================================================ */
 
 function closeAndReload() {
-  const activeLink = document.querySelector(".nav-links a.active");
-  if (activeLink) {
-    localStorage.setItem(
-      "activeSectionId",
-      activeLink.getAttribute("href").substring(1)
-    );
+  const activeSection = document.querySelector(".content-section.active");
+  if (activeSection) {
+    localStorage.setItem("activeSectionId", activeSection.id);
   }
   window.location.reload();
 }
@@ -78,7 +75,6 @@ const timeAgo = (d) => {
 
 function addNotification(type, message, time) {
   notificationList.querySelector(".notification-empty")?.remove();
-
   const item = document.createElement("div");
   item.className = "notification-item unread";
   item.innerHTML = `
@@ -93,7 +89,6 @@ function addNotification(type, message, time) {
     </div>
   `;
   notificationList.prepend(item);
-
   notificationCount++;
   notificationCounter.textContent =
     notificationCount > 99 ? "99+" : notificationCount;
@@ -110,10 +105,8 @@ async function pollNotifications() {
         headers: { Authorization: `Bearer ${token}` },
       }),
     ]);
-
     const donData = await donRes.json();
     const conData = await conRes.json();
-
     if (donRes.ok && donData.data.length)
       donData.data.forEach((d) =>
         addNotification(
@@ -124,7 +117,6 @@ async function pollNotifications() {
           d.createdAt
         )
       );
-
     if (conRes.ok && conData.data.length)
       conData.data.forEach((c) =>
         addNotification(
@@ -133,7 +125,6 @@ async function pollNotifications() {
           c.createdAt
         )
       );
-
     lastChecked = new Date().toISOString();
   } catch {}
 }
@@ -191,10 +182,8 @@ const navigationToggleBtn = document.querySelector(".navigation-btn");
 navigationLinks.forEach((link) => {
   link.addEventListener("click", (e) => {
     e.preventDefault();
-    navigationLinks.forEach(
-      (l) => l.classList.remove("active"),
-      sidebarNav.classList.remove("active")
-    );
+    navigationLinks.forEach((l) => l.classList.remove("active"));
+    sidebarNav.classList.remove("active");
     contentSections.forEach((s) => s.classList.remove("active"));
     link.classList.add("active");
     document
@@ -205,7 +194,6 @@ navigationLinks.forEach((link) => {
 
 const savedSection = localStorage.getItem("activeSectionId") || "dashboard";
 localStorage.removeItem("activeSectionId");
-
 const savedLink = document.querySelector(
   `.nav-links a[href="#${savedSection}"]`
 );
@@ -218,12 +206,8 @@ if (savedLink) {
 }
 
 document.addEventListener("click", (e) => {
-  if (
-    !sidebarNav.contains(e.target) &&
-    sidebarNav.classList.contains("active")
-  ) {
+  if (!sidebarNav.contains(e.target) && sidebarNav.classList.contains("active"))
     sidebarNav.classList.remove("active");
-  }
 });
 
 navigationToggleBtn?.addEventListener("click", (e) => {
@@ -291,10 +275,6 @@ fetchTotalUsersCount();
 fetchTotalMembersCount();
 fetchProjectCounts();
 
-/* ============================================================
-   DONATIONS CHART
-============================================================ */
-
 document.addEventListener("DOMContentLoaded", async () => {
   try {
     const response = await fetch("/api/donations/monthly-stats", {
@@ -303,7 +283,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     const monthlyStatsData = await response.json();
     const canvas = document.getElementById("donationsChart");
     if (!canvas) return;
-
     new Chart(canvas.getContext("2d"), {
       type: "line",
       data: {
@@ -400,7 +379,9 @@ document.querySelectorAll(".edit-project-btn").forEach((btn) => {
     try {
       const response = await fetch(
         `/api/projects/${btn.getAttribute("data-id")}`,
-        { headers: { Authorization: `Bearer ${token}` } }
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
       );
       const data = await response.json();
       if (response.ok) {
@@ -467,9 +448,6 @@ editProjectModal?.addEventListener("click", (e) => {
 });
 
 document
-  .getElementById("projectUpdateOkBtn")
-  ?.addEventListener("click", closeAndReload);
-document
   .getElementById("projectUpdateErrorBtn")
   ?.addEventListener("click", () => {
     if (projectUpdateErrorModal) projectUpdateErrorModal.style.display = "none";
@@ -518,7 +496,7 @@ createNewsForm?.addEventListener("submit", async (e) => {
   }
 });
 
-document.querySelectorAll(".delete-btn").forEach((btn) => {
+document.querySelectorAll(".delete-news-btn").forEach((btn) => {
   btn.addEventListener("click", async (e) => {
     e.preventDefault();
     if (!confirm("Are you sure you want to delete this news?")) return;
@@ -535,7 +513,7 @@ document.querySelectorAll(".delete-btn").forEach((btn) => {
   });
 });
 
-document.querySelectorAll(".edit-btn").forEach((btn) => {
+document.querySelectorAll(".edit-news-btn").forEach((btn) => {
   btn.addEventListener("click", async () => {
     try {
       const res = await fetch(`/api/news/${btn.getAttribute("data-id")}`, {
@@ -589,9 +567,6 @@ editNewsForm?.addEventListener("submit", async (e) => {
   }
 });
 
-document
-  .getElementById("newsUpdateOkBtn")
-  ?.addEventListener("click", closeAndReload);
 document.getElementById("newsUpdateErrorBtn")?.addEventListener("click", () => {
   if (newsUpdateError) newsUpdateError.style.display = "none";
   if (editNewsFormWrapper) editNewsFormWrapper.style.display = "flex";
@@ -658,14 +633,6 @@ document.querySelectorAll(".delete-member-btn").forEach((btn) => {
       alert("An error occurred while deleting member");
     }
   });
-});
-
-/* ============================================================
-   GLOBAL OK BUTTONS
-============================================================ */
-
-document.querySelectorAll(".ok-btn, .ok-error-btn").forEach((btn) => {
-  btn.addEventListener("click", closeAndReload);
 });
 
 /* ============================================================
@@ -738,10 +705,8 @@ async function updateVolunteerStatus(id, status) {
       },
       body: JSON.stringify({ status }),
     });
-    if (res.ok) {
-      localStorage.setItem("activeSectionId", "volunteers");
-      location.reload();
-    } else alert("Failed to update volunteer status");
+    if (res.ok) closeAndReload();
+    else alert("Failed to update volunteer status");
   } catch {
     alert("An error occurred");
   }
@@ -774,6 +739,239 @@ document.querySelectorAll(".delete-volunteer-btn").forEach((btn) => {
       else alert("Failed to delete volunteer");
     } catch {
       alert("An error occurred");
+    }
+  });
+});
+
+/* ============================================================
+   MISSIONS
+============================================================ */
+
+const createMissionBtn = document.getElementById("createMission");
+const createMissionSection = document.querySelector(".missions-section");
+const createMissionForm = document.getElementById("missionsForm");
+const missionsFormWrapper = createMissionSection?.querySelector(".form");
+const editMissionSection = document.querySelector(".edit-mission");
+const editMissionForm = document.getElementById("editMissionForm");
+const editMissionFormWrapper = document.querySelector(".edit-mission .form");
+const missionUpdateSuccess = document.getElementById("missionUpdateSuccess");
+const missionUpdateError = document.getElementById("missionUpdateError");
+
+createMissionBtn?.addEventListener("click", () => {
+  createMissionSection.classList.add("active");
+});
+
+createMissionSection?.addEventListener("click", (e) => {
+  if (e.target === createMissionSection)
+    createMissionSection.classList.remove("active");
+});
+
+createMissionForm?.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  if (missionsFormWrapper) missionsFormWrapper.style.display = "none";
+  try {
+    const response = await fetch("/api/missions/createMission", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
+      body: new FormData(createMissionForm),
+    });
+    if (response.ok) {
+      document.getElementById("missionsSuccess").style.display = "flex";
+      createMissionForm.reset();
+    } else {
+      document.getElementById("missionsError").style.display = "flex";
+    }
+  } catch {
+    document.getElementById("missionsError").style.display = "flex";
+  }
+});
+
+document.querySelectorAll(".edit-mission-btn").forEach((btn) => {
+  btn.addEventListener("click", async () => {
+    try {
+      const res = await fetch(`/api/missions/${btn.getAttribute("data-id")}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+      if (!res.ok) return;
+      const m = data.data;
+      document.getElementById("editMissionId").value = m._id;
+      document.getElementById("editMissionTitle").value = m.title;
+      document.getElementById("editMissionDescription").value = m.description;
+      document.getElementById("editMissionLocation").value = m.location;
+      document.getElementById("editMissionDuration").value = m.duration;
+      document.getElementById("editMissionVolunteers").value = m.volunteers;
+      document.getElementById("editMissionStatus").value = m.status;
+      if (editMissionFormWrapper) editMissionFormWrapper.style.display = "flex";
+      if (missionUpdateSuccess) missionUpdateSuccess.style.display = "none";
+      if (missionUpdateError) missionUpdateError.style.display = "none";
+      editMissionSection.classList.add("active");
+    } catch (err) {
+      console.error("Failed to load mission:", err);
+      alert("Failed to load mission data");
+    }
+  });
+});
+
+editMissionForm?.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const missionId = document.getElementById("editMissionId")?.value;
+  if (!missionId) return;
+  if (editMissionFormWrapper) editMissionFormWrapper.style.display = "none";
+  try {
+    const response = await fetch(`/api/missions/${missionId}`, {
+      method: "PATCH",
+      headers: { Authorization: `Bearer ${token}` },
+      body: new FormData(editMissionForm),
+    });
+    if (response.ok) {
+      if (missionUpdateSuccess) missionUpdateSuccess.style.display = "flex";
+      if (missionUpdateError) missionUpdateError.style.display = "none";
+      editMissionForm.reset();
+    } else {
+      if (missionUpdateSuccess) missionUpdateSuccess.style.display = "none";
+      if (missionUpdateError) missionUpdateError.style.display = "flex";
+    }
+  } catch (err) {
+    console.error("Failed to update mission:", err);
+    if (missionUpdateSuccess) missionUpdateSuccess.style.display = "none";
+    if (missionUpdateError) missionUpdateError.style.display = "flex";
+  }
+});
+
+editMissionSection?.addEventListener("click", (e) => {
+  if (e.target === editMissionSection) {
+    editMissionSection.classList.remove("active");
+    if (editMissionFormWrapper) editMissionFormWrapper.style.display = "flex";
+    if (missionUpdateSuccess) missionUpdateSuccess.style.display = "none";
+    if (missionUpdateError) missionUpdateError.style.display = "none";
+  }
+});
+
+document.getElementById("cancelEditMission")?.addEventListener("click", () => {
+  editMissionSection?.classList.remove("active");
+  if (editMissionFormWrapper) editMissionFormWrapper.style.display = "flex";
+  if (missionUpdateSuccess) missionUpdateSuccess.style.display = "none";
+  if (missionUpdateError) missionUpdateError.style.display = "none";
+});
+
+document
+  .getElementById("missionUpdateErrorBtn")
+  ?.addEventListener("click", () => {
+    if (missionUpdateError) missionUpdateError.style.display = "none";
+    if (editMissionFormWrapper) editMissionFormWrapper.style.display = "flex";
+  });
+
+document.querySelectorAll(".delete-mission-btn").forEach((btn) => {
+  btn.addEventListener("click", async () => {
+    if (!confirm("Are you sure you want to delete this mission?")) return;
+    try {
+      const res = await fetch(`/api/missions/deleteMission/${btn.dataset.id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.ok || res.status === 204) btn.closest("tr")?.remove();
+      else alert((await res.json()).message || "Failed to delete mission");
+    } catch {
+      alert("An error occurred while deleting mission");
+    }
+  });
+});
+
+/* ============================================================
+   OK BUTTONS & RELOAD
+============================================================ */
+
+document.querySelectorAll(".ok-btn, .ok-error-btn").forEach((btn) => {
+  btn.addEventListener("click", closeAndReload);
+});
+
+document.querySelectorAll(".action-btn").forEach((btn) => {
+  btn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const dropdown = btn.nextElementSibling;
+    document.querySelectorAll(".see-more-btns.active").forEach((d) => {
+      if (d !== dropdown) d.classList.remove("active");
+    });
+    dropdown.classList.toggle("active");
+  });
+});
+
+document.addEventListener("click", () => {
+  document
+    .querySelectorAll(".see-more-btns.active")
+    .forEach((d) => d.classList.remove("active"));
+});
+
+// ─── SUPPORT ──────────────────────────────────────────────────
+// Accept Support
+document.querySelectorAll(".accept-support-btn").forEach((btn) => {
+  btn.addEventListener("click", async () => {
+    const id = btn.dataset.id;
+    try {
+      const res = await fetch(`/api/support/${id}/accept`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      const data = await res.json();
+      if (data.status === "success") {
+        alert("support accepted");
+      } else {
+        alert("Failed to accept support request");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  });
+});
+
+// Reject Support
+document.querySelectorAll(".reject-support-btn").forEach((btn) => {
+  btn.addEventListener("click", async () => {
+    const id = btn.dataset.id;
+    try {
+      const res = await fetch(`/api/support/${id}/reject`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      const data = await res.json();
+      if (data.status === "success") {
+        btn.closest("tr").remove();
+        alert("support request rejected succesfully");
+      } else {
+        alert("Failed to reject support request");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  });
+});
+
+// Delete Support
+document.querySelectorAll(".delete-support-btn").forEach((btn) => {
+  btn.addEventListener("click", async () => {
+    const id = btn.dataset.id;
+    if (!confirm("Are you sure you want to delete this support request?"))
+      return;
+    try {
+      const res = await fetch(`/api/support/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      const data = await res.json();
+      if (data.status === "success") {
+        btn.closest("tr").remove();
+      } else {
+        alert("Failed to delete support request");
+      }
+    } catch (err) {
+      console.error(err);
     }
   });
 });

@@ -13,8 +13,6 @@ header
       
 
     ul.nav-links
-      .close-btn
-        i.fa-solid.fa-x
       li
         a(href="/" class=activePage === 'home' ? 'active' : '') Home
       li
@@ -24,7 +22,13 @@ header
       li
         a(href="/blog" class=activePage === 'blog' ? 'active' : '') Blog
       li
+        a(href="/missions" class=activePage === 'missions' ? 'active' : '') Missions
+      li
+        a(href="/volunteer" class=activePage === 'volunteer' ? 'active' : '') Volunteer
+      li
         a(href="/contact" class=activePage === 'contact' ? 'active' : '') Contact Us
+      li
+        a(href="/support" class=activePage === 'support' ? 'active' : '') Support
 
     .header-btns
       a.donate-btn(href="/payment") Donate Now
@@ -45,6 +49,8 @@ header
   .profile-modal
     .modal-header
       h2 My Profile
+      button.logout-btn#logoutBtn(type="button")
+        i.fa-solid.fa-right-from-bracket
       button.close-modal
         i.fa-solid.fa-xmark
 
@@ -127,7 +133,3 @@ header
             button.save-btn(type="submit")
               i.fa-solid.fa-lock
               |  Update Password
-
-          button.logout-btn#logoutBtn(type="button")
-            i.fa-solid.fa-right-from-bracket
-            span Logout

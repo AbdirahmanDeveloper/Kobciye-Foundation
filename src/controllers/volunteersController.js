@@ -1,4 +1,6 @@
-const Volenteers = require("../models/Volunteers");
+
+const Volunteer = require("../models/Volunteers");
+const Mission = require("../models/Missions");
 const upload = require("../middleware/volIpload");
 const { Resend } = require("resend");
 
@@ -8,7 +10,7 @@ exports.uploadImage = upload.single("volImage");
 
 exports.createVolunteer = async (req, res) => {
   try {
-    const volonteer = await Volenteers.create({
+    const volonteer = await Volunteer.create({
       name: req.body.volName,
       phone: req.body.volPhone,
       email: req.body.volEmail,
@@ -17,7 +19,7 @@ exports.createVolunteer = async (req, res) => {
       nationalId: req.body.nationalId,
     });
     await resend.emails.send({
-      from:"Kobciye Foundation <info@kobciyefoundation.org>",
+      from: "Kobciye Foundation <info@kobciyefoundation.org>",
       to: process.env.ADMIN_EMAIL,
       subject: "📩 New Volunteer Application Received",
       html: `
@@ -102,7 +104,7 @@ exports.updateVolunteer = async (req, res) => {
       });
     }
 
-    const volunteer = await Volenteers.findByIdAndUpdate(
+    const volunteer = await Volunteer.findByIdAndUpdate(
       id,
       { status },
       { new: true, runValidators: true }
@@ -132,7 +134,7 @@ exports.deleteVolunteer = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const volunteer = await Volenteers.findByIdAndDelete(id);
+    const volunteer = await Volunteer.findByIdAndDelete(id);
 
     if (!volunteer) {
       return res.status(404).json({
@@ -145,5 +147,67 @@ exports.deleteVolunteer = async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ status: "failed" });
+  }
+};
+
+
+exports.createVolunteer = async (req, res) => {
+  try {
+    const {
+      volName,
+      volPhone,
+      volEmail,
+      availibility,
+      nationalId,
+      type,
+      missionId,
+      projectId,
+    } = req.body;
+
+    if (type === "mission") {
+      if (!missionId)
+        return res
+          .status(400)
+          .json({ status: "fail", message: "Please select a mission" });
+
+      const mission = await Mission.findById(missionId);
+      if (!mission)
+        return res
+          .status(404)
+          .json({ status: "fail", message: "Mission not found" });
+
+      if (mission.volunteersJoined >= mission.volunteers)
+        return res
+          .status(400)
+          .json({ status: "fail", message: "No spots left for this mission" });
+
+      await Mission.findByIdAndUpdate(missionId, {
+        $inc: { volunteersJoined: 1 },
+      });
+    }
+
+    const volunteer = await Volunteer.create({
+      name: volName,
+      phone: volPhone,
+      email: volEmail,
+      availibility,
+      nationalId,
+      image: req.file?.path || "",
+      type,
+      mission: type === "mission" ? missionId : null,
+      project: type === "project" ? projectId : null,
+    });
+
+    res.status(201).json({ status: "success", data: volunteer });
+  } catch (err) {
+    console.error("Failed to create volunteer:", err.message);
+    if (err.code === 11000)
+      return res
+        .status(400)
+        .json({
+          status: "fail",
+          message: "This email is already registered as a volunteer",
+        });
+    res.status(500).json({ status: "error", message: err.message });
   }
 };

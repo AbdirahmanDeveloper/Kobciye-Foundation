@@ -11,9 +11,6 @@ body {
   font-family: "Segoe UI", sans-serif;
 }
 
-/* ============================================================
-   CSS VARIABLES
-============================================================ */
 :root {
   --gold: #c0873f;
 }
@@ -35,19 +32,12 @@ header {
   padding: 1rem;
 }
 
-/* ============================================================
-   LOGO
-============================================================ */
-
 .logo {
-  text-decoration: none;
   width: 250px;
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  transition: 0.3s ease;
 }
 
 .logo-img {
@@ -57,12 +47,11 @@ header {
 }
 
 /* ============================================================
-   3. NAVIGATION BUTTON (hamburger)
+   3. HAMBURGER BUTTON
 ============================================================ */
 .navigation-btn {
   position: absolute;
   left: 10px;
-  width: fit-content;
   padding: 0.5rem 1rem;
   border-radius: 5px;
   background: transparent;
@@ -77,7 +66,7 @@ header {
 }
 
 /* ============================================================
-   NOTIFICATION BELL
+   4. NOTIFICATION BELL
 ============================================================ */
 .notification-bell {
   display: flex;
@@ -107,7 +96,7 @@ header {
 }
 
 /* ============================================================
-   4. SIDEBAR
+   5. SIDEBAR
 ============================================================ */
 .side-bar {
   width: 280px;
@@ -154,13 +143,9 @@ header {
 .nav-links a.active {
   color: #000;
   background: #bcbcbc;
-  padding: 10px;
   border-radius: 6px;
 }
 
-/* ============================================================
-   5. SIDEBAR - DIVIDER & AUTH BUTTONS
-============================================================ */
 .nav-divider {
   height: 1px;
   background: #a8a8a8;
@@ -169,6 +154,9 @@ header {
   list-style: none;
 }
 
+/* ============================================================
+   6. AUTH BUTTONS
+============================================================ */
 .auth-item {
   padding: 0.5rem 0 !important;
   list-style: none;
@@ -232,24 +220,8 @@ header {
   transform: none !important;
 }
 
-@keyframes buttonPress {
-  0% {
-    transform: translateX(0);
-  }
-  50% {
-    transform: translateX(3px);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
-
-.auth-btn:active {
-  animation: buttonPress 0.2s ease;
-}
-
 /* ============================================================
-   6. CONTENT SECTIONS
+   7. CONTENT SECTIONS
 ============================================================ */
 .content-section {
   display: none;
@@ -265,7 +237,7 @@ header {
 }
 
 /* ============================================================
-   7. DASHBOARD
+   8. DASHBOARD
 ============================================================ */
 .dashboard-container {
   padding: 30px;
@@ -288,7 +260,7 @@ header {
   align-items: center;
   gap: 20px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   border: 1px solid #e5e7eb;
   height: 120px;
 }
@@ -311,19 +283,19 @@ header {
 }
 
 .stat-icon.donations {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #667eea, #764ba2);
 }
 .stat-icon.users {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  background: linear-gradient(135deg, #f093fb, #f5576c);
 }
 .stat-icon.members {
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  background: linear-gradient(135deg, #4facfe, #00f2fe);
 }
 .stat-icon.active {
-  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+  background: linear-gradient(135deg, #43e97b, #38f9d7);
 }
 .stat-icon.completed {
-  background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+  background: linear-gradient(135deg, #fa709a, #fee140);
 }
 
 .stat-details h3 {
@@ -360,7 +332,7 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #667eea, #764ba2);
   color: white;
 }
 
@@ -373,19 +345,9 @@ header {
   gap: 10px;
 }
 
-.card-header h2 i {
-  font-size: 20px;
-}
-
 .card-body {
   padding: 30px;
   overflow: hidden;
-}
-
-.donationCard-item {
-  padding: 1.4rem 1rem;
-  color: black;
-  width: 33%;
 }
 
 .chart-card .card-body {
@@ -406,124 +368,22 @@ header {
   overflow-y: auto;
 }
 
-.donor-details h4 {
-  font-size: 15px;
-  font-weight: 600;
-  color: #1f2937;
-  margin: 0 0 5px 0;
-}
-
-.donor-details p {
-  font-size: 13px;
-  color: #6b7280;
-  margin: 0;
-}
-
-.donation-amount {
-  font-size: 16px;
-  font-weight: 700;
-  color: #667eea;
-  white-space: nowrap;
-}
-
 .donation-items-container {
   display: flex;
   justify-content: space-between;
   width: 100%;
-  border-bottom: 1px solid #555;
+  border-bottom: 1px solid #e5e7eb;
   background: #ffffff;
 }
 
-/* ============================================================
-   STATUS BADGES
-============================================================ */
-.status-success,
-.status-pending,
-.status-failed {
-  display: inline-block;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: capitalize;
-  text-align: center;
-  min-width: 70px;
-}
-
-.status-success {
-  background-color: #dcfce7;
-  color: #16a34a;
-}
-.status-pending {
-  background-color: #fef9c3;
-  color: #ca8a04;
-}
-.status-failed {
-  background-color: #fee2e2;
-  color: #dc2626;
+.donationCard-item {
+  padding: 1.4rem 1rem;
+  color: black;
+  width: 33%;
 }
 
 /* ============================================================
-   VOLUNTEER STATUS BADGES
-============================================================ */
-.status-badge {
-  display: inline-block;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: capitalize;
-  text-align: center;
-  min-width: 70px;
-}
-
-.status-badge.status-pending {
-  background-color: #fef9c3;
-  color: #ca8a04;
-}
-
-.status-badge.status-accepted {
-  background-color: #dcfce7;
-  color: #16a34a;
-}
-
-.status-badge.status-rejected {
-  background-color: #fee2e2;
-  color: #dc2626;
-}
-
-/* ============================================================
-   ROLE BADGES
-============================================================ */
-.role {
-  display: inline-block;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: capitalize;
-  text-align: center;
-  min-width: 60px;
-}
-
-.role-admin {
-  background-color: #ede9fe;
-  color: #7c3aed;
-}
-.role-user {
-  background-color: #e0f2fe;
-  color: #0369a1;
-}
-
-.text-muted {
-  color: #9ca3af;
-  padding: 2rem;
-  text-align: center;
-  font-size: 0.95rem;
-}
-
-/* ============================================================
-   8. TABLES
+   9. TABLES
 ============================================================ */
 .lists {
   padding: 2rem;
@@ -544,7 +404,7 @@ table {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
-tr:first-child {
+thead tr {
   background: #1f2937;
   color: #ffffff;
   font-weight: 700;
@@ -558,28 +418,36 @@ th {
   font-size: 1rem;
 }
 
-tr:not(:first-child) {
+tbody tr {
   border-bottom: 1px solid #e5e7eb;
+  transition: background 0.15s ease;
 }
 
-tr:not(:first-child):hover {
+tbody tr:hover {
   background: #f1f5f9;
 }
 
-tr:nth-child(even):not(:first-child) {
+tbody tr:nth-child(even) {
   background: #f9fafb;
 }
-tr:nth-child(odd):not(:first-child) {
+tbody tr:nth-child(odd) {
   background: #ffffff;
+}
+tbody tr:nth-child(even):hover,
+tbody tr:nth-child(odd):hover {
+  background: #f1f5f9;
+}
+
+.text-muted {
+  color: #9ca3af;
+  padding: 2rem;
+  text-align: center;
+  font-size: 0.95rem;
 }
 
 /* ============================================================
-   VOLUNTEER TABLE
+   10. VOLUNTEER IMAGE
 ============================================================ */
-.volonteers-list table {
-  width: 100%;
-}
-
 .volunteer-img {
   width: 50px;
   height: 50px;
@@ -589,56 +457,118 @@ tr:nth-child(odd):not(:first-child) {
   display: block;
 }
 
-.accept-volunteer-btn,
-.reject-volunteer-btn {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 8px;
+/* ============================================================
+   11. STATUS BADGES
+============================================================ */
+.status-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
   font-weight: 600;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 13px;
-  transition: all 0.3s ease;
+  text-transform: capitalize;
+  text-align: center;
+  min-width: 70px;
 }
 
-.accept-volunteer-btn {
-  background: #16a34a;
-  color: white;
+.status-pending {
+  background: #fef9c3;
+  color: #ca8a04;
 }
-
-.accept-volunteer-btn:hover {
-  background: #15803d;
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(22, 163, 74, 0.3);
+.status-accepted {
+  background: #dcfce7;
+  color: #16a34a;
 }
-
-.reject-volunteer-btn {
-  background: #f59e0b;
-  color: white;
+.status-rejected {
+  background: #fee2e2;
+  color: #dc2626;
 }
-
-.reject-volunteer-btn:hover {
-  background: #d97706;
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3);
+.status-success {
+  background: #dcfce7;
+  color: #16a34a;
+}
+.status-failed {
+  background: #fee2e2;
+  color: #dc2626;
+}
+.status-active {
+  background: #eafaf1;
+  color: #27ae60;
+}
+.status-completed {
+  background: #eaf0fb;
+  color: #2980b9;
 }
 
 /* ============================================================
-   9. ACTION BUTTONS
+   12. ROLE BADGES
 ============================================================ */
-.action-row {
-  display: flex;
-  gap: 0.6rem;
-  flex-wrap: wrap;
-  justify-content: center;
+.role {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+  text-align: center;
+  min-width: 60px;
 }
 
-.edit-btn,
-.delete-btn,
-.delete-volunteer-btn,
-.delete-member-btn {
+.role-admin {
+  background: #ede9fe;
+  color: #7c3aed;
+}
+.role-user {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+/* ============================================================
+   13. ACTION DROPDOWN
+============================================================ */
+.action-btn {
+  background: transparent;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 16px;
+  color: #555;
+  transition: all 0.2s ease;
+}
+
+.action-btn:hover {
+  background: #f1f5f9;
+  border-color: #c0873f;
+  color: #c0873f;
+}
+
+.see-more-btns {
+  display: none;
+  position: fixed;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  padding: 8px;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 9999;
+  min-width: 140px;
+}
+
+.see-more-btns.active {
+  display: flex;
+}
+.see-more-btns a {
+  text-decoration: none;
+}
+/* ============================================================
+   14. CRUD BUTTONS
+============================================================ */
+.edit-btn {
+  background: #3b82f6;
+  color: white;
   padding: 8px 16px;
   border: none;
   border-radius: 8px;
@@ -649,11 +579,6 @@ tr:nth-child(odd):not(:first-child) {
   gap: 6px;
   font-size: 13px;
   transition: all 0.3s ease;
-}
-
-.edit-btn {
-  background: #3b82f6;
-  color: white;
 }
 
 .edit-btn:hover {
@@ -662,22 +587,71 @@ tr:nth-child(odd):not(:first-child) {
   box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
 }
 
-.delete-btn,
-.delete-volunteer-btn,
-.delete-member-btn {
+.delete-btn {
   background: #ef4444;
   color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  transition: all 0.3s ease;
 }
 
-.delete-btn:hover,
-.delete-member-btn:hover {
+.delete-btn:hover {
   background: #dc2626;
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(239, 68, 68, 0.3);
 }
 
+.accept-btn {
+  background: #16a34a;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  transition: all 0.3s ease;
+}
+
+.accept-btn:hover {
+  background: #15803d;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(22, 163, 74, 0.3);
+}
+
+.reject-btn {
+  background: #f59e0b;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  transition: all 0.3s ease;
+}
+
+.reject-btn:hover {
+  background: #d97706;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3);
+}
+
 /* ============================================================
-   10. ADD BUTTON
+   15. ADD BUTTON
 ============================================================ */
 .add {
   width: 100%;
@@ -706,7 +680,7 @@ tr:nth-child(odd):not(:first-child) {
 }
 
 /* ============================================================
-   11. MODAL / CREATE SECTION OVERLAY
+   16. MODAL OVERLAY
 ============================================================ */
 .create-section {
   position: fixed;
@@ -730,14 +704,14 @@ tr:nth-child(odd):not(:first-child) {
 }
 
 /* ============================================================
-   12. FORMS
+   17. FORMS
 ============================================================ */
 .form {
   width: 600px;
   max-width: 95vw;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.24);
   border-radius: 10px;
   display: flex;
   flex-direction: column;
@@ -778,27 +752,10 @@ tr:nth-child(odd):not(:first-child) {
 }
 
 .form form input:focus,
-.form form select:focus {
+.form form select:focus,
+.form form textarea:focus {
   border-color: green;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-}
-
-textarea {
-  width: 100%;
-  padding: 12px 15px;
-  border: 2px solid #e5e7eb;
-  border-radius: 10px;
-  font-size: 15px;
-  font-family: inherit;
-  resize: vertical;
-  transition: all 0.3s ease;
-  height: 180px;
-}
-
-textarea:focus {
-  outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
 }
 
 .form button[type="submit"] {
@@ -835,8 +792,8 @@ textarea:focus {
   border-radius: 10px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
   font-size: 1rem;
+  transition: background 0.3s ease;
 }
 
 .cancel-edit-btn:hover {
@@ -863,7 +820,7 @@ textarea:focus {
 }
 
 /* ============================================================
-   13. SUCCESS & ERROR MESSAGES
+   18. SUCCESS & ERROR MESSAGES
 ============================================================ */
 .success-message,
 .error-message {
@@ -884,12 +841,23 @@ textarea:focus {
 .success-message i {
   font-size: 4rem;
   color: #1f2937;
-  margin-bottom: 1rem;
 }
 
 .success-message h2 {
   color: #1f2937;
-  margin-bottom: 2rem;
+}
+
+.error-message i {
+  font-size: 4rem;
+  color: #dc2626;
+}
+
+.error-message h2 {
+  color: #dc2626;
+}
+
+.error-message p {
+  color: #555;
 }
 
 .ok-btn {
@@ -905,22 +873,6 @@ textarea:focus {
 
 .ok-btn:hover {
   background: #374151;
-}
-
-.error-message i {
-  font-size: 4rem;
-  color: #dc2626;
-  margin-bottom: 1rem;
-}
-
-.error-message h2 {
-  color: #dc2626;
-  margin-bottom: 0.5rem;
-}
-
-.error-message p {
-  color: #555;
-  margin-bottom: 2rem;
 }
 
 .ok-error-btn {
@@ -939,43 +891,7 @@ textarea:focus {
 }
 
 /* ============================================================
-   14. EDIT NEWS MODAL
-============================================================ */
-.edit-news {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(4px);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-.edit-news.active {
-  display: flex;
-}
-
-.edit-news .form {
-  max-width: 600px;
-  width: 90%;
-  max-height: 90vh;
-  overflow-y: auto;
-}
-
-/* ============================================================
-   15. MISC
-============================================================ */
-.db-card {
-  width: 500px;
-  height: 500px;
-}
-
-/* ============================================================
-   16. NOTIFICATION SECTION
+   19. NOTIFICATION PANEL
 ============================================================ */
 .notification-section {
   display: none;
@@ -1032,9 +948,8 @@ textarea:focus {
   gap: 12px;
   padding: 12px 16px;
   background: #ffffff;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  transition: all 0.2s ease;
+  border-bottom: 1px solid #e5e7eb;
+  transition: background 0.2s ease;
   cursor: pointer;
 }
 
@@ -1068,8 +983,7 @@ textarea:focus {
 .notification-text {
   flex: 1;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
 }
 
 .notification-text p {
@@ -1098,7 +1012,7 @@ textarea:focus {
   color: #d1d5db;
 }
 
-.notofication-counter {
+.notification-counter {
   position: absolute;
   top: -8px;
   left: -4px;
@@ -1112,19 +1026,38 @@ textarea:focus {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Segoe UI", sans-serif;
 }
 
 /* ============================================================
-   17. RESPONSIVE — LARGE TABLETS (≤ 1400px)
+   20. MISSIONS & SUPPORT SPECIFIC
+============================================================ */
+.missions-section,
+.edit-mission {
+  position: fixed;
+  inset: 0;
+  backdrop-filter: blur(10px);
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 200;
+}
+
+.missions-section.active,
+.edit-mission.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* ============================================================
+   21. RESPONSIVE — LARGE TABLETS (≤ 1400px)
 ============================================================ */
 @media (max-width: 1400px) {
-  header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
   .logo {
     display: none;
   }
@@ -1143,14 +1076,12 @@ textarea:focus {
 
   .side-bar {
     top: 80px;
-    left: 0;
     width: 280px;
     height: calc(100vh - 80px);
     transform: translateX(-100%);
     background: white;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
     border-radius: 0 10px 10px 0;
-    transition: transform 0.35s ease;
   }
 
   .side-bar.active {
@@ -1167,7 +1098,7 @@ textarea:focus {
 }
 
 /* ============================================================
-   18. RESPONSIVE — TABLETS (≤ 1200px)
+   22. RESPONSIVE — TABLETS (≤ 1200px)
 ============================================================ */
 @media (max-width: 1200px) {
   .stats-grid {
@@ -1183,7 +1114,7 @@ textarea:focus {
 }
 
 /* ============================================================
-   19. RESPONSIVE — SMALL TABLETS (≤ 900px)
+   23. RESPONSIVE — SMALL TABLETS (≤ 900px)
 ============================================================ */
 @media (max-width: 900px) {
   .stats-grid {
@@ -1209,14 +1140,11 @@ textarea:focus {
 }
 
 /* ============================================================
-   20. RESPONSIVE — MOBILE (≤ 768px)
+   24. RESPONSIVE — MOBILE (≤ 768px)
 ============================================================ */
 @media (max-width: 768px) {
   .dashboard-container {
     padding: 15px;
-  }
-  .logo {
-    background: white;
   }
 
   .stats-grid {
@@ -1241,7 +1169,6 @@ textarea:focus {
   .stat-details p {
     font-size: 12px;
   }
-
   .dashboard-grid {
     gap: 16px;
   }
@@ -1268,13 +1195,6 @@ textarea:focus {
     width: 100%;
   }
 
-  .donations-list {
-    overflow-x: auto;
-  }
-  .donation-items-container {
-    min-width: 450px;
-  }
-
   .add-btn {
     width: 90%;
     font-size: 1rem;
@@ -1288,21 +1208,6 @@ textarea:focus {
     padding: 1.2rem;
     gap: 1rem;
   }
-
-  .action-row {
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .edit-btn,
-  .delete-btn,
-  .delete-member-btn,
-  .accept-volunteer-btn,
-  .reject-volunteer-btn {
-    font-size: 12px;
-    padding: 6px 10px;
-  }
-
   .volunteer-img {
     width: 36px;
     height: 36px;
@@ -1310,7 +1215,7 @@ textarea:focus {
 }
 
 /* ============================================================
-   21. RESPONSIVE — EXTRA SMALL PHONES (≤ 480px)
+   25. RESPONSIVE — PHONES (≤ 480px)
 ============================================================ */
 @media (max-width: 480px) {
   .stats-grid {
@@ -1349,7 +1254,6 @@ textarea:focus {
     font-size: 0.78rem;
     padding: 0.8rem 0.3rem;
   }
-
   .volunteer-img {
     width: 32px;
     height: 32px;

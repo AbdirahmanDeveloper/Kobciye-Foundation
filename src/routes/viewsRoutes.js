@@ -16,5 +16,11 @@ router.route("/payment").get(viewsController.getPayment);
 router.get("/reset-password", viewsController.getResetPassword);
 router.get("/otp", viewsController.getOTP);
 router.get("/volonteerPage", viewsController.getVolonteerPage);
+router.get("/missions", viewsController.getMissionsPage);
+router.get("/missions/:id", viewsController.getMissionModal);
+router.get("/volunteer", viewsController.getVolunteerPage);
+router.get("/support", viewsController.getSupportPage);
+router.get("/volunteer/:id", viewsController.getVolunteerModal);
+router.get("/support/:id",   viewsController.getSupportModal);
 
 module.exports = router;

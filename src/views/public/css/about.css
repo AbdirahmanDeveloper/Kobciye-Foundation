@@ -13,6 +13,7 @@
   justify-content: center;
 }
 
+/* Decorative grain overlay */
 .about-hero::before {
   content: "";
   position: absolute;
@@ -25,6 +26,7 @@
   position: relative;
   z-index: 2;
 }
+
 
 /* =========================
    ABOUT US SECTION

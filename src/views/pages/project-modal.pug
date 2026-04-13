@@ -1,6 +1,8 @@
 include ../layout/_head
 
 body
+  include ../partials/_navbar
+
   block content
 
     //- PROJECT HERO
@@ -20,12 +22,10 @@ body
         //- LEFT — Main Content
         .project-modal-main
 
-          //- Cover Image
           if project.image
             .project-modal-image(data-aos="fade-up" data-aos-duration="600")
               img(src=project.image alt=project.title)
 
-          //- About
           .project-modal-about(data-aos="fade-up" data-aos-duration="600")
             h2 About This Project
             .body-text-wrapper
@@ -37,7 +37,6 @@ body
         //- RIGHT — Sidebar
         .project-modal-sidebar
 
-          //- Progress Card
           .sidebar-card(data-aos="fade-up" data-aos-duration="600")
             .progress-stats
               .stat-row
@@ -56,7 +55,15 @@ body
               i.fa-solid.fa-heart
               |  Donate Now
 
-          //- Meta Card
+            if project.status === 'active'
+              a.get-involved-btn.btn-volunteer(href="/volunteer")
+                i.fa-solid.fa-hand-holding-heart
+                |  Join as Volunteer
+            else
+              button.get-involved-btn.btn-completed(disabled)
+                i.fa-solid.fa-circle-check
+                |  Project Completed
+
           .sidebar-card.meta-card(data-aos="fade-up" data-aos-delay="100" data-aos-duration="600")
             if project.category
               .meta-row
@@ -71,7 +78,6 @@ body
                 i.fa-regular.fa-calendar
                 span= project.createdAt.toDateString()
 
-          //- Back Link
           a.btn-back(href="/projects" data-aos="fade-up" data-aos-delay="200")
             i.fa-solid.fa-arrow-left
             |  Back to Projects
@@ -81,6 +87,7 @@ body
       h1 Make a Difference
       p Your support helps us deliver real change in communities that need it most.
       a.get-involved-btn(href=`/payment?project=${project._id}`) Donate to This Project
+
   include ../partials/testimonials
   include ../partials/_footer
 

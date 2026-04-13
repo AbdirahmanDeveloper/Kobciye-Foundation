@@ -1,0 +1,111 @@
+include ../layout/_head
+
+body
+  block content
+
+    //- MISSION HERO
+    section.project-modal-hero
+      .hero-content
+        .modal-hero-txt(data-aos="fade-up" data-aos-duration="800")
+          span.hero-badge
+            i.fa-solid.fa-circle-dot
+            |  #{mission.status === 'active' ? 'Ongoing Mission' : 'Completed Mission'}
+          h1= mission.title
+
+    //- MISSION BODY
+    section.project-modal-section
+
+      .project-modal-grid
+
+        //- LEFT — Main Content
+        .project-modal-main
+
+          //- Cover Image
+          if mission.image
+            .project-modal-image(data-aos="fade-up" data-aos-duration="600")
+              img(src=mission.image alt=mission.title)
+
+          //- About
+          .project-modal-about(data-aos="fade-up" data-aos-duration="600")
+            h2 About This Mission
+            .body-text-wrapper
+              p.body-text= mission.description
+            button#readMoreBtn.read-more-btn(type="button")
+              span Read More
+              i.fa-solid.fa-chevron-down
+
+        //- RIGHT — Sidebar
+        .project-modal-sidebar
+
+          //- Volunteers Card
+          .sidebar-card(data-aos="fade-up" data-aos-duration="600")
+            .progress-stats
+              .stat-row
+                span.stat-label Status
+                span.stat-value(class=mission.status === 'active' ? 'gold' : '')= mission.status === 'active' ? 'Active' : 'Completed'
+              .stat-row
+                span.stat-label Volunteers Joined
+                span.stat-value= mission.volunteersJoined
+              .stat-row
+                span.stat-label Spots Left
+                span.stat-value.gold= mission.volunteers - mission.volunteersJoined
+              .stat-row
+                span.stat-label Duration
+                span.stat-value= mission.duration
+              .stat-row
+                span.stat-label Location
+                span.stat-value= mission.location
+
+            .progress-bar
+              .progress-bar__fill(style=`width: ${Math.min(Math.round((mission.volunteersJoined / mission.volunteers) * 100), 100)}%`)
+
+            a.get-involved-btn(href=`/payment?mission=${mission._id}`)
+              i.fa-solid.fa-heart
+              |  Donate Now
+
+            if mission.status === 'active'
+              a.get-involved-btn.btn-volunteer(href="/volunteer")
+                i.fa-solid.fa-hand-holding-heart
+                |  Join as Volunteer
+            else
+              button.get-involved-btn.btn-completed(disabled)
+                i.fa-solid.fa-circle-check
+                |  Mission Completed
+
+
+          //- Meta Card
+          .sidebar-card.meta-card(data-aos="fade-up" data-aos-delay="100" data-aos-duration="600")
+            if mission.category
+              .meta-row
+                i.fa-solid.fa-tag
+                span= mission.category
+            .meta-row
+              i.fa-solid.fa-user
+              span Kobciye Foundation
+            .meta-row
+              i.fa-regular.fa-calendar
+              span= mission.createdAt.toDateString()
+            .meta-row
+              i.fa-solid.fa-location-dot
+              span= mission.location
+            .meta-row
+              i.fa-regular.fa-clock
+              span= mission.duration
+
+          //- Back Link
+          a.btn-back(href="/missions" data-aos="fade-up" data-aos-delay="200")
+            i.fa-solid.fa-arrow-left
+            |  Back to Missions
+
+    //- CALL TO ACTION
+    section.get-involved(data-aos="fade-up" data-aos-duration="700")
+      h1 Be Part of the Change
+      p Your support and volunteer efforts help us deliver real impact in communities that need it most.
+      a.get-involved-btn(href=`/payment?mission=${mission._id}`) Donate to This Mission
+
+  include ../partials/testimonials
+  include ../partials/_footer
+
+  script(src="/js/mission.js")
+  script(src="/js/main.js")
+  script(src="/js/project.js")

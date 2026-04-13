@@ -1,0 +1,81 @@
+include ../layout/_head
+
+body
+
+  block content
+
+    //- SUPPORT HERO
+    section.project-modal-hero
+      .hero-content
+        .modal-hero-txt(data-aos="fade-up" data-aos-duration="800")
+          span.hero-badge
+            i.fa-solid.fa-circle-dot
+            |  #{support.status === 'accepted' ? 'Accepted Request' : support.status === 'rejected' ? 'Rejected' : 'Pending Review'}
+          h1= support.name
+
+    //- SUPPORT BODY
+    section.project-modal-section
+
+      .project-modal-grid
+
+        //- LEFT — Main Content
+        .project-modal-main
+
+          if support.image
+            .project-modal-image(data-aos="fade-up" data-aos-duration="600")
+              img(src=support.image alt=support.name)
+
+          .project-modal-about(data-aos="fade-up" data-aos-duration="600")
+            h2 Support Request Details
+            .body-text-wrapper
+              p.body-text= support.message || support.description || 'No details provided.'
+            button#readMoreBtn.read-more-btn(type="button")
+              span Read More
+              i.fa-solid.fa-chevron-down
+
+        //- RIGHT — Sidebar
+        .project-modal-sidebar
+
+          .sidebar-card(data-aos="fade-up" data-aos-duration="600")
+            .progress-stats
+              .stat-row
+                span.stat-label Status
+                span.stat-value= support.status
+              .stat-row
+                span.stat-label Subject
+                span.stat-value= support.subject
+              if support.location
+                .stat-row
+                  span.stat-label Location
+                  span.stat-value= support.location
+
+          .sidebar-card.meta-card(data-aos="fade-up" data-aos-delay="100" data-aos-duration="600")
+            .meta-row
+              i.fa-solid.fa-phone
+              span= support.phone
+            .meta-row
+              i.fa-solid.fa-envelope
+              span= support.email
+            if support.nationalId
+              .meta-row
+                i.fa-solid.fa-id-card
+                span= support.nationalId
+            if support.createdAt
+              .meta-row
+                i.fa-regular.fa-calendar
+                span= support.createdAt.toDateString()
+
+          a.btn-back(href="/admin#support" data-aos="fade-up" data-aos-delay="200")
+            i.fa-solid.fa-arrow-left
+            |  Back to Support
+
+    //- CALL TO ACTION
+    section.get-involved(data-aos="fade-up" data-aos-duration="700")
+      h1 We're Here to Help
+      p Kobciye Foundation is committed to supporting those in need within our communities.
+      a.get-involved-btn(href="/support") Request Support
+
+  include ../partials/testimonials
+  include ../partials/_footer
+
+  script(src="/js/admin.js")
