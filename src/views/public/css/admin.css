@@ -542,7 +542,6 @@ tbody tr:nth-child(odd):hover {
   border-color: #c0873f;
   color: #c0873f;
 }
-
 .see-more-btns {
   display: none;
   position: fixed;

@@ -1,15 +1,19 @@
 const Mission = require("../models/Missions");
 const Volunteer = require("../models/Volunteers");
 const { Resend } = require("resend");
+const { upload, uploadToCloudinary } = require("../middleware/upload");
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 // ─── CREATE ───────────────────────────────────────────────────
 exports.createMission = async (req, res) => {
   try {
+    const imageUrl = req.file
+      ? await uploadToCloudinary(req.file.buffer, "kobciye-foundation/missions")
+      : "";
     const mission = await Mission.create({
       title: req.body.title,
       description: req.body.description,
-      image: req.file.path,
+      image: imageUrl,
       duration: req.body.duration,
       volunteers: req.body.volunteers,
       location: req.body.location,

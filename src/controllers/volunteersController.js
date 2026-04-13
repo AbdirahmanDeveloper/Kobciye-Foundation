@@ -1,66 +1,12 @@
-
 const Volunteer = require("../models/Volunteers");
 const Mission = require("../models/Missions");
-const upload = require("../middleware/volIpload");
+const { upload, uploadToCloudinary } = require("../middleware/upload");
 const { Resend } = require("resend");
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-exports.uploadImage = upload.single("volImage");
 
-exports.createVolunteer = async (req, res) => {
-  try {
-    const volonteer = await Volunteer.create({
-      name: req.body.volName,
-      phone: req.body.volPhone,
-      email: req.body.volEmail,
-      image: req.file ? req.file.path : null,
-      availibility: req.body.availibility,
-      nationalId: req.body.nationalId,
-    });
-    await resend.emails.send({
-      from: "Kobciye Foundation <info@kobciyefoundation.org>",
-      to: process.env.ADMIN_EMAIL,
-      subject: "📩 New Volunteer Application Received",
-      html: `
-        <h2>New Volunteer Request</h2>
-    
-        <p>A new volunteer has submitted an application to <strong>Kobciye Foundation</strong>.</p>
-    
-        <hr/>
-    
-        <h3>Volunteer Details:</h3>
-        <ul>
-          <li><strong>Name:</strong> ${volonteer.name}</li>
-          <li><strong>Email:</strong> ${volonteer.email}</li>
-          <li><strong>Phone:</strong> ${volonteer.phone}</li>
-          <li><strong>Availability:</strong> ${volonteer.availibility}</li>
-          <li><strong>National ID:</strong> ${volonteer.nationalId}</li>
-        </ul>
-    
-        ${
-          volonteer.image
-            ? `<p><strong>Image:</strong><br/><img src="${volonteer.image}" width="200"/></p>`
-            : ""
-        }
-    
-        <hr/>
-    
-        <p>Please log in to the admin dashboard to review and take action.</p>
-    
-        <br/>
-        <p><strong>Kobciye Foundation System</strong></p>
-      `,
-    });
-    res.status(200).json({
-      status: "success",
-      data: volonteer,
-    });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ status: "failed" });
-  }
-};
+// ─── EMAIL HELPER ─────────────────────────────────────────────
 
 async function sendVolunteerEmail(volunteer, status) {
   const isAccepted = status === "accepted";
@@ -92,64 +38,7 @@ async function sendVolunteerEmail(volunteer, status) {
   });
 }
 
-exports.updateVolunteer = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { status } = req.body;
-
-    if (!["pending", "accepted", "rejected"].includes(status)) {
-      return res.status(400).json({
-        status: "failed",
-        message: "Invalid status. Must be pending, accepted, or rejected",
-      });
-    }
-
-    const volunteer = await Volunteer.findByIdAndUpdate(
-      id,
-      { status },
-      { new: true, runValidators: true }
-    );
-
-    if (!volunteer) {
-      return res.status(404).json({
-        status: "failed",
-        message: "Volunteer not found",
-      });
-    }
-
-    if (status === "accepted" || status === "rejected") {
-      await sendVolunteerEmail(volunteer, status);
-    }
-
-    res.status(200).json({
-      status: "success",
-      data: volunteer,
-    });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ status: "failed" });
-  }
-};
-exports.deleteVolunteer = async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    const volunteer = await Volunteer.findByIdAndDelete(id);
-
-    if (!volunteer) {
-      return res.status(404).json({
-        status: "failed",
-        message: "Volunteer not found",
-      });
-    }
-
-    res.status(204).json({ status: "success", data: null });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ status: "failed" });
-  }
-};
-
+// ─── CREATE ───────────────────────────────────────────────────
 
 exports.createVolunteer = async (req, res) => {
   try {
@@ -186,28 +75,163 @@ exports.createVolunteer = async (req, res) => {
       });
     }
 
+    const imageUrl = req.file
+      ? await uploadToCloudinary(
+          req.file.buffer,
+          "kobciye-foundation/volunteers"
+        )
+      : "";
+
     const volunteer = await Volunteer.create({
       name: volName,
       phone: volPhone,
       email: volEmail,
       availibility,
       nationalId,
-      image: req.file?.path || "",
+      image: imageUrl,
       type,
       mission: type === "mission" ? missionId : null,
       project: type === "project" ? projectId : null,
+    });
+
+    await resend.emails.send({
+      from: "Kobciye Foundation <info@kobciyefoundation.org>",
+      to: process.env.ADMIN_EMAIL,
+      subject: "📩 New Volunteer Application Received",
+      html: `
+        <h2>New Volunteer Request</h2>
+        <p>A new volunteer has submitted an application to <strong>Kobciye Foundation</strong>.</p>
+        <hr/>
+        <h3>Volunteer Details:</h3>
+        <ul>
+          <li><strong>Name:</strong> ${volunteer.name}</li>
+          <li><strong>Email:</strong> ${volunteer.email}</li>
+          <li><strong>Phone:</strong> ${volunteer.phone}</li>
+          <li><strong>Availability:</strong> ${volunteer.availibility}</li>
+          <li><strong>National ID:</strong> ${volunteer.nationalId}</li>
+          <li><strong>Type:</strong> ${volunteer.type}</li>
+        </ul>
+        ${
+          volunteer.image
+            ? `<p><strong>Image:</strong><br/><img src="${volunteer.image}" width="200"/></p>`
+            : ""
+        }
+        <hr/>
+        <p>Please log in to the admin dashboard to review and take action.</p>
+        <br/>
+        <p><strong>Kobciye Foundation System</strong></p>
+      `,
     });
 
     res.status(201).json({ status: "success", data: volunteer });
   } catch (err) {
     console.error("Failed to create volunteer:", err.message);
     if (err.code === 11000)
+      return res.status(400).json({
+        status: "fail",
+        message: "This email is already registered as a volunteer",
+      });
+    res.status(500).json({ status: "error", message: err.message });
+  }
+};
+
+// ─── ACCEPT ───────────────────────────────────────────────────
+
+exports.acceptVolunteer = async (req, res) => {
+  try {
+    const volunteer = await Volunteer.findByIdAndUpdate(
+      req.params.id,
+      { status: "accepted" },
+      { new: true }
+    );
+
+    if (!volunteer)
       return res
-        .status(400)
-        .json({
-          status: "fail",
-          message: "This email is already registered as a volunteer",
-        });
+        .status(404)
+        .json({ status: "fail", message: "Volunteer not found" });
+
+    await sendVolunteerEmail(volunteer, "accepted");
+
+    res.status(200).json({ status: "success", data: volunteer });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ status: "error", message: err.message });
+  }
+};
+
+// ─── REJECT ───────────────────────────────────────────────────
+
+exports.rejectVolunteer = async (req, res) => {
+  try {
+    const volunteer = await Volunteer.findByIdAndUpdate(
+      req.params.id,
+      { status: "rejected" },
+      { new: true }
+    );
+
+    if (!volunteer)
+      return res
+        .status(404)
+        .json({ status: "fail", message: "Volunteer not found" });
+
+    await sendVolunteerEmail(volunteer, "rejected");
+
+    res.status(200).json({ status: "success", data: volunteer });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ status: "error", message: err.message });
+  }
+};
+
+// ─── UPDATE ───────────────────────────────────────────────────
+
+exports.updateVolunteer = async (req, res) => {
+  try {
+    const { status } = req.body;
+
+    if (!["pending", "accepted", "rejected"].includes(status)) {
+      return res.status(400).json({
+        status: "fail",
+        message: "Invalid status. Must be pending, accepted, or rejected",
+      });
+    }
+
+    const volunteer = await Volunteer.findByIdAndUpdate(
+      req.params.id,
+      { status },
+      { new: true, runValidators: true }
+    );
+
+    if (!volunteer)
+      return res
+        .status(404)
+        .json({ status: "fail", message: "Volunteer not found" });
+
+    if (status === "accepted" || status === "rejected") {
+      await sendVolunteerEmail(volunteer, status);
+    }
+
+    res.status(200).json({ status: "success", data: volunteer });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ status: "error", message: err.message });
+  }
+};
+
+// ─── DELETE ───────────────────────────────────────────────────
+
+exports.deleteVolunteer = async (req, res) => {
+  try {
+    const volunteer = await Volunteer.findByIdAndDelete(req.params.id);
+
+    if (!volunteer)
+      return res
+        .status(404)
+        .json({ status: "fail", message: "Volunteer not found" });
+
+    res.status(200).json({ status: "success", message: "Volunteer deleted" });
+  } catch (err) {
+    console.error(err);
     res.status(500).json({ status: "error", message: err.message });
   }
 };

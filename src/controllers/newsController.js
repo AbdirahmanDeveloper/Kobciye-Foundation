@@ -1,6 +1,7 @@
 const News = require("../models/News");
 const Newsletter = require("../models/NewsLetter");
 const { Resend } = require("resend");
+const { upload, uploadToCloudinary } = require("../middleware/upload");
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -260,12 +261,14 @@ exports.createNews = async (req, res) => {
       return res
         .status(400)
         .json({ status: "fail", message: "Please upload a cover image" });
-
+    const imageUrl = req.file
+      ? await uploadToCloudinary(req.file.buffer, "kobciye-foundation/news")
+      : "";
     const news = await News.create({
       title: req.body.title,
       content: req.body.content,
       project: req.body.project,
-      image: req.file.path,
+      image: imageUrl,
       publishedBy: req.user.id,
     });
 

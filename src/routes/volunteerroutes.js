@@ -1,21 +1,17 @@
 const express = require("express");
 const volonteerController = require("../controllers/volunteersController.js");
+const { upload } = require("../middleware/upload");
 
 const router = express.Router();
 
 router.post(
   "/apply",
-  volonteerController.uploadImage,
+  upload.single("volImage"),
   volonteerController.createVolunteer
 );
-
-router.post(
-  "/createVolunteer",
-  volonteerController.uploadImage,
-  volonteerController.createVolunteer
-);
-
-router.patch("/updateVolunteer/:id", volonteerController.updateVolunteer);
-router.delete("/deleteVolunteer/:id", volonteerController.deleteVolunteer);
+router.patch("/:id/accept", volonteerController.acceptVolunteer);
+router.patch("/:id/reject", volonteerController.rejectVolunteer);
+router.patch("/:id", volonteerController.updateVolunteer);
+router.delete("/:id", volonteerController.deleteVolunteer);
 
 module.exports = router;

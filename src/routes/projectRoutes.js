@@ -1,7 +1,7 @@
 const express = require("express");
 const projectController = require("../controllers/projectController");
 const { protect, restrictTo } = require("../middleware/authMiddlewares");
-const upload = require("../middleware/projectsUpload.js");
+const { upload } = require("../middleware/upload");
 
 const router = express.Router();
 

@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const upload = require("../middleware/memberUpload");
+const { upload } = require("../middleware/upload");
 const membersController = require("../controllers/membersController");
 const { protect, restrictTo } = require("../middleware/authMiddlewares");
 

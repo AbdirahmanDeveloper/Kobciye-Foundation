@@ -1,6 +1,6 @@
 const express = require("express");
 const missionsController = require("../controllers/missionsController");
-const upload = require("../middleware/missionsUpload");
+const { upload } = require("../middleware/upload");
 const { protect, restrictTo } = require("../middleware/authMiddlewares");
 
 const router = express.Router();
@@ -16,7 +16,7 @@ router.get(
   "/:id",
   protect,
   restrictTo("admin"),
-  missionsController.getSingleMission     
+  missionsController.getSingleMission
 );
 
 router.post(

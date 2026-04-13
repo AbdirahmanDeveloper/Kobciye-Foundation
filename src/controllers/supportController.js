@@ -1,10 +1,14 @@
 const Support = require("../models/Support");
 const { Resend } = require("resend");
+const { upload, uploadToCloudinary } = require("../middleware/upload");
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 exports.createSupport = async (req, res) => {
   try {
+    const imageUrl = req.file
+    ? await uploadToCloudinary(req.file.buffer, "kobciye-foundation/support")
+    : "";
     const support = await Support.create({
       name: req.body.name,
       email: req.body.email,
@@ -13,7 +17,7 @@ exports.createSupport = async (req, res) => {
       nationalId: req.body.nationalId,
       subject: req.body.subject,
       message: req.body.message,
-      image: req.file.path,
+      image: imageUrl,
     });
 
     res.status(201).json({ status: "success", data: support });

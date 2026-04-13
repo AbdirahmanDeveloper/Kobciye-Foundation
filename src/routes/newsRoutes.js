@@ -1,7 +1,7 @@
 const express = require("express");
 const newsController = require("../controllers/newsController.js");
 const { protect, restrictTo } = require("../middleware/authMiddlewares");
-const upload = require("../middleware/newsUpload.js");
+const { upload } = require("../middleware/upload");
 
 const router = express.Router();
 
