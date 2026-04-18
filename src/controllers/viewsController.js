@@ -8,6 +8,8 @@ const Impacts = require("../models/Impacts");
 const Volunteers = require("../models/Volunteers");
 const Mission = require("../models/Missions");
 const Support = require("../models/Support");
+const Monthlydonor = require("../models/MonthlyDonor");
+const MonthlyDonor = require("../models/MonthlyDonor");
 
 // ─── HELPERS ──────────────────────────────────────────────────
 
@@ -158,6 +160,7 @@ exports.getAdmin = async (req, res) => {
       volunteers,
       missions,
       supports,
+      donors,
     ] = await Promise.all([
       News.find(),
       Project.find().populate("createdBy"),
@@ -178,6 +181,7 @@ exports.getAdmin = async (req, res) => {
       Volunteers.find(),
       Mission.find(),
       Support.find().sort({ createdAt: -1 }),
+      MonthlyDonor.find().sort({ createdAt: -1 }),
     ]);
 
     res.render("pages/admin", {
@@ -193,6 +197,7 @@ exports.getAdmin = async (req, res) => {
       volunteers,
       missions,
       supports,
+      donors
     });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -275,7 +280,9 @@ exports.getVolunteerModal = async (req, res) => {
   try {
     const volunteer = await Volunteers.findById(req.params.id);
     if (!volunteer)
-      return res.status(404).json({ status: "fail", message: "Volunteer not found" });
+      return res
+        .status(404)
+        .json({ status: "fail", message: "Volunteer not found" });
 
     res.render("pages/vol-modal", {
       title: volunteer.name,
@@ -290,7 +297,9 @@ exports.getSupportModal = async (req, res) => {
   try {
     const support = await Support.findById(req.params.id);
     if (!support)
-      return res.status(404).json({ status: "fail", message: "Support request not found" });
+      return res
+        .status(404)
+        .json({ status: "fail", message: "Support request not found" });
 
     res.render("pages/support-modal", {
       title: support.name,

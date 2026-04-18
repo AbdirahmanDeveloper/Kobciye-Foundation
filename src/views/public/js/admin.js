@@ -192,6 +192,7 @@ navigationLinks.forEach((link) => {
   });
 });
 
+// Restore the active section after a reload
 const savedSection = localStorage.getItem("activeSectionId") || "dashboard";
 localStorage.removeItem("activeSectionId");
 const savedLink = document.querySelector(
@@ -366,7 +367,7 @@ document.querySelectorAll(".delete-project-btn").forEach((btn) => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      if (response.ok || response.status === 204) btn.closest("tr")?.remove();
+      if (response.ok || response.status === 204) closeAndReload();
       else alert((await response.json()).message || "Failed to delete project");
     } catch {
       alert("An error occurred while deleting project");
@@ -505,7 +506,7 @@ document.querySelectorAll(".delete-news-btn").forEach((btn) => {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
-      if (response.ok || response.status === 204) btn.closest("tr")?.remove();
+      if (response.ok || response.status === 204) closeAndReload();
       else alert((await response.json()).message || "Failed to delete news");
     } catch {
       alert("An error occurred while deleting news");
@@ -627,7 +628,7 @@ document.querySelectorAll(".delete-member-btn").forEach((btn) => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      if (response.ok || response.status === 204) btn.closest("tr")?.remove();
+      if (response.ok || response.status === 204) closeAndReload();
       else alert((await response.json()).message || "Failed to delete member");
     } catch {
       alert("An error occurred while deleting member");
@@ -697,7 +698,7 @@ impactsForm?.addEventListener("submit", async (e) => {
 
 async function updateVolunteerStatus(id, status) {
   try {
-    const res = await fetch(`/api/volunteers/updateVolunteer/${id}`, {
+    const res = await fetch(`/api/volunteers/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -728,14 +729,11 @@ document.querySelectorAll(".delete-volunteer-btn").forEach((btn) => {
   btn.addEventListener("click", async () => {
     if (!confirm("Are you sure you want to delete this volunteer?")) return;
     try {
-      const res = await fetch(
-        `/api/volunteers/deleteVolunteer/${btn.dataset.id}`,
-        {
-          method: "DELETE",
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      if (res.ok || res.status === 204) btn.closest("tr")?.remove();
+      const res = await fetch(`/api/volunteers/${btn.dataset.id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.ok || res.status === 204) closeAndReload();
       else alert("Failed to delete volunteer");
     } catch {
       alert("An error occurred");
@@ -870,7 +868,7 @@ document.querySelectorAll(".delete-mission-btn").forEach((btn) => {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
-      if (res.ok || res.status === 204) btn.closest("tr")?.remove();
+      if (res.ok || res.status === 204) closeAndReload();
       else alert((await res.json()).message || "Failed to delete mission");
     } catch {
       alert("An error occurred while deleting mission");
@@ -879,7 +877,7 @@ document.querySelectorAll(".delete-mission-btn").forEach((btn) => {
 });
 
 /* ============================================================
-   OK BUTTONS & RELOAD
+   OK BUTTONS & DROPDOWNS
 ============================================================ */
 
 document.querySelectorAll(".ok-btn, .ok-error-btn").forEach((btn) => {
@@ -903,55 +901,44 @@ document.addEventListener("click", () => {
     .forEach((d) => d.classList.remove("active"));
 });
 
-// ─── SUPPORT ──────────────────────────────────────────────────
-// Accept Support
+/* ============================================================
+   SUPPORT
+============================================================ */
+
 document.querySelectorAll(".accept-support-btn").forEach((btn) => {
   btn.addEventListener("click", async () => {
     const id = btn.dataset.id;
     try {
       const res = await fetch(`/api/support/${id}/accept`, {
         method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
-      if (data.status === "success") {
-        alert("support accepted");
-      } else {
-        alert("Failed to accept support request");
-      }
+      if (data.status === "success") closeAndReload();
+      else alert("Failed to accept support request");
     } catch (err) {
       console.error(err);
     }
   });
 });
 
-// Reject Support
 document.querySelectorAll(".reject-support-btn").forEach((btn) => {
   btn.addEventListener("click", async () => {
     const id = btn.dataset.id;
     try {
       const res = await fetch(`/api/support/${id}/reject`, {
         method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
-      if (data.status === "success") {
-        btn.closest("tr").remove();
-        alert("support request rejected succesfully");
-      } else {
-        alert("Failed to reject support request");
-      }
+      if (data.status === "success") closeAndReload();
+      else alert("Failed to reject support request");
     } catch (err) {
       console.error(err);
     }
   });
 });
 
-// Delete Support
 document.querySelectorAll(".delete-support-btn").forEach((btn) => {
   btn.addEventListener("click", async () => {
     const id = btn.dataset.id;
@@ -960,22 +947,21 @@ document.querySelectorAll(".delete-support-btn").forEach((btn) => {
     try {
       const res = await fetch(`/api/support/${id}`, {
         method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
-      if (data.status === "success") {
-        btn.closest("tr").remove();
-      } else {
-        alert("Failed to delete support request");
-      }
+      if (data.status === "success") closeAndReload();
+      else alert("Failed to delete support request");
     } catch (err) {
       console.error(err);
     }
   });
 });
-/* ── Read More Toggle ── */
+
+/* ============================================================
+   READ MORE TOGGLE
+============================================================ */
+
 document.querySelectorAll(".read-more-btn").forEach((btn) => {
   btn.addEventListener("click", () => {
     const wrapper = btn.previousElementSibling;
@@ -985,4 +971,188 @@ document.querySelectorAll(".read-more-btn").forEach((btn) => {
       ? "Read Less"
       : "Read More";
   });
+});
+
+/* ============================================================
+   MONTHLY DONATIONS
+============================================================ */
+
+const addMonthlyDonorBtn = document.getElementById("addMonthlyDonor");
+const createMonthlyDonorModal = document.querySelector(".create-monthly-donor");
+const createMonthlyDonorForm = document.getElementById(
+  "createMonthlyDonorForm"
+);
+const monthlyDonorSuccess = document.getElementById("monthlyDonorSuccess");
+const monthlyDonorError = document.getElementById("monthlyDonorError");
+const monthlyDonorFormWrapper = createMonthlyDonorModal?.querySelector(".form");
+
+const checkinModal = document.querySelector(".monthly-checkin-section");
+const checkinForm = document.getElementById("monthlyCheckinForm");
+const checkinFormWrapper = checkinModal?.querySelector("form");
+const checkinSuccess = document.getElementById("checkinSuccess");
+const checkinError = document.getElementById("checkinError");
+
+// ── Open / close create modal ──────────────────────────────
+
+addMonthlyDonorBtn?.addEventListener("click", () => {
+  createMonthlyDonorModal.classList.add("active");
+});
+
+createMonthlyDonorModal?.addEventListener("click", (e) => {
+  if (e.target === createMonthlyDonorModal)
+    createMonthlyDonorModal.classList.remove("active");
+});
+
+createMonthlyDonorModal
+  ?.querySelector(".close-modal-btn")
+  ?.addEventListener("click", () => {
+    createMonthlyDonorModal.classList.remove("active");
+  });
+
+// ── Create donor form submit ───────────────────────────────
+
+createMonthlyDonorForm?.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  if (monthlyDonorFormWrapper) monthlyDonorFormWrapper.style.display = "none";
+  try {
+    const res = await fetch("/api/monthly-donors/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        name: document.getElementById("donorName").value,
+        email: document.getElementById("donorEmail").value,
+        phone: document.getElementById("donorPhone").value,
+        amount: document.getElementById("donorAmount").value,
+        startDate: document.getElementById("donorStartDate").value,
+      }),
+    });
+    if (res.ok) {
+      if (monthlyDonorError) monthlyDonorError.style.display = "none";
+      if (monthlyDonorSuccess) monthlyDonorSuccess.style.display = "flex";
+      createMonthlyDonorForm.reset();
+    } else {
+      if (monthlyDonorSuccess) monthlyDonorSuccess.style.display = "none";
+      if (monthlyDonorError) monthlyDonorError.style.display = "flex";
+    }
+  } catch {
+    if (monthlyDonorSuccess) monthlyDonorSuccess.style.display = "none";
+    if (monthlyDonorError) monthlyDonorError.style.display = "flex";
+  }
+});
+
+// ── Open check-in modal & load donor data ─────────────────
+
+document.querySelectorAll(".monthly-checkin-btn").forEach((btn) => {
+  btn.addEventListener("click", async () => {
+    const id = btn.dataset.id;
+    try {
+      const res = await fetch(`/api/monthly-donors/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+      if (!res.ok) return alert("Failed to load donor");
+
+      const donor = data.data;
+
+      // Populate donor info
+      document.getElementById("checkinDonorId").value = donor._id;
+      document.getElementById("checkinDonorName").textContent = donor.name;
+      document.getElementById("checkinDonorEmail").textContent = donor.email;
+      document.getElementById("checkinDonorAmount").textContent =
+        donor.amount.toLocaleString();
+
+      // Pre-tick already paid months
+      document.querySelectorAll(".month-checkbox").forEach((cb) => {
+        cb.checked = donor.paidMonths.includes(Number(cb.value));
+      });
+
+      // Reset modal state
+      if (checkinFormWrapper) checkinFormWrapper.style.display = "block";
+      if (checkinSuccess) checkinSuccess.style.display = "none";
+      if (checkinError) checkinError.style.display = "none";
+
+      checkinModal.classList.add("active");
+    } catch {
+      alert("An error occurred loading donor data");
+    }
+  });
+});
+
+// ── Close check-in modal ──────────────────────────────────
+
+checkinModal?.addEventListener("click", (e) => {
+  if (e.target === checkinModal) checkinModal.classList.remove("active");
+});
+
+checkinModal
+  ?.querySelector(".close-checkin-btn")
+  ?.addEventListener("click", () => {
+    checkinModal.classList.remove("active");
+  });
+
+// ── Submit check-in ───────────────────────────────────────
+
+checkinForm?.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const id = document.getElementById("checkinDonorId").value;
+
+  // Collect checked month indexes
+  const checkedMonths = Array.from(
+    document.querySelectorAll(".month-checkbox:checked")
+  ).map((cb) => Number(cb.value));
+
+  if (checkedMonths.length === 0) {
+    return alert("Please select at least one month");
+  }
+
+  if (checkinFormWrapper) checkinFormWrapper.style.display = "none";
+
+  try {
+    const res = await fetch(`/api/monthly-donors/${id}/checkin`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ months: checkedMonths }),
+    });
+    if (res.ok) {
+      if (checkinError) checkinError.style.display = "none";
+      if (checkinSuccess) checkinSuccess.style.display = "flex";
+    } else {
+      if (checkinSuccess) checkinSuccess.style.display = "none";
+      if (checkinError) checkinError.style.display = "flex";
+    }
+  } catch {
+    if (checkinSuccess) checkinSuccess.style.display = "none";
+    if (checkinError) checkinError.style.display = "flex";
+  }
+});
+
+// ── Delete monthly donor ──────────────────────────────────
+
+document.querySelectorAll(".delete-monthly-donor-btn").forEach((btn) => {
+  btn.addEventListener("click", async () => {
+    if (!confirm("Are you sure you want to delete this monthly donor?")) return;
+    try {
+      const res = await fetch(`/api/monthly-donors/${btn.dataset.id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.ok || res.status === 204) closeAndReload();
+      else alert("Failed to delete monthly donor");
+    } catch {
+      alert("An error occurred");
+    }
+  });
+});
+document.querySelectorAll(".month-checkbox").forEach((cb) => {
+  const isChecked = donor.paidMonths.includes(Number(cb.value));
+
+  cb.checked = isChecked;
+
+  cb.closest(".month-card").classList.toggle("checked", isChecked);
 });

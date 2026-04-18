@@ -18,6 +18,7 @@ const impactsRoutes = require("./routes/impactsRoutes");
 const volonteerRoutes = require("./routes/volunteerroutes");
 const missionsRoutes = require("./routes/missionsRoutes");
 const supportRoutes = require("./routes/supportRoute");
+const monthlyDonorroutes = require("./routes/monthlyDonationRoutes");
 
 // ============================================================
 // APP INIT
@@ -99,7 +100,7 @@ app.use(
   })
 );
 
-// 3. Body parser 
+// 3. Body parser
 app.use(express.json({ limit: "10mb" }));
 
 // 4. NoSQL injection protection
@@ -120,7 +121,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// 5. XSS protection 
+// 5. XSS protection
 app.use((req, res, next) => {
   const sanitize = (obj) => {
     if (obj && typeof obj === "object") {
@@ -141,7 +142,7 @@ app.use((req, res, next) => {
 // 6. HPP
 app.use(hpp());
 
-// 7. Speed limiter 
+// 7. Speed limiter
 const speedLimiter = slowDown({
   windowMs: 15 * 60 * 1000,
   delayAfter: 30,
@@ -166,6 +167,7 @@ app.use("/api/impacts", impactsRoutes);
 app.use("/api/volunteers", volonteerRoutes);
 app.use("/api/missions", missionsRoutes);
 app.use("/api/support", supportRoutes);
+app.use("/api/monthly-donors", monthlyDonorroutes);
 
 // ============================================================
 // GLOBAL ERROR HANDLER

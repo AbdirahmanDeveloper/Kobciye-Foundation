@@ -1,19 +1,4 @@
 /* ============================================================
-   HEADER SCROLL EFFECT
-============================================================ */
-
-const header = document.querySelector("header");
-const SCROLL_THRESHOLD = 80;
-
-window.addEventListener("scroll", () => {
-  if (window.scrollY > SCROLL_THRESHOLD) {
-    header.classList.add("active");
-  } else {
-    header.classList.remove("active");
-  }
-});
-
-/* ============================================================
    THEME BTN
 ============================================================ */
 const themeBtn = document.querySelector(".theme-btn");
@@ -61,10 +46,29 @@ document.addEventListener("click", (e) => {
   }
 });
 
-document.querySelectorAll(".nav-links a").forEach((link) => {
+document.querySelectorAll(".nav-links .nav-link").forEach((link) => {
   link.addEventListener("click", closeNav);
 });
+/* ============================================================
+| DROPDOWN TOGGLE
+============================================================ */
+const dropdownToggle = document.querySelector(".dropdown-toggle");
+const dropdown = document.querySelector(".dropdown");
 
+if (dropdownToggle) {
+  dropdownToggle.addEventListener("click", (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle("open");
+  });
+}
+
+const navCloseBtn = document.querySelector(".close-btn");
+if (navCloseBtn) {
+  navCloseBtn.addEventListener("click", () => {
+    dropdown?.classList.remove("open");
+    dropdownToggle?.setAttribute("aria-expanded", "false");
+  });
+}
 /* ============================================================
    USER PROFILE MODAL
 ============================================================ */
@@ -513,4 +517,3 @@ scrollProjectRight?.addEventListener("click", () => {
     behavior: "smooth",
   });
 });
-

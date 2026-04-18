@@ -681,7 +681,8 @@ tbody tr:nth-child(odd):hover {
 /* ============================================================
    16. MODAL OVERLAY
 ============================================================ */
-.create-section {
+.create-section,
+.monthly-checkin-section {
   position: fixed;
   inset: 0;
   backdrop-filter: blur(10px);
@@ -696,7 +697,8 @@ tbody tr:nth-child(odd):hover {
   z-index: 200;
 }
 
-.create-section.active {
+.create-section.active,
+.monthly-checkin-section.active {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
@@ -1053,6 +1055,240 @@ tbody tr:nth-child(odd):hover {
   pointer-events: auto;
 }
 
+
+/* ============================================================
+   20. CHECK IN MODEL
+============================================================ */
+/* ─── OVERLAY ─────────────────────────────────────────────── */
+.modal-overlay.monthly-checkin-section {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  z-index: 1000;
+}
+
+/* ─── MODAL ───────────────────────────────────────────────── */
+.modal.modal-wide {
+  background: #ffffff;
+  border-radius: 12px;
+  border: 0.5px solid rgba(0, 0, 0, 0.12);
+  width: 100%;
+  max-width: 800px;
+  overflow: hidden;
+}
+
+/* ─── HEADER ──────────────────────────────────────────────── */
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-bottom: 0.5px solid rgba(0, 0, 0, 0.08);
+}
+
+.modal-header h3 {
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.close-checkin-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 8px;
+  color: #888;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  transition: background 0.12s;
+}
+
+.close-checkin-btn:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+/* ─── DONOR INFO ──────────────────────────────────────────── */
+.checkin-donor-info {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-bottom: 0.5px solid rgba(0, 0, 0, 0.08);
+}
+
+.checkin-donor-info .donor-label {
+  padding: 12px 20px;
+  font-size: 11px;
+  color: #999;
+  margin: 0;
+}
+
+.checkin-donor-info .donor-label:not(:last-child) {
+  border-right: 0.5px solid rgba(0, 0, 0, 0.08);
+}
+
+.checkin-donor-info .donor-label strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: #111;
+  margin-top: 3px;
+}
+
+/* ─── FORM ────────────────────────────────────────────────── */
+#monthlyCheckinForm {
+  padding: 20px;
+}
+
+/* ─── MONTHS GRID ─────────────────────────────────────────── */
+.months-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.month-card {
+  border: 0.5px solid rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+  padding: 12px 6px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+  transition: border-color 0.12s, background 0.12s;
+  position: relative;
+}
+
+.month-card:hover {
+  border-color: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.month-card label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.month-icon {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #aaa;
+  font-size: 14px;
+}
+
+.month-card label span {
+  font-size: 11px;
+  color: #888;
+  text-align: center;
+}
+
+
+/* ─── FORM ACTIONS ────────────────────────────────────────── */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* ─── BUTTONS ─────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: opacity 0.12s;
+}
+
+.btn-primary {
+  background: #111;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  opacity: 0.82;
+}
+
+.btn-secondary {
+  background: none;
+  color: #111;
+  border: 0.5px solid rgba(0, 0, 0, 0.2);
+}
+
+.btn-secondary:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+/* ─── SUCCESS STATE ───────────────────────────────────────── */
+.checkin-success-message {
+  padding: 32px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+}
+
+.checkin-success-message .fa-circle-check {
+  font-size: 40px;
+  color: #22863a;
+}
+
+.checkin-success-message h3 {
+  font-size: 15px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.checkin-success-message p {
+  font-size: 13px;
+  color: #666;
+  margin: 0 0 6px;
+}
+
+/* ─── ERROR STATE ─────────────────────────────────────────── */
+.echeckin-rror-message {
+  padding: 32px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+}
+
+.checkin-error-message .fa-circle-xmark {
+  font-size: 40px;
+  color: #cb2431;
+}
+
+.checkin-error-message h3 {
+  font-size: 15px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.checkin-error-message p {
+  font-size: 13px;
+  color: #666;
+  margin: 0 0 6px;
+}
 /* ============================================================
    21. RESPONSIVE — LARGE TABLETS (≤ 1400px)
 ============================================================ */

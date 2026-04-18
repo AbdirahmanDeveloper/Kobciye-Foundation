@@ -10,25 +10,33 @@ header
 
   //- NAV DRAWER
   nav
-      
-
     ul.nav-links
       li
-        a(href="/" class=activePage === 'home' ? 'active' : '') Home
+        a.nav-link(href="/" class=activePage === 'home' ? 'active' : '') Home
+
       li
-        a(href="/about" class=activePage === 'about' ? 'active' : '') About Us
+        a.nav-link(href="/about" class=activePage === 'about' ? 'active' : '') About Us
+
+      li.dropdown
+        .dropdown-trigger
+          a.dropdown-link(href="#") Projects
+          button.dropdown-toggle(type="button" aria-expanded="false")
+            i.fa-solid.fa-chevron-down
+        ul.dropdown-menu
+          li
+            a.nav-link(href="/projects" class=activePage === 'projects' ? 'active' : '') Projects
+          li
+            a.nav-link(href="/missions" class=activePage === 'missions' ? 'active' : '') Missions
+          li
+            a.nav-link(href="/volunteer" class=activePage === 'volunteer' ? 'active' : '') Volunteer
+          li
+            a.nav-link(href="/support" class=activePage === 'support' ? 'active' : '') Support
+
       li
-        a(href="/projects" class=activePage === 'projects' ? 'active' : '') Projects
+        a.nav-link(href="/blog" class=activePage === 'blog' ? 'active' : '') Blog
+
       li
-        a(href="/blog" class=activePage === 'blog' ? 'active' : '') Blog
-      li
-        a(href="/missions" class=activePage === 'missions' ? 'active' : '') Missions
-      li
-        a(href="/volunteer" class=activePage === 'volunteer' ? 'active' : '') Volunteer
-      li
-        a(href="/contact" class=activePage === 'contact' ? 'active' : '') Contact Us
-      li
-        a(href="/support" class=activePage === 'support' ? 'active' : '') Support
+        a.nav-link(href="/contact" class=activePage === 'contact' ? 'active' : '') Contact Us
 
     .header-btns
       a.donate-btn(href="/payment") Donate Now
