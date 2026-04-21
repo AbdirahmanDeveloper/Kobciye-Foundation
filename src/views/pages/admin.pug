@@ -33,7 +33,7 @@ body
             |  Donations
         li
           a(href="#monthlyDonations")
-            i.fa-solid.fa-gauge
+            i.fas.fa-arrows-rotate
             | Monthly Donations
         li
           a(href="#news")
@@ -696,6 +696,7 @@ body
             th #
             th Name
             th Email
+            th Phone
             th Amount (KES)
             th Months Paid
             th Status
@@ -707,6 +708,8 @@ body
                 td= i + 1
                 td= donor.name
                 td= donor.email
+                td.donor-phone
+                  a(href=`https://wa.me/254${donor.phone.replace(/\D/g, '').replace(/^0/, '')}` target="_blank") #{donor.phone}
                 td= donor.amount.toLocaleString()
                 td
                   span.badge= donor.monthsPaid + " / 12"

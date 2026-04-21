@@ -1127,6 +1127,10 @@ tbody tr:nth-child(odd):hover {
   color: #999;
   margin: 0;
 }
+.donor-phone a{
+  text-decoration: none;
+  color: black;
+}
 
 .checkin-donor-info .donor-label:not(:last-child) {
   border-right: 0.5px solid rgba(0, 0, 0, 0.08);
