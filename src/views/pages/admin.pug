@@ -554,6 +554,8 @@ body
             th Email
             th Availability
             th National ID
+            th DOB
+            th Address
             th Type
             th Status
             th Action
@@ -568,6 +570,8 @@ body
                 td= item.email
                 td= item.availibility
                 td= item.nationalId
+                td= item.dateOfBirth ? new Date(item.dateOfBirth).toLocaleDateString() : 'N/A'
+                td= item.address
                 td= item.type
                 td
                   span.status-badge(class=`status-${item.status}`)= item.status
@@ -759,8 +763,9 @@ body
             th Name
             th Email
             th Phone
-            th Shop
-            th Amount (KES)
+            th Shop Center
+            th Shop No
+            th Amount
             th Months Paid
             th Status
             th Actions
@@ -773,7 +778,8 @@ body
                 td= donor.email
                 td.donor-phone
                   a(href=`https://wa.me/254${donor.phone.replace(/\D/g, '').replace(/^0/, '')}` target="_blank") #{donor.phone}
-                td= donor.shop
+                td= donor.shopCenter
+                td= donor.shopNo
                 td= donor.amount.toLocaleString()
                 td
                   span.badge= donor.monthsPaid + " / 12"
@@ -822,8 +828,12 @@ body
             input#donorPhone(type="tel" name="phone" placeholder="Enter phone number")
 
           .form-group
-            label(for="shopName") Shop Name
-            input#shopName(type="text" name="shop" placeholder="Enter Shop Name")
+            label(for="shopCenter") Shop Center
+            input#shopCenter(type="text" name="shopCenter" placeholder="Enter Shop Name")
+
+          .form-group
+            label(for="shopNo") Shop No
+            input#shopNo(type="text" name="shopNo" placeholder="Enter Shop No")
 
           .form-group
             label(for="donorAmount") Monthly Amount (KES)

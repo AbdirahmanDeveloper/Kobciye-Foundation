@@ -63,9 +63,22 @@ body
 
           .input-box
             label(for="nationalId")
-              | Your National ID
+              | National ID
               span.req *
             input(id="nationalId" name="nationalId" placeholder="e.g: 000 000 000 0" required)
+
+          .input-box
+            label(for="nationalId")
+              | Date of Birth
+              span.req *
+            input(id="dateOfBirth" type="date" name="dateOfBirth" placeholder="e.g: 02/01/2000" required)
+
+          .input-box
+            label(for="nationalId")
+              | Your Address
+              span.req *
+            input(id="address" name="address" placeholder="e.g: Eastleigh 6th st" required)
+
 
           .form-divider
 

@@ -5,7 +5,6 @@ const { Resend } = require("resend");
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-
 // ─── EMAIL HELPER ─────────────────────────────────────────────
 
 async function sendVolunteerEmail(volunteer, status) {
@@ -48,6 +47,8 @@ exports.createVolunteer = async (req, res) => {
       volEmail,
       availibility,
       nationalId,
+      dateOfBirth,
+      address,
       type,
       missionId,
       projectId,
@@ -88,6 +89,8 @@ exports.createVolunteer = async (req, res) => {
       email: volEmail,
       availibility,
       nationalId,
+      dateOfBirth,
+      address,
       image: imageUrl,
       type,
       mission: type === "mission" ? missionId : null,

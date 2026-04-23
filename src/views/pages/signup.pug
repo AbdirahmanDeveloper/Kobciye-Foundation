@@ -18,7 +18,6 @@ html(lang="en")
           i.fa-solid.fa-user
           input(type="text" id="name" name="name" placeholder="Joe Doe" required)
 
-
       .input-box
         label(for="email") Email
         .input-with-icon
@@ -36,10 +35,9 @@ html(lang="en")
         .input-with-icon
           i.fa-solid.fa-globe
           select#country(name="country" required)
-            option(value="" disabled selected) Select your country
+            option(value="" disabled selected) Loading countries...
 
       .input-box
-        p
         label(for="password") Password
         .pass-error-message(style="color:red; font-weight:bold; display:none;")
         .input-with-icon
@@ -47,15 +45,13 @@ html(lang="en")
           input(type="password" id="password" name="password" placeholder="Min. 8 characters" required)
           i.fa-solid.fa-eye.toggle-password#togglePassword(style="left:auto; right:14px; cursor:pointer; pointer-events:all;")
 
-
       .input-box
-        label(for="confirm-password") Confirm Passwordp
+        label(for="confirm-password") Confirm Password
         .pass-confirm-error-message(style="color:red; font-weight:bold; display:none;")
         .input-with-icon
           i.fa-solid.fa-lock
           input(type="password" id="confirm-password" placeholder="Confirm Your Password" required)
           i.fa-solid.fa-eye.toggle-password#toggleConfirmPassword(style="left:auto; right:14px; cursor:pointer; pointer-events:all;")
-
 
       button.auth-btn(type="submit") Sign Up
 
@@ -64,5 +60,3 @@ html(lang="en")
         a(href="/login") Login
 
   script(src="/js/signup.js")
-
-    

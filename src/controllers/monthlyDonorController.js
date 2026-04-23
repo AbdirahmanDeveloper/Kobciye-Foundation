@@ -122,13 +122,15 @@ async function sendThankYouEmail(donor, paidMonths) {
 
 exports.createMonthlyDonor = async (req, res) => {
   try {
-    const { name, email, phone, shop, amount, startDate } = req.body;
+    const { name, email, phone, shopCenter, shopNo, amount, startDate } =
+      req.body;
 
     const donor = await MonthlyDonor.create({
       name,
       email,
       phone,
-      shop,
+      shopCenter,
+      shopNo,
       amount,
       startDate,
     });

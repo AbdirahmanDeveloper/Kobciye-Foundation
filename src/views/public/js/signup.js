@@ -19,7 +19,6 @@ signUpForm.addEventListener("submit", async (e) => {
   const signupError = document.querySelector(".signup-error-message");
   const submitBtn = document.querySelector(".auth-btn");
 
-
   // Client-side validation
   if (!name || !email || !phone || !country) {
     signupError.style.display = "block";
@@ -71,20 +70,34 @@ signUpForm.addEventListener("submit", async (e) => {
 });
 
 // Load countries
-fetch("https://restcountries.com/v3.1/all?fields=name,cca2,flag")
+fetch("/data/countries.json")
   .then((res) => res.json())
   .then((countries) => {
     const select = document.getElementById("country");
+
+    select.innerHTML =
+      '<option value="" disabled selected>Select your country</option>';
+
     countries
-      .sort((a, b) => a.name.common.localeCompare(b.name.common))
+      .sort((a, b) => a.name.localeCompare(b.name)) // ✅ FIXED
       .forEach((country) => {
         const option = document.createElement("option");
-        option.value = country.cca2;
-        option.textContent = `${country.flag} ${country.name.common}`;
+
+        option.value = country.code; // ✅ FIXED
+        option.textContent = `${country.flag} ${country.name}`; // ✅ FIXED
+
+        // Optional: auto-select Kenya
+        if (country.code === "KE") option.selected = true;
+
         select.appendChild(option);
       });
   })
-  .catch(() => console.error("Failed to load countries"));
+  .catch((err) => {
+    console.error(err);
+    const select = document.getElementById("country");
+    select.innerHTML =
+      '<option value="" disabled selected>Failed to load — refresh page</option>';
+  });
 
 // Toggle password visibility
 const togglePassword = document.getElementById("togglePassword");

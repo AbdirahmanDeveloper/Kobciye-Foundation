@@ -28,6 +28,14 @@ const volunteersSchema = mongoose.Schema({
   nationalId: {
     type: String,
   },
+  dateOfBirth: {
+    type: Date,
+    required: [true, "birth date is required"],
+  },
+  address: {
+    type: String,
+    required: true,
+  },
   type: {
     type: String,
     enum: ["permanent", "mission", "project"],

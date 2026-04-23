@@ -18,7 +18,11 @@ const monthlyDonorSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
-    shop: {
+    shopCenter: {
+      type: String,
+      required: true,
+    },
+    shopNo: {
       type: String,
       required: true,
     },
