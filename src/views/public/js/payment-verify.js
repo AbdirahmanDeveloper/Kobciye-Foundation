@@ -15,24 +15,15 @@ async function verifyPayment() {
     const data = await res.json();
 
     if (res.ok && data.data.paymentStatus === "success") {
-      // Populate receipt
       document.getElementById("receiptRef").textContent = reference;
-      document.getElementById("receiptDate").textContent = new Date().toDateString();
-
-      // Fetch the donation details for amount and method
-      const donRes = await fetch(`/api/donations/my-donations`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const donData = await donRes.json();
-
-      // Find the matching donation by reference
-      const donation = donData.data?.find(d => d.reference === reference);
-      if (donation) {
-        document.getElementById("receiptAmount").textContent =
-          `KES ${donation.amount.toLocaleString()}`;
-        document.getElementById("receiptMethod").textContent =
-          donation.paymentMethod.toUpperCase();
-      }
+      document.getElementById("receiptDate").textContent =
+        new Date().toDateString();
+      document.getElementById(
+        "receiptAmount"
+      ).textContent = `KES ${data.data.amount.toLocaleString()}`;
+      document.getElementById("receiptMethod").textContent = (
+        data.data.paymentMethod || "CARD"
+      ).toUpperCase();
 
       showState("successState");
     } else {

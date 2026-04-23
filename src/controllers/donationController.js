@@ -31,7 +31,6 @@ const markDonationSuccess = async (reference) => {
   donation.status = "success";
   await donation.save();
 
-  // Update project raised amount only after marking success
   if (donation.project) {
     await updateProjectProgress(donation.project, donation.amount);
   }
@@ -174,6 +173,7 @@ exports.verifyPayment = async (req, res) => {
           amount: paystackAmount,
           reference: req.params.reference,
           projectId: donation?.project || null,
+          paymentMethod: donation?.paymentMethod || null,
         },
       });
     }
