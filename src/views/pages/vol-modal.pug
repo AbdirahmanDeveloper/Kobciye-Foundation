@@ -46,7 +46,7 @@ body
                 span.stat-value= volunteer.type
               .stat-row
                 span.stat-label Type
-                span.stat-value= volunteer.dateOfBirth
+                span.stat-value= volonteer.dateOfBirth ? new Date(item.dateOfBirth).toLocaleDateString() : 'N/A'
               .stat-row
                 span.stat-label Type
                 span.stat-value= volunteer.address
