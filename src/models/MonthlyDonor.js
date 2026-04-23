@@ -18,6 +18,10 @@ const monthlyDonorSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    shop: {
+      type: String,
+      required: true,
+    },
     amount: {
       type: Number,
       required: [true, "Amount is required"],

@@ -1298,9 +1298,11 @@ header {
 
 .donations-header {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+  gap: 10px;
 }
 
 .donations-header h2 {

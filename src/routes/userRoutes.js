@@ -42,6 +42,4 @@ router.get("/", protect, restrictTo("admin"), userController.getAllUsers);
 router.delete("/:id", protect, restrictTo("admin"), userController.deleteUser);
 router.get("/totalUsers", protect, restrictTo("admin"), userController.totalUsers);
 
-
-
 module.exports = router;

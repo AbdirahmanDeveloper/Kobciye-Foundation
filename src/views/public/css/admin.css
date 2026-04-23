@@ -247,7 +247,7 @@ header {
 
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   gap: 20px;
   margin-bottom: 30px;
 }
@@ -296,6 +296,30 @@ header {
 }
 .stat-icon.completed {
   background: linear-gradient(135deg, #fa709a, #fee140);
+}
+.stat-icon.monthly {
+  background: rgba(99, 102, 241, 0.1);
+  color: #6366f1;
+}
+.stat-icon.missions {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+.stat-icon.news {
+  background: rgba(245, 158, 11, 0.1);
+  color: #f59e0b;
+}
+.stat-icon.contacts {
+  background: rgba(20, 184, 166, 0.1);
+  color: #14b8a6;
+}
+.stat-icon.support {
+  background: rgba(168, 85, 247, 0.1);
+  color: #a855f7;
+}
+.stat-icon.volunteers {
+  background: rgba(236, 72, 153, 0.1);
+  color: #ec4899;
 }
 
 .stat-details h3 {
@@ -1055,7 +1079,6 @@ tbody tr:nth-child(odd):hover {
   pointer-events: auto;
 }
 
-
 /* ============================================================
    20. CHECK IN MODEL
 ============================================================ */
@@ -1127,7 +1150,7 @@ tbody tr:nth-child(odd):hover {
   color: #999;
   margin: 0;
 }
-.donor-phone a{
+.donor-phone a {
   text-decoration: none;
   color: black;
 }
@@ -1199,7 +1222,6 @@ tbody tr:nth-child(odd):hover {
   color: #888;
   text-align: center;
 }
-
 
 /* ─── FORM ACTIONS ────────────────────────────────────────── */
 .form-actions {

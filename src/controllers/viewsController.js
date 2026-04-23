@@ -197,7 +197,7 @@ exports.getAdmin = async (req, res) => {
       volunteers,
       missions,
       supports,
-      donors
+      donors,
     });
   } catch (err) {
     res.status(500).json({ message: err.message });

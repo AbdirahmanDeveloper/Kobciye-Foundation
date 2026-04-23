@@ -17,10 +17,6 @@ document.documentElement.style.display = "";
 ============================================================ */
 
 function closeAndReload() {
-  const activeSection = document.querySelector(".content-section.active");
-  if (activeSection) {
-    localStorage.setItem("activeSectionId", activeSection.id);
-  }
   window.location.reload();
 }
 
@@ -215,66 +211,6 @@ navigationToggleBtn?.addEventListener("click", (e) => {
   e.stopPropagation();
   sidebarNav.classList.toggle("active");
 });
-
-/* ============================================================
-   DASHBOARD STATS
-============================================================ */
-
-async function fetchTotalDonationAmount() {
-  try {
-    const response = await fetch("/api/donations/totalAmount", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    const data = await response.json();
-    const el = document.getElementById("totalDonatedAmount");
-    if (el)
-      el.textContent = response.ok
-        ? `KES ${(data.data.totalAmount || 0).toLocaleString()}`
-        : "KES 0";
-  } catch {}
-}
-
-async function fetchTotalUsersCount() {
-  try {
-    const response = await fetch("/api/users/totalUsers", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    const data = await response.json();
-    const el = document.getElementById("totalUsers");
-    if (el) el.textContent = response.ok ? data.data.totalUsers : "0";
-  } catch {}
-}
-
-async function fetchTotalMembersCount() {
-  try {
-    const response = await fetch("/api/members/totalMembers", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    const data = await response.json();
-    const el = document.getElementById("totalMembers");
-    if (el) el.textContent = response.ok ? data.data.totalMembers : "0";
-  } catch {}
-}
-
-async function fetchProjectCounts() {
-  try {
-    const response = await fetch("/api/projects/countProjects", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    const data = await response.json();
-    if (response.ok) {
-      const activeEl = document.getElementById("activeProjects");
-      const completedEl = document.getElementById("completedProjects");
-      if (activeEl) activeEl.textContent = data.data.countActive;
-      if (completedEl) completedEl.textContent = data.data.countCompleted;
-    }
-  } catch {}
-}
-
-fetchTotalDonationAmount();
-fetchTotalUsersCount();
-fetchTotalMembersCount();
-fetchProjectCounts();
 
 document.addEventListener("DOMContentLoaded", async () => {
   try {
@@ -1025,6 +961,7 @@ createMonthlyDonorForm?.addEventListener("submit", async (e) => {
         name: document.getElementById("donorName").value,
         email: document.getElementById("donorEmail").value,
         phone: document.getElementById("donorPhone").value,
+        shop: document.getElementById("shopName").value,
         amount: document.getElementById("donorAmount").value,
         startDate: document.getElementById("donorStartDate").value,
       }),
@@ -1142,17 +1079,31 @@ document.querySelectorAll(".delete-monthly-donor-btn").forEach((btn) => {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
-      if (res.ok || res.status === 204) closeAndReload();
-      else alert("Failed to delete monthly donor");
+      if (res.ok || res.status === 204) {
+        document.getElementById("donorDeleteSuccess").style.display = "flex";
+      }
     } catch {
       alert("An error occurred");
     }
   });
 });
-document.querySelectorAll(".month-checkbox").forEach((cb) => {
-  const isChecked = donor.paidMonths.includes(Number(cb.value));
 
-  cb.checked = isChecked;
-
-  cb.closest(".month-card").classList.toggle("checked", isChecked);
+document.querySelectorAll(".delete-monthly-donor-btn").forEach((btn) => {
+  btn.addEventListener("click", async () => {
+    if (!confirm("Are you sure you want to delete this monthly donor?")) return;
+    try {
+      const res = await fetch(`/api/monthly-donors/${btn.dataset.id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.ok || res.status === 204) {
+        document.getElementById("donorDeleteSuccess").style.display = "flex";
+      } else {
+        document.getElementById("donorDeleteError").style.display = "flex";
+      }
+      closeAndReload();
+    } catch {
+      document.getElementById("donorDeleteError").style.display = "flex";
+    }
+  });
 });

@@ -91,32 +91,78 @@ body
           .stat-icon.donations
             i.fa-solid.fa-hand-holding-dollar
           .stat-details
-            h3#totalDonatedAmount KES 0
+            h3#totalDonatedAmount KES #{donations.reduce(function(sum, d){ return sum + (d.amount || 0) }, 0).toLocaleString()}
             p Total Donated
+
         .stat-card
-          .stat-icon.users
-            i.fa-solid.fa-users
+          .stat-icon.monthly
+            i.fas.fa-arrows-rotate
           .stat-details
-            h3#totalUsers 0
-            p Total Users
-        .stat-card
-          .stat-icon.members
-            i.fa-solid.fa-user-group
-          .stat-details
-            h3#totalMembers 0
-            p Total Members
+            h3#totalMonthlyDonors= donors.length
+            p Monthly Donors
+
         .stat-card
           .stat-icon.active
             i.fa-solid.fa-rocket
           .stat-details
-            h3#activeProjects 0
+            h3#activeProjects= projects.filter(function(p){ return p.status === 'active' }).length
             p Active Projects
+
         .stat-card
           .stat-icon.completed
             i.fa-solid.fa-circle-check
           .stat-details
-            h3#completedProjects 0
+            h3#completedProjects= projects.filter(function(p){ return p.status === 'completed' }).length
             p Completed Projects
+
+        .stat-card
+          .stat-icon.users
+            i.fa-solid.fa-users
+          .stat-details
+            h3#totalUsers= users.length
+            p Total Users
+
+        .stat-card
+          .stat-icon.members
+            i.fa-solid.fa-user-group
+          .stat-details
+            h3#totalMembers= members.length
+            p Total Members
+
+        .stat-card
+          .stat-icon.volunteers
+            i.fa-solid.fa-hand-holding-hand
+          .stat-details
+            h3#totalVolunteers= volunteers.length
+            p Volunteers
+
+        .stat-card
+          .stat-icon.missions
+            i.fa-solid.fa-bullseye
+          .stat-details
+            h3#totalMissions= missions.length
+            p Missions
+
+        .stat-card
+          .stat-icon.news
+            i.fa-solid.fa-newspaper
+          .stat-details
+            h3#totalNews= news.length
+            p News Posts
+
+        .stat-card
+          .stat-icon.contacts
+            i.fa-solid.fa-address-book
+          .stat-details
+            h3#totalContacts= contacts.length
+            p Contacts
+
+        .stat-card
+          .stat-icon.support
+            i.fa-solid.fa-headset
+          .stat-details
+            h3#totalSupport= supports.length
+            p Support Requests
 
       .dashboard-grid
         .dashboard-card.chart-card
@@ -287,6 +333,7 @@ body
             th Name
             th Email
             th Role
+            th Action
         tbody
           if users && users.length
             each item in users
@@ -295,11 +342,26 @@ body
                 td= item.email
                 td
                   span.role(class=`role-${item.role}`)= item.role
+                td
+                  .action-wrapper
+                    button.action-btn
+                      i.fa-solid.fa-ellipsis-vertical
+                    .see-more-btns
+                      button.delete-btn.delete-user-btn(data-id=item._id)
+                        i.fa-solid.fa-trash
+                        |  Delete
           else
             tr
               td(colspan="3")
                 p.text-muted No users found
-
+    .success-message#userDeleteSuccess
+      i.fa-solid.fa-circle-check
+      h2 User Deleted Successfully
+      button.ok-btn#userDeleteOkBtn OK
+    .error-message#userDeleteError
+      i.fa-solid.fa-circle-xmark
+      h2 User Delete Failed
+      button.ok-error-btn#userDeleteErrorBtn OK
   //- ==================
   //- PROJECTS
   //- ==================
@@ -697,6 +759,7 @@ body
             th Name
             th Email
             th Phone
+            th Shop
             th Amount (KES)
             th Months Paid
             th Status
@@ -710,6 +773,7 @@ body
                 td= donor.email
                 td.donor-phone
                   a(href=`https://wa.me/254${donor.phone.replace(/\D/g, '').replace(/^0/, '')}` target="_blank") #{donor.phone}
+                td= donor.shop
                 td= donor.amount.toLocaleString()
                 td
                   span.badge= donor.monthsPaid + " / 12"
@@ -728,15 +792,22 @@ body
                         span  Delete
           else
             tr
-              td(colspan="7").empty-table No monthly donors yet
+              td(colspan="7").text-muted No monthly donors yet
+    .success-message#donorDeleteSuccess
+      i.fa-solid.fa-circle-check
+      h2 Donor Deleted Successfully
+      button.ok-btn OK
+    .error-message#donorDeleteError
+      i.fa-solid.fa-circle-xmark
+      h2 Donor Delete Failed
+      button.ok-error-btn OK
 
   // ─── CREATE MONTHLY DONOR MODAL ───────────────────────────────
   .create-monthly-donor.create-section
     .modal
-      .modal-header
-        h3 Add Monthly Donor
-
       .form
+        .form-title
+          h2 Add Monthly Donor
         form#createMonthlyDonorForm
           .form-group
             label(for="donorName") Full Name
@@ -749,6 +820,10 @@ body
           .form-group
             label(for="donorPhone") Phone Number
             input#donorPhone(type="tel" name="phone" placeholder="Enter phone number")
+
+          .form-group
+            label(for="shopName") Shop Name
+            input#shopName(type="text" name="shop" placeholder="Enter Shop Name")
 
           .form-group
             label(for="donorAmount") Monthly Amount (KES)

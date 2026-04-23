@@ -25,7 +25,7 @@ exports.getMe = async (req, res) => {
 
 exports.updateMe = async (req, res) => {
   try {
-    const allowedFields = ["name", "email", "phone", "country"];
+    const allowedFields = ["name", "email", "phone", "country", ];
     const updates = {};
     Object.keys(req.body).forEach((field) => {
       if (allowedFields.includes(field)) updates[field] = req.body[field];
@@ -82,6 +82,7 @@ exports.deleteUser = async (req, res) => {
     res.status(204).json({ status: "success", data: null });
   } catch (err) {
     res.status(500).json({ message: err.message });
+    console.log(500).json({ message: err.message });
   }
 };
 
