@@ -309,3 +309,7 @@ exports.getSupportModal = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+exports.getPaymentSuccess = async (req, res) => {
+  res.render("pages/verify-payment")
+}

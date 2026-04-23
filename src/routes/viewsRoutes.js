@@ -13,6 +13,7 @@ router.get("/blog/:id", viewsController.getBlogModal);
 router.route("/contact").get(viewsController.getContacts);
 router.route("/admin").get(viewsController.getAdmin);
 router.route("/payment").get(viewsController.getPayment);
+router.route("/verify-payment").get(viewsController.getPaymentSuccess);
 router.get("/reset-password", viewsController.getResetPassword);
 router.get("/otp", viewsController.getOTP);
 router.get("/volonteerPage", viewsController.getVolonteerPage);

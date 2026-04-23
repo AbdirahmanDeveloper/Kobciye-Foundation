@@ -10,14 +10,36 @@ const updateProjectProgress = async (projectId, amount) => {
   if (!proj) return;
 
   proj.raisedAmount += amount;
+
   if (proj.raisedAmount >= proj.goalAmount) {
     proj.status = "completed";
     proj.raisedAmount = proj.goalAmount;
   }
+  proj.remainingAmount = proj.goalAmount - proj.raisedAmount;
+
   await proj.save();
 };
 
-// ─── PAYSTACK ─────────────────────────────────────────────────
+// ─── MARK DONATION SUCCESS (shared logic, runs only once) ─────
+
+const markDonationSuccess = async (reference) => {
+  const donation = await Donation.findOne({ reference });
+  if (!donation) return null;
+
+  if (donation.status === "success") return donation;
+
+  donation.status = "success";
+  await donation.save();
+
+  // Update project raised amount only after marking success
+  if (donation.project) {
+    await updateProjectProgress(donation.project, donation.amount);
+  }
+
+  return donation;
+};
+
+// ─── PAYSTACK INITIALIZE ──────────────────────────────────────
 
 exports.initializePayment = async (req, res) => {
   try {
@@ -28,7 +50,7 @@ exports.initializePayment = async (req, res) => {
         .status(400)
         .json({ status: "fail", message: "Please provide amount" });
 
-    if (Number(amount) < 10)
+    if (Number(amount) < 5)
       return res
         .status(400)
         .json({ status: "fail", message: "Minimum donation is KES 10" });
@@ -66,7 +88,7 @@ exports.initializePayment = async (req, res) => {
       amount: Number(amount) * 100,
       currency: "KES",
       reference,
-      callback_url: `${process.env.FRONTEND_URL}/projects`,
+      callback_url: `${process.env.FRONTEND_URL}/verify-payment?ref=${reference}`,
       metadata: {
         project_id: project || "custom",
         project_title: projectDoc ? projectDoc.title : "Custom Donation",
@@ -78,7 +100,10 @@ exports.initializePayment = async (req, res) => {
 
     if (paymentMethod === "mpesa") {
       paystackPayload.channels = ["mobile_money"];
-      paystackPayload.mobile_money = { phone, provider: "mpesa" };
+      paystackPayload.mobile_money = {
+        phone: phone.startsWith("0") ? "254" + phone.slice(1) : phone,
+        provider: "mpesa",
+      };
     } else {
       paystackPayload.channels = ["card"];
     }
@@ -108,20 +133,14 @@ exports.initializePayment = async (req, res) => {
   }
 };
 
+// ─── WEBHOOK (called by Paystack server-to-server) ────────────
+
 exports.handleWebhook = async (req, res) => {
   try {
     const { event, data } = req.body;
 
     if (event === "charge.success") {
-      const donation = await Donation.findOne({ reference: data.reference });
-      if (!donation) return res.status(200).json({ message: "Received" });
-
-      if (donation.status !== "success") {
-        donation.status = "success";
-        await donation.save();
-        if (donation.project)
-          await updateProjectProgress(donation.project, donation.amount);
-      }
+      await markDonationSuccess(data.reference);
     }
 
     res.status(200).json({ message: "Received" });
@@ -130,6 +149,8 @@ exports.handleWebhook = async (req, res) => {
     res.status(200).json({ message: "Received" });
   }
 };
+
+// ─── VERIFY (called by frontend after redirect) ───────────────
 
 exports.verifyPayment = async (req, res) => {
   try {
@@ -140,25 +161,29 @@ exports.verifyPayment = async (req, res) => {
       }
     );
 
-    const { status } = paystackRes.data.data;
+    const paystackStatus = paystackRes.data.data.status;
+    const paystackAmount = paystackRes.data.data.amount / 100;
 
-    if (status === "success") {
-      const donation = await Donation.findOne({
-        reference: req.params.reference,
+    if (paystackStatus === "success") {
+      const donation = await markDonationSuccess(req.params.reference);
+
+      return res.status(200).json({
+        status: "success",
+        data: {
+          paymentStatus: "success",
+          amount: paystackAmount,
+          reference: req.params.reference,
+          projectId: donation?.project || null,
+        },
       });
-      if (donation && donation.status !== "success") {
-        donation.status = "success";
-        await donation.save();
-        if (donation.project)
-          await updateProjectProgress(donation.project, donation.amount);
-      }
     }
 
     res.status(200).json({
       status: "success",
-      data: { paymentStatus: status === "success" ? "success" : "pending" },
+      data: { paymentStatus: paystackStatus },
     });
   } catch (err) {
+    console.error("Verify error:", err.message);
     try {
       const donation = await Donation.findOne({
         reference: req.params.reference,
@@ -167,9 +192,11 @@ exports.verifyPayment = async (req, res) => {
         return res
           .status(404)
           .json({ status: "fail", message: "Donation not found" });
-      res
-        .status(200)
-        .json({ status: "success", data: { paymentStatus: donation.status } });
+
+      res.status(200).json({
+        status: "success",
+        data: { paymentStatus: donation.status },
+      });
     } catch (fallbackErr) {
       res.status(500).json({ status: "error", message: fallbackErr.message });
     }
@@ -365,6 +392,7 @@ exports.getMonthlyStats = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
 exports.getRecentDonations = async (req, res) => {
   try {
     const since = req.query.since

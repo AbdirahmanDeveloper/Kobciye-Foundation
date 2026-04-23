@@ -1,0 +1,51 @@
+doctype html
+head
+  meta(charset="UTF-8")
+  meta(name="viewport" content="width=device-width, initial-scale=1.0")
+  title Payment Verification || Kobciye Foundation
+  link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css")
+  link(rel="stylesheet" href="/css/payment-success.css")
+  link(rel="icon" type="image/x-icon" href="/images/favicon.ico")
+
+body
+  .verify-wrapper
+    .verify-card#verifyCard
+
+      //- Loading state
+      .verify-state#loadingState
+        i.fa-solid.fa-spinner.fa-spin
+        h2 Verifying your payment...
+        p Please wait while we confirm your transaction.
+
+      //- Success state
+      .verify-state#successState(style="display:none")
+        i.fa-solid.fa-circle-check.success-icon
+        h2 Payment Successful!
+        p Thank you for your donation to Kobciye Foundation.
+        .receipt
+          p
+            strong Reference:
+            span#receiptRef  —
+          p
+            strong Amount:
+            span#receiptAmount  —
+          p
+            strong Method:
+            span#receiptMethod  —
+          p
+            strong Date:
+            span#receiptDate  —
+        .verify-actions
+          a.btn-primary(href="/projects") View Projects
+          a.btn-secondary(href="/") Back to Home
+
+      //- Failed state
+      .verify-state#failedState(style="display:none")
+        i.fa-solid.fa-circle-xmark.error-icon
+        h2 Payment Not Confirmed
+        p Your payment could not be verified. If you were charged, please contact us.
+        .verify-actions
+          a.btn-primary(href="/donate") Try Again
+          a.btn-secondary(href="/") Back to Home
+
+  script(src="/js/payment-verify.js")
