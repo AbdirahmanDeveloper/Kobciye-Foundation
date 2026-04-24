@@ -323,6 +323,8 @@ document.querySelectorAll(".edit-project-btn").forEach((btn) => {
         document.getElementById("editTitle").value = data.data.title;
         document.getElementById("editDescription").value =
           data.data.description;
+        document.getElementById("editBeneficiaries").value = data.data.beneficiares;
+        document.getElementById("editImplementation").value = data.data.implementation;
         document.getElementById("editGoalAmount").value = data.data.goalAmount;
         document.getElementById("editStatus").value = data.data.status;
         editProjectModal.classList.add("active");
