@@ -374,6 +374,8 @@ body
         thead
           tr
             th Project Title
+            th Project Beneficiaries
+            th Implementation Period
             th Goal Amount (Ksh)
             th Raised Amount (Ksh)
             th Status
@@ -383,6 +385,8 @@ body
             each project in projects
               tr
                 td= project.title
+                td= project.implementation
+                td= project.beneficiaries
                 td= project.goalAmount
                 td= project.raisedAmount
                 td= project.status
@@ -410,6 +414,8 @@ body
       form#createProjectForm
         input(type="text" name="title" placeholder="Project Title" required)
         input(type="text" name="description" placeholder="Project Description" required)
+        input(type="text" name="beneficiaries" placeholder="Project beneficiaries" required)
+        input(type="text" name="implementation" placeholder="Project Implementation" required)
         input(type="number" name="goalAmount" placeholder="Goal Amount" required)
         input(type="file" name="image" accept="image/*" required)
         button(type="submit") Create Project

@@ -121,6 +121,8 @@ exports.createProject = async (req, res) => {
       image: imageUrl,
       title: req.body.title,
       description: req.body.description,
+      beneficiaries: req.body.beneficiaries,
+      implementation: req.body.implementation,
       goalAmount: req.body.goalAmount,
       createdBy: req.user.id,
     });

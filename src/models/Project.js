@@ -12,7 +12,14 @@ const projectSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-
+    beneficiaries: {
+      type: String,
+      required: true,
+    },
+    implementation: {
+      type: String,
+      required: true,
+    },
     goalAmount: {
       type: Number,
       required: true,
@@ -40,7 +47,7 @@ const projectSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 module.exports = mongoose.model("Project", projectSchema);

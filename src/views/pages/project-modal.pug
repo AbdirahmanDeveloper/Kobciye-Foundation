@@ -48,6 +48,12 @@ body
               .stat-row
                 span.stat-label Progress
                 span.stat-value.gold #{Math.min(Math.round((project.raisedAmount / project.goalAmount) * 100), 100)}%
+              .stat-row
+                span.stat-label Beneficiaries
+                span.stat-value= project.beneficiaries
+              .stat-row
+                span.stat-label Implementation Period
+                span.stat-value= project.implementation
             .progress-bar
               .progress-bar__fill(style=`width: ${Math.min(Math.round((project.raisedAmount / project.goalAmount) * 100), 100)}%`)
 

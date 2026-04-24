@@ -11,7 +11,6 @@ if (!token) {
 }
 
 document.documentElement.style.display = "";
-
 /* ============================================================
    HELPERS
 ============================================================ */
@@ -46,7 +45,6 @@ adminLogoutBtn?.addEventListener("click", (e) => {
     }, 500);
   }
 });
-
 /* ============================================================
    NOTIFICATIONS
 ============================================================ */
@@ -155,7 +153,6 @@ document.addEventListener("click", (e) => {
 /* ============================================================
    SIDEBAR & NAVIGATION
 ============================================================ */
-
 const loginBtn = document.querySelector(".login-btn");
 const logoutBtn = document.getElementById("logoutBtn");
 const userProfileSection = document.querySelector(".user-profile");
