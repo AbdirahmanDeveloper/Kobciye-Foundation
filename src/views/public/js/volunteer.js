@@ -4,7 +4,9 @@
 
 const volonteerForm = document.getElementById("volonteerForm");
 const volModal = document.getElementById("volMessageModal");
-const volSuccess = document.getElementById("volSuccessMessage");
+const volSuccess =
+  document.getElementById("volSuccessMessage") ||
+  document.getElementById("contactSuccessMessage");
 const volError = document.getElementById("volErrorMessage");
 const volunteerTypeSelect = document.getElementById("volunteerType");
 const missionsBox = document.getElementById("missionsBox");
@@ -16,15 +18,15 @@ const projectSelect = document.getElementById("projectSelect");
 volunteerTypeSelect?.addEventListener("change", () => {
   const val = volunteerTypeSelect.value;
 
-  missionsBox.style.display = "none";
-  projectsBox.style.display = "none";
-  missionSelect.required = false;
-  projectSelect.required = false;
+  if (missionsBox) missionsBox.style.display = "none";
+  if (projectsBox) projectsBox.style.display = "none";
+  if (missionSelect) missionSelect.required = false;
+  if (projectSelect) projectSelect.required = false;
 
-  if (val === "mission") {
+  if (val === "mission" && missionsBox && missionSelect) {
     missionsBox.style.display = "block";
     missionSelect.required = true;
-  } else if (val === "project") {
+  } else if (val === "project" && projectsBox && projectSelect) {
     projectsBox.style.display = "block";
     projectSelect.required = true;
   }
@@ -34,17 +36,17 @@ volunteerTypeSelect?.addEventListener("change", () => {
 volonteerForm?.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const type = volunteerTypeSelect.value;
+  const type = volunteerTypeSelect?.value;
 
   if (!type) {
     alert("Please select a volunteer type");
     return;
   }
-  if (type === "mission" && !missionSelect.value) {
+  if (type === "mission" && missionSelect && !missionSelect.value) {
     alert("Please select a mission");
     return;
   }
-  if (type === "project" && !projectSelect.value) {
+  if (type === "project" && projectSelect && !projectSelect.value) {
     alert("Please select a project");
     return;
   }
@@ -61,25 +63,29 @@ volonteerForm?.addEventListener("submit", async (e) => {
 
     const data = await res.json();
 
-    volModal.style.display = "flex";
+    if (volModal) volModal.style.display = "flex";
 
     if (res.ok) {
-      volSuccess.style.display = "flex";
-      volError.style.display = "none";
+      if (volSuccess) volSuccess.style.display = "flex";
+      if (volError) volError.style.display = "none";
       volonteerForm.reset();
-      missionsBox.style.display = "none";
-      projectsBox.style.display = "none";
+      if (missionsBox) missionsBox.style.display = "none";
+      if (projectsBox) projectsBox.style.display = "none";
     } else {
-      volError.style.display = "flex";
-      volSuccess.style.display = "none";
-      volError.querySelector("p").textContent =
-        data.message || "Something went wrong. Please try again.";
+      if (volError) {
+        volError.style.display = "flex";
+        const p = volError.querySelector("p");
+        if (p)
+          p.textContent =
+            data.message || "Something went wrong. Please try again.";
+      }
+      if (volSuccess) volSuccess.style.display = "none";
     }
   } catch (err) {
     console.error(err);
-    volModal.style.display = "flex";
-    volError.style.display = "flex";
-    volSuccess.style.display = "none";
+    if (volModal) volModal.style.display = "flex";
+    if (volError) volError.style.display = "flex";
+    if (volSuccess) volSuccess.style.display = "none";
   } finally {
     submitBtn.disabled = false;
     submitBtn.textContent = "Submit Application";
@@ -89,8 +95,8 @@ volonteerForm?.addEventListener("submit", async (e) => {
 // ── OK BUTTONS ──
 document.querySelectorAll("#volMessageModal .ok-btn").forEach((btn) => {
   btn.addEventListener("click", () => {
-    volModal.style.display = "none";
-    volSuccess.style.display = "none";
-    volError.style.display = "none";
+    if (volModal) volModal.style.display = "none";
+    if (volSuccess) volSuccess.style.display = "none";
+    if (volError) volError.style.display = "none";
   });
 });

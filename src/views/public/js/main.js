@@ -384,10 +384,8 @@ const token = localStorage.getItem("token");
 const API = "";
 const loginBtn = document.querySelector(".login-btn");
 
-if (token) {
-  loginBtn.style.display = "none";
-} else {
-  loginBtn.style.display = "block";
+if (loginBtn) {
+  loginBtn.style.display = token ? "none" : "block";
 }
 
 /* ============================================================
