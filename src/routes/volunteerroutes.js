@@ -6,7 +6,10 @@ const router = express.Router();
 
 router.post(
   "/apply",
-  upload.single("volImage"),
+  upload.fields([
+    { name: "volImage", maxCount: 1 },
+    { name: "nationalIdDoc", maxCount: 1 },
+  ]),
   volonteerController.createVolunteer
 );
 router.patch("/:id/accept", volonteerController.acceptVolunteer);

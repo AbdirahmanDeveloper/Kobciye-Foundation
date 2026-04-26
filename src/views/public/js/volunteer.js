@@ -2,10 +2,6 @@
    VOLUNTEER
 ============================================================ */
 
-const fileInput = document.getElementById("volImage");
-const filenameEl = document.getElementById("filename");
-const uploadSub = document.querySelector(".upload-sub");
-const uploadMain = document.querySelector(".upload-main");
 const volonteerForm = document.getElementById("volonteerForm");
 const volModal = document.getElementById("volMessageModal");
 const volSuccess = document.getElementById("volSuccessMessage");
@@ -16,37 +12,10 @@ const projectsBox = document.getElementById("projectsBox");
 const missionSelect = document.getElementById("missionSelect");
 const projectSelect = document.getElementById("projectSelect");
 
-// ── FILE INPUT ──
-fileInput?.addEventListener("change", () => {
-  const file = fileInput.files[0];
-  if (!file) return;
-
-  const allowedTypes = ["image/jpeg", "image/png"];
-  const maxSize = 5 * 1024 * 1024;
-
-  if (!allowedTypes.includes(file.type)) {
-    alert("Only PNG or JPG files are allowed.");
-    fileInput.value = "";
-    return;
-  }
-
-  if (file.size > maxSize) {
-    alert("File size must not exceed 5MB.");
-    fileInput.value = "";
-    return;
-  }
-
-  filenameEl.textContent = file.name;
-  filenameEl.style.display = "block";
-  if (uploadSub) uploadSub.style.display = "none";
-  if (uploadMain) uploadMain.textContent = "Image selected";
-});
-
 // ── VOLUNTEER TYPE ──
 volunteerTypeSelect?.addEventListener("change", () => {
   const val = volunteerTypeSelect.value;
 
-  // reset both
   missionsBox.style.display = "none";
   projectsBox.style.display = "none";
   missionSelect.required = false;
@@ -100,10 +69,6 @@ volonteerForm?.addEventListener("submit", async (e) => {
       volonteerForm.reset();
       missionsBox.style.display = "none";
       projectsBox.style.display = "none";
-      filenameEl.textContent = "No file chosen";
-      if (uploadSub) uploadSub.style.display = "block";
-      if (uploadMain)
-        uploadMain.textContent = "Click to upload your passport photo";
     } else {
       volError.style.display = "flex";
       volSuccess.style.display = "none";

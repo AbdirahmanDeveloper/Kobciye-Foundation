@@ -42,16 +42,6 @@ body
           .input-box
             label(for="volImage")
               | Passport Photo
-              span.req *
-            label.file-upload-label(for="volImage")
-              .upload-icon
-                svg(viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg")
-                  path(d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4")
-                  polyline(points="17 8 12 3 7 8")
-                  line(x1="12" y1="3" x2="12" y2="15")
-              span.upload-main Click to upload your passport photo
-              span.upload-sub PNG or JPG only — max 5MB
-              span.upload-filename#filename No file chosen
             input(type="file" name="volImage" id="volImage" accept="image/png, image/jpeg" required)
             span.field-error#imageError(style="display:none; color:red; font-size:0.8rem;")
 
@@ -63,22 +53,24 @@ body
 
           .input-box
             label(for="nationalId")
-              | National ID
+              | National ID Number / Birth Certificate
               span.req *
             input(id="nationalId" name="nationalId" placeholder="e.g: 000 000 000 0" required)
 
           .input-box
-            label(for="nationalId")
-              | Date of Birth
-              span.req *
-            input(id="dateOfBirth" type="date" name="dateOfBirth" placeholder="e.g: 02/01/2000" required)
+            label(for="nationalIdDoc")
+              | Upload National ID / Birth Certificate
+            input(id="nationalIdDoc" type="file" name="nationalIdDoc" accept="image/png, image/jpeg, application/pdf" required)
+          .input-box
+            label(for="bio")
+              | Your Bio
+            textarea(id="bio" name="bio" placeholder="Your Bio" required)
 
           .input-box
-            label(for="nationalId")
+            label(for="address")
               | Your Address
               span.req *
             input(id="address" name="address" placeholder="e.g: Eastleigh 6th st" required)
-
 
           .form-divider
 

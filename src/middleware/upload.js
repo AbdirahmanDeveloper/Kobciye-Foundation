@@ -8,24 +8,28 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// store file in memory, upload to cloudinary manually
 const storage = multer.memoryStorage();
 
 const fileFilter = (req, file, cb) => {
-  if (file.mimetype.startsWith("image/")) {
+  const allowed = ["image/jpeg", "image/png", "image/webp", "application/pdf"];
+  if (allowed.includes(file.mimetype)) {
     cb(null, true);
   } else {
-    cb(new Error("Only images are allowed"), false);
+    cb(new Error("Only images and PDF files are allowed"), false);
   }
 };
 
 const upload = multer({ storage, fileFilter });
 
-// call this after multer in your controller
-const uploadToCloudinary = (fileBuffer, folder) => {
+const uploadToCloudinary = (fileBuffer, folder, mimetype) => {
   return new Promise((resolve, reject) => {
+    const isPdf = mimetype === "application/pdf";
     const stream = cloudinary.uploader.upload_stream(
-      { folder, allowed_formats: ["jpg", "jpeg", "png", "webp"] },
+      {
+        folder,
+        allowed_formats: isPdf ? ["pdf"] : ["jpg", "jpeg", "png", "webp"],
+        resource_type: isPdf ? "raw" : "image",
+      },
       (error, result) => {
         if (error) reject(error);
         else resolve(result.secure_url);

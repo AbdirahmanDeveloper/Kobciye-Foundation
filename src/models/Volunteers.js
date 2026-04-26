@@ -5,12 +5,10 @@ const volunteersSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-
   phone: {
     type: String,
     required: true,
   },
-
   email: {
     type: String,
     required: true,
@@ -28,9 +26,15 @@ const volunteersSchema = mongoose.Schema({
   nationalId: {
     type: String,
   },
+  nationalIdDoc: {
+    type: String,
+    required: true,
+  },
+  bio: {
+    type: String,
+  },
   dateOfBirth: {
     type: Date,
-    required: [true, "birth date is required"],
   },
   address: {
     type: String,
@@ -45,6 +49,11 @@ const volunteersSchema = mongoose.Schema({
   mission: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Missions",
+    default: null,
+  },
+  project: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Project",
     default: null,
   },
   status: {

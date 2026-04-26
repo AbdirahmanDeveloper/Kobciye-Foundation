@@ -24,6 +24,14 @@ const supportSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    nationalIdDoc: {
+      type: String,
+      required: true,
+    },
+    supportDocuments: {
+      type: String,
+      required: true,
+    },
     image: {
       type: String,
       required: true,

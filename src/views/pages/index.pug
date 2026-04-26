@@ -125,95 +125,108 @@ body
           i.fa-solid.fa-newspaper
           span View All News
 
-      //- VOLUNTEER SECTION
-      section.volonteer-section
-        .volonteer-form
-          .section-title
-            span.eyebrow Kobciye Foundation
-            h1 Become a Volunteer
-            p Join our community of changemakers and help us create lasting impact.
+      //- VOLUNTEER FORM SECTION
+    section.volonteer-section
+      .volonteer-form
+        .section-title
+          span.eyebrow Kobciye Foundation
+          h1 Apply Now
+          p Fill in the form below and we'll get back to you shortly.
 
-          form#volonteerForm.contact-form(enctype="multipart/form-data")
+        form#volonteerForm.contact-form(enctype="multipart/form-data")
 
-            .input-box
-              label(for="volName")
-                | Your Full Name
-                span.req *
-              input(type="text" name="volName" id="volName" placeholder="Joe Doe" required)
+          .input-box
+            label(for="volName")
+              | Your Full Name
+              span.req *
+            input(type="text" name="volName" id="volName" placeholder="Joe Doe" required)
 
-            .input-box
-              label(for="volPhone")
-                | Your Phone Number
-                span.req *
-              input(type="tel" name="volPhone" id="volPhone" placeholder="+254 700 000 000" required)
+          .input-box
+            label(for="volPhone")
+              | Your Phone Number
+              span.req *
+            input(type="tel" name="volPhone" id="volPhone" placeholder="+254 700 000 000" required)
 
-            .input-box
-              label(for="volEmail")
-                | Your Email
-                span.req *
-              input(type="email" name="volEmail" id="volEmail" placeholder="joeDoe@gmail.com" required)
+          .input-box
+            label(for="volEmail")
+              | Your Email
+              span.req *
+            input(type="email" name="volEmail" id="volEmail" placeholder="joeDoe@gmail.com" required)
 
-            .input-box
-              label(for="volImage")
-                | Passport Photo
-                span.req *
-              label.file-upload-label(for="volImage")
-                .upload-icon
-                  svg(viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg")
-                    path(d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4")
-                    polyline(points="17 8 12 3 7 8")
-                    line(x1="12" y1="3" x2="12" y2="15")
-                span.upload-main Click to upload your passport photo
-                span.upload-sub PNG or JPG only — max 5MB
-                span.upload-filename#filename No file chosen
-              input(type="file" name="volImage" id="volImage" accept="image/png, image/jpeg" required)
-              span.field-error#imageError(style="display:none; color:red; font-size:0.8rem;")
+          .input-box
+            label(for="volImage")
+              | Passport Photo
+            input(type="file" name="volImage" id="volImage" accept="image/png, image/jpeg" required)
+            span.field-error#imageError(style="display:none; color:red; font-size:0.8rem;")
 
-            .input-box
-              label(for="availibility")
-                | Your Availability
-                span.req *
-              input(id="availibility" name="availibility" placeholder="e.g: 7 Days a Week" required)
+          .input-box
+            label(for="availibility")
+              | Your Availability
+              span.req *
+            input(id="availibility" name="availibility" placeholder="e.g: 7 Days a Week" required)
 
-            .input-box
-              label(for="nationalId")
-                | Your National ID
-                span.req *
-              input(id="nationalId" name="nationalId" placeholder="e.g: 000 000 000 0" required)
+          .input-box
+            label(for="nationalId")
+              | National ID Number / Birth Certificate
+              span.req *
+            input(id="nationalId" name="nationalId" placeholder="e.g: 000 000 000 0" required)
 
-            .form-divider
+          .input-box
+            label(for="nationalIdDoc")
+              | Upload National ID / Birth Certificate
+            input(id="nationalIdDoc" type="file" name="nationalIdDoc" accept="image/png, image/jpeg, application/pdf" required)
+          .input-box
+            label(for="bio")
+              | Your Bio
+            textarea(id="bio" name="bio" placeholder="Your Bio" required)
 
-            //- VOLUNTEER TYPE
-            .input-box
-              label(for="volunteerType")
-                | Volunteer Type
-                span.req *
-              select#volunteerType(name="type" required)
-                option(value="") Select type...
-                option(value="permanent") Permanent Volunteer
-                option(value="mission") Mission Volunteer
-                option(value="project") Project Volunteer
-            .input-box#missionsBox(style="display:none")
-              label(for="missionSelect")
-                | Select Mission
-                span.req *
-              select#missionSelect(name="missionId")
-                option(value="") Loading missions...
-            .input-box#projectsBox(style="display:none")
-              label(for="projectSelect")
-                | Select Project
-                span.req *
-              select#projectSelect(name="projectId")
-                option(value="") Select a project...
-                if ongoingProjects && ongoingProjects.length > 0
-                  each proj in ongoingProjects
-                    option(value=proj._id)= proj.title
-                else
-                  option(value="" disabled) No active projects available
+          .input-box
+            label(for="address")
+              | Your Address
+              span.req *
+            input(id="address" name="address" placeholder="e.g: Eastleigh 6th st" required)
 
-            .form-divider
-            button.vol-submit(type="submit") Submit Application
-            p.privacy-note We respect your privacy. Your information will only be used to contact you about volunteering opportunities.
+          .form-divider
+
+          //- VOLUNTEER TYPE
+          .input-box
+            label(for="volunteerType")
+              | Volunteer Type
+              span.req *
+            select#volunteerType(name="type" required)
+              option(value="") Select type...
+              option(value="permanent") Permanent Volunteer
+              option(value="mission") Mission Volunteer
+              option(value="project") Project Volunteer
+
+          //- MISSION SELECT
+          .input-box#missionsBox(style="display:none")
+            label(for="missionSelect")
+              | Select Mission
+              span.req *
+            select#missionSelect(name="missionId")
+              option(value="") Select a mission...
+              if missions && missions.length > 0
+                each mission in missions
+                  option(value=mission._id)= mission.title
+              else
+                option(value="" disabled) No active missions available
+
+          .input-box#projectsBox(style="display:none")
+            label(for="projectSelect")
+              | Select Project
+              span.req *
+            select#projectSelect(name="projectId")
+              option(value="") Select a project...
+              if ongoingProjects && ongoingProjects.length > 0
+                each project in ongoingProjects
+                  option(value=project._id)= project.title
+              else
+                option(value="" disabled) No active projects available
+
+          .form-divider
+          button.vol-submit(type="submit") Submit Application
+          p.privacy-note We respect your privacy. Your information will only be used to contact you about volunteering opportunities.
 
         .message-modal#volMessageModal
           .message-content.success#contactSuccessMessage

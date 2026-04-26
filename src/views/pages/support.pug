@@ -41,12 +41,19 @@ body
               label National ID
               input(type="text" name="nationalId" placeholder="Enter your national ID number" required)
             .form-group
+              label Upload National ID
+              input(type="file" name="nationalIdDoc" required)
+            .form-group
+              label Support Documents if Applicable
+              input(type="file" name="supportDocuments" multiple required)
+
+            .form-group
+              label Photo
+              input(type="file" name="image" accept="image/*" required)
+            
+            .form-group
               label Support Subject
               input(type="text" name="subject" placeholder="Enter the subject" required)
-
-          .form-group
-            label Photo
-            input(type="file" name="image" accept="image/*" required)
 
           .form-group
             label Message

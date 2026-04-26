@@ -1,6 +1,6 @@
 const Volunteer = require("../models/Volunteers");
 const Mission = require("../models/Missions");
-const { upload, uploadToCloudinary } = require("../middleware/upload");
+const { uploadToCloudinary } = require("../middleware/upload");
 const { Resend } = require("resend");
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -47,7 +47,7 @@ exports.createVolunteer = async (req, res) => {
       volEmail,
       availibility,
       nationalId,
-      dateOfBirth,
+      bio,
       address,
       type,
       missionId,
@@ -76,12 +76,30 @@ exports.createVolunteer = async (req, res) => {
       });
     }
 
-    const imageUrl = req.file
-      ? await uploadToCloudinary(
-          req.file.buffer,
-          "kobciye-foundation/volunteers"
-        )
-      : "";
+    const volImageFile = req.files?.["volImage"]?.[0];
+    const nationalIdDocFile = req.files?.["nationalIdDoc"]?.[0];
+
+    if (!volImageFile)
+      return res
+        .status(400)
+        .json({ status: "fail", message: "Passport photo is required" });
+
+    if (!nationalIdDocFile)
+      return res
+        .status(400)
+        .json({ status: "fail", message: "National ID document is required" });
+
+    const imageUrl = await uploadToCloudinary(
+      volImageFile.buffer,
+      "kobciye-foundation/volunteers/photos",
+      volImageFile.mimetype
+    );
+
+    const nationalIdDocUrl = await uploadToCloudinary(
+      nationalIdDocFile.buffer,
+      "kobciye-foundation/volunteers/ids",
+      nationalIdDocFile.mimetype
+    );
 
     const volunteer = await Volunteer.create({
       name: volName,
@@ -89,7 +107,8 @@ exports.createVolunteer = async (req, res) => {
       email: volEmail,
       availibility,
       nationalId,
-      dateOfBirth,
+      nationalIdDoc: nationalIdDocUrl,
+      bio,
       address,
       image: imageUrl,
       type,
@@ -116,7 +135,12 @@ exports.createVolunteer = async (req, res) => {
         </ul>
         ${
           volunteer.image
-            ? `<p><strong>Image:</strong><br/><img src="${volunteer.image}" width="200"/></p>`
+            ? `<p><strong>Photo:</strong><br/><img src="${volunteer.image}" width="200"/></p>`
+            : ""
+        }
+        ${
+          volunteer.nationalIdDoc
+            ? `<p><strong>ID Document:</strong> <a href="${volunteer.nationalIdDoc}" target="_blank">View Document</a></p>`
             : ""
         }
         <hr/>

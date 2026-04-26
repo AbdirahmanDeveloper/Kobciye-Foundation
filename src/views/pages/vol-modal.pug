@@ -21,9 +21,29 @@ body
         //- LEFT — Main Content
         .project-modal-main
 
-          if volunteer.image
-            .project-modal-image(data-aos="fade-up" data-aos-duration="600")
-              img(src=volunteer.image alt=volunteer.name)
+          //- IMAGES GALLERY
+          .vol-images-grid(data-aos="fade-up" data-aos-duration="600")
+            if volunteer.image
+              .vol-image-card
+                span.vol-image-label
+                  i.fa-solid.fa-user
+                  |  Passport Photo
+                .vol-image-wrap
+                  img(src=volunteer.image alt=`${volunteer.name} passport photo`)
+            if volunteer.nationalIdDoc
+              .vol-image-card
+                span.vol-image-label
+                  i.fa-solid.fa-file-lines
+                  |  National Id
+                .vol-image-wrap.doc-wrap
+                  a.doc-link-full(href=volunteer.nationalIdDoc target="_blank")
+                    .doc-icon-wrap
+                      i.fa-solid.fa-file-lines
+                    .doc-info
+                      span.doc-title National Id
+                      span.doc-sub Click to open
+                    .doc-arrow
+                      i.fa-solid.fa-arrow-up-right-from-square
 
           .project-modal-about(data-aos="fade-up" data-aos-duration="600")
             h2 About This Volunteer
@@ -45,10 +65,7 @@ body
                 span.stat-label Type
                 span.stat-value= volunteer.type
               .stat-row
-                span.stat-label Type
-                span.stat-value= volunteer.dateOfBirth ? new Date(volunteer.dateOfBirth).toLocaleDateString() : 'N/A'
-              .stat-row
-                span.stat-label Type
+                span.stat-label Address
                 span.stat-value= volunteer.address
               .stat-row
                 span.stat-label Availability

@@ -10,7 +10,7 @@ body
         .modal-hero-txt(data-aos="fade-up" data-aos-duration="800")
           span.hero-badge
             i.fa-solid.fa-circle-dot
-            |  #{support.status === 'accepted' ? 'Accepted Request' : support.status === 'rejected' ? 'Rejected' : 'Pending Review'}
+            |  #{support.status === 'accepted' ? 'Accepted' : support.status === 'rejected' ? 'Rejected' : 'Pending Review'}
           h1= support.name
 
     //- SUPPORT BODY
@@ -21,14 +21,50 @@ body
         //- LEFT — Main Content
         .project-modal-main
 
-          if support.image
-            .project-modal-image(data-aos="fade-up" data-aos-duration="600")
-              img(src=support.image alt=support.name)
+          //- IMAGES & DOCUMENTS GALLERY
+          .vol-images-grid(data-aos="fade-up" data-aos-duration="600")
+            if support.image
+              .vol-image-card
+                span.vol-image-label
+                  i.fa-solid.fa-user
+                  |  Passport Photo
+                .vol-image-wrap
+                  img(src=support.image alt=`${support.name} photo`)
+
+            if support.nationalIdDoc
+              .vol-image-card
+                span.vol-image-label
+                  i.fa-solid.fa-file-lines
+                  |  National Id
+                .vol-image-wrap.doc-wrap
+                  a.doc-link-full(href=support.nationalIdDoc target="_blank")
+                    .doc-icon-wrap
+                      i.fa-solid.fa-file-lines
+                    .doc-info
+                      span.doc-title National Id
+                      span.doc-sub Click to open
+                    .doc-arrow
+                      i.fa-solid.fa-arrow-up-right-from-square
+
+            if support.supportDocuments
+              .vol-image-card
+                span.vol-image-label
+                  i.fa-solid.fa-file-lines
+                  |  Support Documents
+                .vol-image-wrap.doc-wrap
+                  a.doc-link-full(href=support.supportDocuments target="_blank")
+                    .doc-icon-wrap
+                      i.fa-solid.fa-file-lines
+                    .doc-info
+                      span.doc-title Support Document
+                      span.doc-sub Click to open
+                    .doc-arrow
+                      i.fa-solid.fa-arrow-up-right-from-square
 
           .project-modal-about(data-aos="fade-up" data-aos-duration="600")
-            h2 Support Request Details
+            h2 Support Request
             .body-text-wrapper
-              p.body-text= support.message || support.description || 'No details provided.'
+              p.body-text= support.message || 'No message provided.'
             button#readMoreBtn.read-more-btn(type="button")
               span Read More
               i.fa-solid.fa-chevron-down
@@ -44,10 +80,13 @@ body
               .stat-row
                 span.stat-label Subject
                 span.stat-value= support.subject
-              if support.location
+              .stat-row
+                span.stat-label Location
+                span.stat-value= support.location
+              if support.nationalId
                 .stat-row
-                  span.stat-label Location
-                  span.stat-value= support.location
+                  span.stat-label National ID
+                  span.stat-value= support.nationalId
 
           .sidebar-card.meta-card(data-aos="fade-up" data-aos-delay="100" data-aos-duration="600")
             .meta-row
@@ -56,10 +95,6 @@ body
             .meta-row
               i.fa-solid.fa-envelope
               span= support.email
-            if support.nationalId
-              .meta-row
-                i.fa-solid.fa-id-card
-                span= support.nationalId
             if support.createdAt
               .meta-row
                 i.fa-regular.fa-calendar
@@ -71,8 +106,8 @@ body
 
     //- CALL TO ACTION
     section.get-involved(data-aos="fade-up" data-aos-duration="700")
-      h1 We're Here to Help
-      p Kobciye Foundation is committed to supporting those in need within our communities.
+      h1 We Are Here to Help
+      p Kobciye Foundation is committed to supporting those in need.
       a.get-involved-btn(href="/support") Request Support
 
   include ../partials/testimonials

@@ -12,10 +12,12 @@ supportForm.addEventListener("submit", async (e) => {
       document.getElementById("supportForm").style.display = "none";
       document.getElementById("supportSuccess").style.display = "flex";
     } else {
+      document.getElementById("supportForm").style.display = "none";
       document.getElementById("supportError").style.display = "flex";
     }
   } catch (err) {
     console.error(err);
+    document.getElementById("supportForm").style.display = "none";
     document.getElementById("supportError").style.display = "flex";
   }
 });

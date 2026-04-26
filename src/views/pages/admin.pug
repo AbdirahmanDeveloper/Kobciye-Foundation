@@ -562,7 +562,7 @@ body
             th Email
             th Availability
             th National ID
-            th DOB
+            th National ID Img
             th Address
             th Type
             th Status
@@ -578,7 +578,8 @@ body
                 td= item.email
                 td= item.availibility
                 td= item.nationalId
-                td= item.dateOfBirth ? new Date(item.dateOfBirth).toLocaleDateString() : 'N/A'
+                td
+                  img.volunteer-img(src=item.nationalIdDoc alt=item.nationalIdDoc)
                 td= item.address
                 td= item.type
                 td

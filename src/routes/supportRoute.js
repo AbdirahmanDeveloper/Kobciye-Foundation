@@ -6,7 +6,15 @@ const { upload } = require("../middleware/upload");
 const router = express.Router();
 
 // Public — submit a support request
-router.post("/", upload.single("image"), supportController.createSupport);
+router.post(
+  "/",
+  upload.fields([
+    { name: "image", maxCount: 1 },
+    { name: "nationalIdDoc", maxCount: 1 },
+    { name: "supportDocuments", maxCount: 1 },
+  ]),
+  supportController.createSupport
+);
 
 // Admin only
 router.patch(

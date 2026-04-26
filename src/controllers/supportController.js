@@ -1,20 +1,58 @@
 const Support = require("../models/Support");
 const { Resend } = require("resend");
-const { upload, uploadToCloudinary } = require("../middleware/upload");
+const { uploadToCloudinary } = require("../middleware/upload");
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+// ─── CREATE ───────────────────────────────────────────────────
+
 exports.createSupport = async (req, res) => {
   try {
-    const imageUrl = req.file
-    ? await uploadToCloudinary(req.file.buffer, "kobciye-foundation/support")
-    : "";
+    const imageFile = req.files?.["image"]?.[0];
+    const nationalIdDocFile = req.files?.["nationalIdDoc"]?.[0];
+    const supportDocumentsFile = req.files?.["supportDocuments"]?.[0];
+
+    if (!imageFile)
+      return res
+        .status(400)
+        .json({ status: "fail", message: "Profile photo is required" });
+
+    if (!nationalIdDocFile)
+      return res
+        .status(400)
+        .json({ status: "fail", message: "National ID document is required" });
+
+    if (!supportDocumentsFile)
+      return res
+        .status(400)
+        .json({ status: "fail", message: "Support document is required" });
+
+    const imageUrl = await uploadToCloudinary(
+      imageFile.buffer,
+      "kobciye-foundation/support/photos",
+      imageFile.mimetype
+    );
+
+    const nationalIdDocUrl = await uploadToCloudinary(
+      nationalIdDocFile.buffer,
+      "kobciye-foundation/support/ids",
+      nationalIdDocFile.mimetype
+    );
+
+    const supportDocumentsUrl = await uploadToCloudinary(
+      supportDocumentsFile.buffer,
+      "kobciye-foundation/support/docs",
+      supportDocumentsFile.mimetype
+    );
+
     const support = await Support.create({
       name: req.body.name,
       email: req.body.email,
       phone: req.body.phone,
       location: req.body.location,
       nationalId: req.body.nationalId,
+      nationalIdDoc: nationalIdDocUrl,
+      supportDocuments: supportDocumentsUrl,
       subject: req.body.subject,
       message: req.body.message,
       image: imageUrl,
@@ -26,6 +64,8 @@ exports.createSupport = async (req, res) => {
     res.status(500).json({ status: "error", message: err.message });
   }
 };
+
+// ─── UPDATE ───────────────────────────────────────────────────
 
 exports.updateSupport = async (req, res) => {
   try {
@@ -46,6 +86,8 @@ exports.updateSupport = async (req, res) => {
     res.status(500).json({ status: "error", message: err.message });
   }
 };
+
+// ─── ACCEPT ───────────────────────────────────────────────────
 
 exports.acceptSupport = async (req, res) => {
   try {
@@ -80,6 +122,8 @@ exports.acceptSupport = async (req, res) => {
   }
 };
 
+// ─── REJECT ───────────────────────────────────────────────────
+
 exports.rejectSupport = async (req, res) => {
   try {
     const support = await Support.findByIdAndUpdate(
@@ -113,6 +157,8 @@ exports.rejectSupport = async (req, res) => {
     res.status(500).json({ status: "error", message: err.message });
   }
 };
+
+// ─── DELETE ───────────────────────────────────────────────────
 
 exports.deleteSupport = async (req, res) => {
   try {

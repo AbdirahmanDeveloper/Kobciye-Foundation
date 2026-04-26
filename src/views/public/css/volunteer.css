@@ -137,10 +137,6 @@
   background: #fff;
 }
 
-.volonteer-form [type="file"] {
-  display: none;
-}
-
 .input-box select {
   padding: 12px 16px;
   font-family: "DM Sans", sans-serif;
@@ -176,64 +172,6 @@
 
 .input-box select option:disabled {
   color: #c4b9ac;
-}
-.file-upload-label {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 24px 16px;
-  background: #faf7f3;
-  border: 1.5px dashed #ddd5c8;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: border-color 0.2s, background 0.2s;
-  text-align: center;
-  width: 100%;
-}
-
-.file-upload-label:hover {
-  border-color: #c17d4a;
-  background: #fdf5ee;
-}
-
-.upload-icon {
-  width: 36px;
-  height: 36px;
-  background: #f0e6da;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.upload-icon svg {
-  width: 18px;
-  height: 18px;
-  stroke: #c17d4a;
-  fill: none;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.upload-main {
-  font-size: 13px;
-  font-weight: 500;
-  color: #5c4d3c;
-}
-
-.upload-sub {
-  font-size: 11.5px;
-  color: #a89b8c;
-}
-
-.upload-filename {
-  font-size: 12px;
-  color: #c17d4a;
-  font-weight: 500;
-  display: none;
 }
 
 .form-divider {
@@ -280,7 +218,10 @@
   justify-content: center;
   z-index: 1000;
 }
-/* VOLUNTEER — DARK THEME */
+
+/* ============================================================
+   VOLUNTEER — DARK THEME
+============================================================ */
 
 body.darke-theme .volonteer-section {
   background: var(--surface-base);
@@ -344,6 +285,7 @@ body.darke-theme .input-box input:focus {
   box-shadow: 0 0 0 3px rgba(212, 168, 83, 0.1);
   background: rgba(255, 255, 255, 0.03);
 }
+
 body.darke-theme .input-box select {
   background-color: var(--surface-3);
   border: 1px solid var(--border-hi);
@@ -367,6 +309,7 @@ body.darke-theme .input-box select option {
 body.darke-theme .input-box select option:disabled {
   color: var(--text-muted);
 }
+
 body.darke-theme .file-upload-label {
   background: var(--surface-3);
   border: 1px dashed var(--border-hi);
@@ -445,4 +388,206 @@ body.darke-theme .ok-btn:hover {
 body.darke-theme #volMessageModal {
   background: rgba(0, 0, 0, 0.65);
   backdrop-filter: blur(8px);
+}
+
+/* ============================================================
+   VOLUNTEER MODAL — IMAGES GRID
+============================================================ */
+
+.vol-images-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.vol-image-card {
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+  border: 1px solid #e8e4de;
+  display: flex;
+  flex-direction: column;
+}
+
+.vol-image-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 14px;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #c0873f;
+  background: #fdf8f3;
+  border-bottom: 1px solid #f0e9e0;
+}
+
+.vol-image-label i {
+  font-size: 12px;
+}
+
+.vol-image-wrap {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: #f5f2ee;
+}
+
+.vol-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  transition: transform 0.5s ease;
+  display: flex;
+}
+/* ── Document card (supportDocuments) ── */
+.vol-image-wrap.doc-wrap {
+  display: flex;
+  aspect-ratio: 4 / 3;
+  background: #fdf8f3;
+}
+
+.doc-link-full {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  padding: 24px 16px;
+  transition: background 0.2s;
+  background: #fdf8f3;
+}
+
+.doc-link-full:hover {
+  background: #f5ede0;
+}
+
+.doc-icon-wrap {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  background: rgba(192, 135, 63, 0.12);
+  border: 1.5px solid rgba(192, 135, 63, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.doc-link-full:hover .doc-icon-wrap {
+  background: rgba(192, 135, 63, 0.2);
+  border-color: #c0873f;
+}
+
+.doc-icon-wrap i {
+  font-size: 1.6rem;
+  color: #c0873f;
+}
+
+.doc-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.doc-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #3a2e22;
+  letter-spacing: 0.02em;
+}
+
+.doc-sub {
+  font-size: 11px;
+  color: #a89278;
+  letter-spacing: 0.03em;
+}
+
+.doc-arrow {
+  margin-top: 4px;
+}
+
+.doc-arrow i {
+  font-size: 13px;
+  color: #c0873f;
+  opacity: 0.7;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.doc-link-full:hover .doc-arrow i {
+  opacity: 1;
+  transform: translate(2px, -2px);
+}
+
+/* Dark theme */
+body.darke-theme .vol-image-wrap.doc-wrap {
+  background: var(--surface-3);
+}
+
+body.darke-theme .doc-link-full {
+  background: var(--surface-3);
+}
+
+body.darke-theme .doc-link-full:hover {
+  background: var(--gold-glow);
+}
+
+body.darke-theme .doc-icon-wrap {
+  background: var(--gold-glow);
+  border-color: var(--gold-border);
+}
+
+body.darke-theme .doc-link-full:hover .doc-icon-wrap {
+  background: rgba(212, 168, 83, 0.2);
+  border-color: var(--gold);
+}
+
+body.darke-theme .doc-icon-wrap i {
+  color: var(--gold);
+}
+
+body.darke-theme .doc-title {
+  color: var(--text-primary);
+}
+
+body.darke-theme .doc-sub {
+  color: var(--text-muted);
+}
+
+body.darke-theme .doc-arrow i {
+  color: var(--gold);
+}
+.vol-image-card:hover .vol-image-wrap img {
+  transform: scale(1.04);
+}
+
+@media (max-width: 560px) {
+  .vol-images-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Dark theme ── */
+body.darke-theme .vol-image-card {
+  background: var(--surface-2);
+  border-color: var(--gold);
+  box-shadow: none;
+}
+
+body.darke-theme .vol-image-label {
+  background: var(--surface-3);
+  border-bottom-color: var(--border);
+  color: var(--gold);
+}
+
+body.darke-theme .vol-image-wrap {
+  background: var(--surface-3);
 }
