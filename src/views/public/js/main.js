@@ -12,11 +12,23 @@ themeBtn?.addEventListener("click", () => {
   localStorage.setItem("theme", isDark ? "dark" : "light");
 });
 
-// Persist across page loads
 if (localStorage.getItem("theme") === "dark") {
   document.body.classList.add("darke-theme");
   if (themeIcon) themeIcon.className = "fa-solid fa-sun";
 }
+
+/* ============================================================
+   SHARED VARIABLES
+============================================================ */
+
+const token = localStorage.getItem("token");
+const API = "";
+const loginBtn = document.querySelector(".login-btn");
+
+if (loginBtn) {
+  loginBtn.style.display = token ? "none" : "block";
+}
+
 /* ============================================================
    MOBILE NAVIGATION TOGGLE
 ============================================================ */
@@ -49,8 +61,9 @@ document.addEventListener("click", (e) => {
 document.querySelectorAll(".nav-links .nav-link").forEach((link) => {
   link.addEventListener("click", closeNav);
 });
+
 /* ============================================================
-| DROPDOWN TOGGLE
+   DROPDOWN TOGGLE
 ============================================================ */
 const dropdownToggle = document.querySelector(".dropdown-toggle");
 const dropdown = document.querySelector(".dropdown");
@@ -69,6 +82,7 @@ if (navCloseBtn) {
     dropdownToggle?.setAttribute("aria-expanded", "false");
   });
 }
+
 /* ============================================================
    USER PROFILE MODAL
 ============================================================ */
@@ -293,16 +307,6 @@ async function loadUserDonations(filter = "all") {
               <i class="fa-solid fa-credit-card"></i>
               ${donation.paymentMethod}
             </span>
-            ${
-              donation.reference
-                ? `
-              <span>
-                <i class="fa-solid fa-hashtag"></i>
-                ${donation.reference}
-              </span>
-            `
-                : ""
-            }
           </div>
         </div>
       `
@@ -328,7 +332,121 @@ async function loadUserDonations(filter = "all") {
     }
   }
 }
+async function loadMonthlyDonorStatus() {
+  const container = document.querySelector(".monthly-donor-card-wrapper");
+  if (!container) return;
 
+  container.innerHTML = `
+    <div class="loading-state">
+      <i class="fa-solid fa-spinner fa-spin"></i>
+      <p>Checking donor status...</p>
+    </div>
+  `;
+
+  try {
+    const res = await fetch(`/api/monthly-donors/me`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <i class="fa-solid fa-heart"></i>
+          <p>${data.message || "You are not a monthly donor yet"}</p>
+        </div>
+      `;
+      return;
+    }
+
+    const donor = data.data;
+    const monthNames = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+
+    const since = new Date(donor.createdAt).toLocaleDateString("en-US", {
+      month: "short",
+      year: "numeric",
+    });
+
+    const nextDate = donor.nextBillingDate
+      ? new Date(donor.nextBillingDate).toLocaleDateString("en-US", {
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+        })
+      : "—";
+
+    const monthsGrid = monthNames
+      .map((name, i) => {
+        const paid = donor.paidMonths?.includes(i);
+        return `
+        <div class="month-pill ${paid ? "paid" : "unpaid"}">
+          <span>${name}</span>
+          <i class="fa-solid ${paid ? "fa-check" : "fa-minus"}"></i>
+        </div>
+      `;
+      })
+      .join("");
+
+    container.innerHTML = `
+      <div class="monthly-donor-card active">
+        <div class="mdc-badge">
+          <i class="fa-solid fa-star"></i> Monthly Donor
+        </div>
+        <div class="mdc-header">
+          <div class="mdc-icon">
+            <i class="fa-solid fa-heart"></i>
+          </div>
+          <div>
+            <h4>${donor.name || "Valued Donor"}</h4>
+            <span class="mdc-since">Member since ${since}</span>
+          </div>
+        </div>
+        <div class="mdc-stats">
+          <div class="mdc-stat">
+            <span>Monthly Amount</span>
+            <strong>KES ${donor.amount.toLocaleString()}</strong>
+          </div>
+          <div class="mdc-stat">
+            <span>Months Paid</span>
+            <strong>${donor.monthsPaid || 0} / 12</strong>
+          </div>
+          <div class="mdc-stat">
+            <span>Status</span>
+            <strong class="mdc-status ${donor.status}">${donor.status}</strong>
+          </div>
+        </div>
+        <div class="mdc-months">
+          <p class="mdc-months-label">Payment months</p>
+          <div class="months-grid">
+            ${monthsGrid}
+          </div>
+        </div>
+      </div>
+    `;
+  } catch (err) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <i class="fa-solid fa-exclamation-circle"></i>
+        <p>Could not load donor status</p>
+      </div>
+    `;
+    console.error(err);
+  }
+}
 /* ============================================================
    DONATION FILTERS
 ============================================================ */
@@ -339,8 +457,17 @@ filterButtons.forEach((button) => {
   button.addEventListener("click", () => {
     filterButtons.forEach((btn) => btn.classList.remove("active"));
     button.classList.add("active");
+
     const filterValue = button.getAttribute("data-filter");
-    loadUserDonations(filterValue);
+    const wrapper = document.querySelector(".monthly-donor-card-wrapper");
+
+    if (filterValue === "monthly") {
+      document.querySelector(".donations-list").innerHTML = "";
+      if (wrapper) loadMonthlyDonorStatus();
+    } else {
+      if (wrapper) wrapper.innerHTML = "";
+      loadUserDonations(filterValue);
+    }
   });
 });
 
@@ -376,17 +503,6 @@ logoutButton?.addEventListener("click", (e) => {
     window.location.href = "/login";
   }
 });
-/* ============================================================
-   SHARED VARIABLES
-============================================================ */
-
-const token = localStorage.getItem("token");
-const API = "";
-const loginBtn = document.querySelector(".login-btn");
-
-if (loginBtn) {
-  loginBtn.style.display = token ? "none" : "block";
-}
 
 /* ============================================================
    TOAST NOTIFICATIONS

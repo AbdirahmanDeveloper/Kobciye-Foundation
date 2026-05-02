@@ -408,7 +408,7 @@ exports.deleteMonthlyDonor = async (req, res) => {
 
 exports.getMonthlyDonorByEmail = async (req, res) => {
   try {
-    const { email } = req.params;
+    const email = req.user.email;
 
     const donor = await MonthlyDonor.findOne({
       email: email.toLowerCase().trim(),
