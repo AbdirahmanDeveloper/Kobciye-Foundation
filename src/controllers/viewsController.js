@@ -10,6 +10,7 @@ const Mission = require("../models/Missions");
 const Support = require("../models/Support");
 const Monthlydonor = require("../models/MonthlyDonor");
 const MonthlyDonor = require("../models/MonthlyDonor");
+const Donation = require("../models/Donation");
 
 // ─── HELPERS ──────────────────────────────────────────────────
 
@@ -165,7 +166,7 @@ exports.getAdmin = async (req, res) => {
       News.find(),
       Project.find().populate("createdBy"),
       Users.find(),
-      Donations.find()
+      Donation.find({ status: "success" })
         .populate("donor", "name email phone country donationType")
         .populate("project", "title")
         .sort({ createdAt: -1 }),
@@ -311,5 +312,5 @@ exports.getSupportModal = async (req, res) => {
 };
 
 exports.getPaymentSuccess = async (req, res) => {
-  res.render("pages/verify-payment")
-}
+  res.render("pages/verify-payment");
+};

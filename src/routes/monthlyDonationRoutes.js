@@ -18,5 +18,6 @@ router.get("/me", protect, monthlyDonorController.getMonthlyDonorByEmail);
 router.get("/:id", protect, monthlyDonorController.getMonthlyDonor);
 router.patch("/:id/checkin", protect, monthlyDonorController.checkInMonths);
 router.delete("/:id", protect, monthlyDonorController.deleteMonthlyDonor);
+router.patch("/:id", protect, monthlyDonorController.updateMonthlyDonor);
 
 module.exports = router;

@@ -323,8 +323,10 @@ document.querySelectorAll(".edit-project-btn").forEach((btn) => {
         document.getElementById("editTitle").value = data.data.title;
         document.getElementById("editDescription").value =
           data.data.description;
-        document.getElementById("editBeneficiaries").value = data.data.beneficiares;
-        document.getElementById("editImplementation").value = data.data.implementation;
+        document.getElementById("editBeneficiaries").value =
+          data.data.beneficiares;
+        document.getElementById("editImplementation").value =
+          data.data.implementation;
         document.getElementById("editGoalAmount").value = data.data.goalAmount;
         document.getElementById("editStatus").value = data.data.status;
         editProjectModal.classList.add("active");
@@ -1106,4 +1108,55 @@ document.querySelectorAll(".delete-monthly-donor-btn").forEach((btn) => {
       document.getElementById("donorDeleteError").style.display = "flex";
     }
   });
+});
+/* === EDIT MONTHLY DONOR === */
+document.querySelectorAll(".edit-monthly-donor-btn").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    document.getElementById("editMonthlyDonorId").value = btn.dataset.id;
+    document.getElementById("editDonorName").value = btn.dataset.name;
+    document.getElementById("editDonorEmail").value = btn.dataset.email;
+    document.getElementById("editDonorPhone").value = btn.dataset.phone;
+    document.getElementById("editShopCenter").value = btn.dataset.shopcenter;
+    document.getElementById("editShopNo").value = btn.dataset.shopno;
+    document.getElementById("editDonorAmount").value = btn.dataset.amount;
+    document
+      .querySelector(".edit-monthly-donor-section")
+      .classList.add("active");
+  });
+});
+
+const editMonthlySection = document.querySelector(".editMonthlyDonorFormMain");
+const editMonthlyDonor = document.getElementById("editMonthlyDonorForm");
+editMonthlyDonor.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const id = document.getElementById("editMonthlyDonorId").value;
+  const body = {
+    name: document.getElementById("editDonorName").value,
+    email: document.getElementById("editDonorEmail").value,
+    phone: document.getElementById("editDonorPhone").value,
+    shopCenter: document.getElementById("editShopCenter").value,
+    shopNo: document.getElementById("editShopNo").value,
+    amount: document.getElementById("editDonorAmount").value,
+    status: document.getElementById("editDonorStatus").value,
+  };
+  try {
+    const res = await fetch(`/api/monthly-donors/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(body),
+    });
+    const data = await res.json();
+    if (res.ok) {
+      editMonthlySection.style.display = "none";
+      document.getElementById("editMonthlyDonorSuccess").style.display = "flex";
+    } else {
+      throw new Error(data.message);
+    }
+  } catch (err) {
+    editMonthlySection.style.display = "none";
+    document.getElementById("editMonthlyDonorError").style.display = "flex";
+  }
 });

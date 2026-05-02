@@ -362,6 +362,7 @@ body
       i.fa-solid.fa-circle-xmark
       h2 User Delete Failed
       button.ok-error-btn#userDeleteErrorBtn OK
+
   //- ==================
   //- PROJECTS
   //- ==================
@@ -438,7 +439,7 @@ body
         input#editTitle(type="text" name="title" placeholder="Project Title" required)
         textarea#editDescription(name="description" placeholder="Project Description" rows="4" required)
         textarea#editBeneficiaries(name="beneficiaries" placeholder="Project Beneficiaries" required)
-        textarea#editImplementation(name="implementation" placeholder="Project Implementation"  required)
+        textarea#editImplementation(name="implementation" placeholder="Project Implementation" required)
         input#editGoalAmount(type="number" name="goalAmount" placeholder="Goal Amount" required)
         select#editStatus(name="status" required)
           option(value="active") Active
@@ -754,7 +755,9 @@ body
               td(colspan="8")
                 p.text-muted No support requests found
 
-  // ─── MONTHLY DONATIONS SECTION ───────────────────────────────
+  //- ==================
+  //- MONTHLY DONATIONS
+  //- ==================
   section#monthlyDonations.content-section
     .add
       button#addMonthlyDonor.add-btn
@@ -799,12 +802,24 @@ body
                       button.monthly-checkin-btn.btn.btn-sm(data-id=donor._id)
                         i.fa-solid.fa-calendar-check
                         span  Check Months
+                      button.edit-monthly-donor-btn.btn.btn-sm(
+                        data-id=donor._id
+                        data-name=donor.name
+                        data-email=donor.email
+                        data-phone=donor.phone
+                        data-shopcenter=donor.shopCenter
+                        data-shopno=donor.shopNo
+                        data-amount=donor.amount
+                      )
+                        i.fa-solid.fa-pen
+                        span  Edit
                       button.delete-monthly-donor-btn.btn.btn-sm.btn-danger(data-id=donor._id)
                         i.fa-solid.fa-trash
                         span  Delete
           else
             tr
-              td(colspan="7").text-muted No monthly donors yet
+              td(colspan="10").text-muted No monthly donors yet
+
     .success-message#donorDeleteSuccess
       i.fa-solid.fa-circle-check
       h2 Donor Deleted Successfully
@@ -814,7 +829,9 @@ body
       h2 Donor Delete Failed
       button.ok-error-btn OK
 
-  // ─── CREATE MONTHLY DONOR MODAL ───────────────────────────────
+  //- ==================
+  //- CREATE MONTHLY DONOR
+  //- ==================
   .create-monthly-donor.create-section
     .modal
       .form
@@ -866,7 +883,68 @@ body
         p Failed to create the donor. Please try again.
         button.ok-error-btn.btn.btn-secondary(type="button") Try Again
 
-  // ─── MONTHLY CHECK-IN MODAL ───────────────────────────────────
+  //- ==================
+  //- EDIT MONTHLY DONOR
+  //- ==================
+  .edit-monthly-donor-section.create-section
+    .modal
+      .form.editMonthlyDonorFormMain
+        .form-title
+          h2 Edit Monthly Donor
+        form#editMonthlyDonorForm
+          input#editMonthlyDonorId(type="hidden")
+
+          .form-group
+            label(for="editDonorName") Full Name
+            input#editDonorName(type="text" name="name" placeholder="Enter full name" required)
+
+          .form-group
+            label(for="editDonorEmail") Email Address
+            input#editDonorEmail(type="email" name="email" placeholder="Enter email address" required)
+
+          .form-group
+            label(for="editDonorPhone") Phone Number
+            input#editDonorPhone(type="tel" name="phone" placeholder="Enter phone number")
+
+          .form-group
+            label(for="editShopCenter") Shop Center
+            input#editShopCenter(type="text" name="shopCenter" placeholder="Enter Shop Name")
+
+          .form-group
+            label(for="editShopNo") Shop No
+            input#editShopNo(type="text" name="shopNo" placeholder="Enter Shop No")
+
+          .form-group
+            label(for="editDonorAmount") Monthly Amount (KES)
+            input#editDonorAmount(type="number" name="amount" placeholder="e.g. 1000" min="1" required)
+
+          .form-group
+            label(for="editDonorStatus") Status
+            select#editDonorStatus(name="status" required)
+              option(value="active") Active
+              option(value="inactive") Inactive
+              option(value="completed") Completed
+
+          .form-actions
+            button.btn.btn-primary(type="submit")
+              i.fa-solid.fa-floppy-disk
+              span  Save Changes
+
+      .success-message#editMonthlyDonorSuccess(style="display:none")
+        i.fa-solid.fa-circle-check
+        h3 Donor Updated!
+        p The donor details have been saved successfully.
+        button.ok-btn.btn.btn-primary(type="button") OK
+
+      .error-message#editMonthlyDonorError(style="display:none")
+        i.fa-solid.fa-circle-xmark
+        h3 Update Failed
+        p Could not save changes. Please try again.
+        button.ok-error-btn.btn.btn-secondary(type="button") Try Again
+
+  //- ==================
+  //- MONTHLY CHECK-IN
+  //- ==================
   .modal-overlay.monthly-checkin-section
     .modal.modal-wide
       .modal-header
@@ -875,12 +953,12 @@ body
           i.fa-solid.fa-xmark
 
       .checkin-donor-info
-        p.donor-label Donor: 
-          strong#checkinDonorName —
-        p.donor-label Email: 
-          strong#checkinDonorEmail —
-        p.donor-label Amount: KES 
-          strong#checkinDonorAmount —
+        p.donor-label Donor:
+          strong#checkinDonorName  —
+        p.donor-label Email:
+          strong#checkinDonorEmail  —
+        p.donor-label Amount: KES
+          strong#checkinDonorAmount  —
 
       form#monthlyCheckinForm
         input#checkinDonorId(type="hidden")

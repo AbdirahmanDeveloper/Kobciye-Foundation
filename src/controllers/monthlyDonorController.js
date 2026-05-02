@@ -424,3 +424,22 @@ exports.getMonthlyDonorByEmail = async (req, res) => {
     res.status(500).json({ status: "error", message: err.message });
   }
 };
+
+// Update single donor details
+exports.updateMonthlyDonor = async (req, res) => {
+  try {
+    const news = await MonthlyDonor.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!news)
+      return res
+        .status(404)
+        .json({ status: "fail", message: "Donor not found" });
+
+    res.status(200).json({ status: "success", data: news });
+  } catch (err) {
+    res.status(400).json({ status: "fail", message: err.message });
+  }
+};
