@@ -3,7 +3,7 @@ const params = new URLSearchParams(window.location.search);
 const reference = params.get("ref");
 
 async function verifyPayment() {
-  if (!reference) {
+  if (!reference || !token) {
     showState("failedState");
     return;
   }
@@ -18,12 +18,15 @@ async function verifyPayment() {
       document.getElementById("receiptRef").textContent = reference;
       document.getElementById("receiptDate").textContent =
         new Date().toDateString();
+
+      const amount = data.data.amount ?? 0;
       document.getElementById(
         "receiptAmount"
-      ).textContent = `KES ${data.data.amount.toLocaleString()}`;
-      document.getElementById("receiptMethod").textContent = (
-        data.data.paymentMethod || "CARD"
-      ).toUpperCase();
+      ).textContent = `KES ${amount.toLocaleString()}`;
+
+      const method = data.data.paymentMethod ?? "CARD";
+      document.getElementById("receiptMethod").textContent =
+        method.toUpperCase();
 
       showState("successState");
     } else {

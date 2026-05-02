@@ -178,9 +178,16 @@ exports.verifyPayment = async (req, res) => {
       });
     }
 
+    const donation = await Donation.findOne({
+      reference: req.params.reference,
+    });
     res.status(200).json({
       status: "success",
-      data: { paymentStatus: paystackStatus },
+      data: {
+        paymentStatus: paystackStatus,
+        amount: donation?.amount || 0,
+        paymentMethod: donation?.paymentMethod || null,
+      },
     });
   } catch (err) {
     console.error("Verify error:", err.message);
@@ -195,7 +202,11 @@ exports.verifyPayment = async (req, res) => {
 
       res.status(200).json({
         status: "success",
-        data: { paymentStatus: donation.status },
+        data: {
+          paymentStatus: donation.status,
+          amount: donation.amount,
+          paymentMethod: donation.paymentMethod,
+        },
       });
     } catch (fallbackErr) {
       res.status(500).json({ status: "error", message: fallbackErr.message });
